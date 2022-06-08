@@ -1,5 +1,5 @@
 const Requirements = () => {
-  return <div>asd</div>;
+  return <div>Requisito</div>;
 };
 
 export default Requirements;
