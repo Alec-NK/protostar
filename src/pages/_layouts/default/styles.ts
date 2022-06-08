@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  .body {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-  }
+  display: grid;
+  grid-template-columns: auto 85%;
+  grid-template-rows: 6% auto;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar content";
+  width: 100vw;
+  height: 100vh;
 
-  .main {
+  .content {
     display: flex;
     flex-direction: column;
+    grid-area: content;
+    padding: 20px;
   }
 `;

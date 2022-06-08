@@ -1,23 +1,20 @@
+import Header from "../../../components/Header";
 import Sidebar from "../../../components/Sidebar";
 
 import { Container } from "./styles";
 
 type LayoutProps = {
-  children: React.ReactNode;
+    children: React.ReactNode;
 };
 
 const DefaultLayout = ({ children }: LayoutProps) => {
-  return (
-    <Container>
-      <div className="body">
-        <Sidebar />
-        <div className="main">
-          <div>header</div>
-          <div className="content">{children}</div>
-        </div>
-      </div>
-    </Container>
-  );
+    return (
+        <Container>
+            <Sidebar />
+            <Header />
+            <div className="content">{children}</div>
+        </Container>
+    );
 };
 
 export default DefaultLayout;
