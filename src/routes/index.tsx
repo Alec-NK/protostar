@@ -4,10 +4,10 @@ import Requirements from "../pages/Requirements";
 import Changes from "../pages/Changes";
 
 const IndexRoutes = () => (
-  <Routes>
-    <Route path="/" element={<Requirements />} />
-    <Route path="/mudanças" element={<Changes />} />
-  </Routes>
+    <Routes>
+        <Route path="/" element={<Requirements />} />
+        <Route path="/mudancas" element={<Changes />} />
+    </Routes>
 );
 
 export default IndexRoutes;
