@@ -1,28 +1,61 @@
 import styled from "styled-components";
 
+type SideItemsProps = {
+    active: boolean;
+};
+
 export const Container = styled.div`
     grid-area: sidebar;
     background-color: #1a1a1a;
-    border-right: solid 1px #404040;
-    padding: 20px;
+    border-right: solid 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 0px 5px 1px rgba(0, 0, 0, 0.2);
+    padding: 20px 30px;
 
     .logo {
         margin-bottom: 50px;
     }
+
+    // Seções - Habilitar na versão final
+    /* .title {
+        font-family: "Maven Pro", sans-serif;
+        font-weight: lighter;
+        font-size: 14px;
+        color: rgba(242, 242, 242, 0.4);
+        margin-bottom: 15px;
+    } */
 `;
 
-export const SideItems = styled.div`
-    div {
-        width: 100%;
-        margin-bottom: 5px;
-        padding: 12px;
-        border-radius: 5px;
-        text-align: center;
-        background-color: #404040;
-        color: white;
-    }
-
+export const SideItems = styled.div<SideItemsProps>`
     a {
         text-decoration: none;
+    }
+
+    .link {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        align-items: center;
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        text-align: center;
+        background-color: ${(props) =>
+            props.active ? "#282828" : "transparent"};
+        color: ${(props) => (props.active ? "white" : "#616060")};
+        transition: 0.2s;
+        font-family: "Maven Pro", sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+
+        &:hover {
+            background-color: #404040;
+            transition: 0.2s;
+        }
+    }
+
+    .link_icon {
+        display: flex;
+        margin-right: 15px;
     }
 `;

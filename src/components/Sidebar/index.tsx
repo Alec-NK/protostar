@@ -1,27 +1,32 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import { FaList } from "react-icons/fa";
+import { MdPublishedWithChanges } from "react-icons/md";
 
 import { Container, SideItems } from "./styles";
 
 const Sidebar = () => {
+    const location = useLocation();
     const menuItems = [
         {
             path: "/",
             name: "Requisitos",
-            icon: "",
+            icon: <FaList />,
         },
         {
-            path: "/mudanças",
+            path: "/mudancas",
             name: "Mudanças",
-            icon: "",
+            icon: <MdPublishedWithChanges />,
         },
     ];
 
     return (
         <Container>
             <div className="logo">protostar logo</div>
+            {/* <div className="title">MENU</div> */}
             {menuItems.map((item, index) => (
-                <SideItems>
+                <SideItems active={item.path === location.pathname}>
                     <NavLink to={item.path} key={index} className="link">
+                        <div className="link_icon">{item.icon}</div>
                         <div className="link_text">{item.name}</div>
                     </NavLink>
                 </SideItems>
