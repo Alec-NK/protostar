@@ -7,4 +7,8 @@ export default createGlobalStyle`
         outline: none;
         box-sizing: border-box;
     }
+
+    button {
+        cursor: pointer;
+    }
 `;
