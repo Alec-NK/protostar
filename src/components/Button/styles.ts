@@ -6,7 +6,6 @@ export const ButtonContainer = styled.button`
     align-items: center;
     height: 0;
     padding: 22px 45px;
-    /* padding: 18px; --- Botao menor */
     margin-right: 7rem;
     border: none;
     border-radius: 5px;
@@ -16,7 +15,7 @@ export const ButtonContainer = styled.button`
     transition: 0.2s;
 
     &:hover {
-        opacity: 0.8;
+        background-color: #f0a732;
         transition: 0.2s;
     }
 
