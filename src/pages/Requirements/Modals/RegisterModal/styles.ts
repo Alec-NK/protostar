@@ -14,6 +14,8 @@ export const Background = styled.div`
 `;
 
 export const Container = styled.div`
+    display: flex;
+    flex-flow: column nowrap;
     width: 50%;
     height: 60%;
     border-radius: 6px;
@@ -36,14 +38,64 @@ export const ModalHeader = styled.div`
 `;
 
 export const Content = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 20px;
     width: 100%;
-    height: 300px;
+    height: calc(100% - 65px);
+    overflow: auto;
 
-    .input-container {
+    label {
+        margin: 0 0 5px 5px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    input {
+        padding: 0.8rem;
+        border: 2px solid #b3b3b3;
+        border-radius: 5px;
+        font-size: 15px;
+        outline: none;
+        transition: all 0.3s;
+        color: black;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 20px;
+
+        .inputContainer {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+    }
+
+    .caption {
+        margin-bottom: 15px;
+        font-family: "Montserrat", sans-serif;
+        color: #b3b3b3;
+    }
+
+    #firstRow {
+        display: grid;
+        grid-template-columns: 8% 91%;
+    }
+
+    #secondRow {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        margin-bottom: 35px;
+    }
+
+    #thirdRow {
+        display: grid;
+        grid-template-columns: 49.5% 49.5%;
+    }
+
+    /* .input-container {
         width: 280px;
         position: relative;
     }
@@ -63,7 +115,6 @@ export const Content = styled.div`
         width: 100%;
         height: 100%;
         border: 2px solid #2f2c45;
-        /* background: #272530; */
         border-radius: 5px;
         font-size: 15px;
         outline: none;
@@ -99,9 +150,10 @@ export const Content = styled.div`
         opacity: 0;
         transition: all 0.3s;
     }
+
     .text-input:focus::placeholder {
         opacity: 1;
-    }
+    } */
 `;
 
 export const Footer = styled.div`
