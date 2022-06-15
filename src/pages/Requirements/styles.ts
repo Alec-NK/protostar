@@ -62,8 +62,8 @@ export const HeaderTable = styled.div`
     width: 100%;
     padding: 0 10px 10px 10px;
     margin-bottom: 25px;
-    font-family: "Maven Pro", sans-serif;
-    /* font-weight: 800; */
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
     border-bottom: solid 1px rgba(242, 242, 242, 0.9);
     color: #525a68;
 `;
