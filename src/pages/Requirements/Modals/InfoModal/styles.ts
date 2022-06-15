@@ -74,9 +74,7 @@ export const SectionsPage = styled.div`
 export const ButtonSection = styled.button<ButtonSectionProps>`
     border: none;
     border-bottom: ${(props) =>
-        props.isActive
-            ? "2px solid #fab039"
-            : "1px solid rgba(242, 242, 242, 0.5)"};
+        props.isActive ? "2px solid #fab039" : "1px solid rgba(242, 242, 242, 0.5)"};
     color: ${(props) => (props.isActive ? "#282828" : "#a3a3a3")};
     font-weight: ${(props) => (props.isActive ? "500" : "300")};
     transition: 0.2s;
@@ -95,39 +93,42 @@ export const Content = styled.div`
     overflow: auto;
 
     .column:first-child {
+        /* background-color: #b3b3b3; */
     }
 
     .column:last-child {
-        margin-left: 3rem;
+        margin-left: 2rem;
+        /* background-color: #b3b3b3; */
     }
 
     .element {
         margin-bottom: 2rem;
     }
 
+    .row_title {
+        width: 100%;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 30px;
+    }
+
     .row {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        /* margin-bottom: 20px; */
-
-        h2 {
-            font-family: "Montserrat", sans-serif;
-            margin-bottom: 30px;
-        }
-
-        .descricao {
-            width: 100%;
-            text-align: justify;
-            margin-bottom: 30px;
-        }
+        text-align: justify;
+        margin-bottom: 30px;
 
         .caption {
             margin-bottom: 15px;
             font-family: "Montserrat", sans-serif;
             color: #b3b3b3;
         }
+    }
+
+    .row_items {
+        display: grid;
+        grid-template-columns: 35% 35% 35%;
+        width: 100%;
+        /* background-color: red; */
+        /* margin-bottom: 20px; */
     }
 `;
 
