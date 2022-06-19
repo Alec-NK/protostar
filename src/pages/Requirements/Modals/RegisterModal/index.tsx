@@ -67,6 +67,7 @@ const customStyles = {
         transition: "all 0.3s",
         color: "black",
         boxShadow: "none",
+        fontFamily: "Montserrat",
         "&:hover": {
             border: "2px solid #b3b3b3",
         },

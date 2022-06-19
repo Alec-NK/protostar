@@ -61,6 +61,7 @@ export const Content = styled.div`
         color: black;
         -webkit-appearance: none;
         -moz-appearance: none;
+        font-family: "Montserrat", sans-serif;
 
         &:disabled {
             border: 2px solid rgba(242, 242, 242, 1);
