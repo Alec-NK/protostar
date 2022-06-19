@@ -11,3 +11,14 @@ export const RequirementsTypes = [
     { value: "F", label: "Funcional" },
     { value: "NF", label: "Não Funcional" },
 ];
+
+export const ChangesTypes = [
+    { value: "AN", label: "Em análise" },
+    { value: "APR", label: "Aprovado" },
+    { value: "RJ", label: "Rejeitado" },
+    { value: "PR", label: "Bloqueado" },
+    { value: "ING", label: "Em implementação" },
+    { value: "IED", label: "Implementado" },
+    { value: "VE", label: "Verificando" },
+    { value: "D", label: "Finalizado" },
+];
