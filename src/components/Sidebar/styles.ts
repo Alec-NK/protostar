@@ -12,7 +12,15 @@ export const Container = styled.div`
     padding: 20px 30px;
 
     .logo {
-        margin-bottom: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 30px;
+
+        img {
+            width: 90%;
+            /* border: 1px solid white; */
+        }
     }
 
     // Seções - Habilitar na versão final
@@ -20,7 +28,7 @@ export const Container = styled.div`
         font-family: "Maven Pro", sans-serif;
         font-weight: lighter;
         font-size: 14px;
-        color: rgba(242, 242, 242, 0.4);
+        color: rgba(242, 242, 242, 0.6);
         margin-bottom: 15px;
     } */
 `;
@@ -40,8 +48,7 @@ export const SideItems = styled.div<SideItemsProps>`
         margin-bottom: 5px;
         border-radius: 5px;
         text-align: center;
-        background-color: ${(props) =>
-            props.active ? "#282828" : "transparent"};
+        background-color: ${(props) => (props.active ? "#282828" : "transparent")};
         color: ${(props) => (props.active ? "white" : "#616060")};
         transition: 0.2s;
         font-family: "Maven Pro", sans-serif;

@@ -26,7 +26,9 @@ const Sidebar = () => {
 
     return (
         <Container>
-            <div className="logo">protostar logo</div>
+            <div className="logo">
+                <img src="images/logo_protostar.png" alt="Protostar" />
+            </div>
             {/* <div className="title">MENU</div> */}
             {menuItems.map((item, index) => (
                 <SideItems active={item.path === location.pathname}>
