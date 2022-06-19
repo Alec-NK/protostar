@@ -17,6 +17,11 @@ const Sidebar = () => {
             name: "Mudanças",
             icon: <MdPublishedWithChanges />,
         },
+        // {
+        //     path: "/solicitacoes",
+        //     name: "Solicitações",
+        //     icon: <MdPublishedWithChanges />,
+        // },
     ];
 
     return (
