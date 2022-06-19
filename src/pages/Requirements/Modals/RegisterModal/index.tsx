@@ -13,7 +13,8 @@ import { RequirementsTypes, StatusTypes } from "../../../../util/Types";
 import { Background, Container, Content, Footer, ModalHeader } from "./styles";
 
 type RegisterModalProps = {
-    setIsOpen: any;
+    setIsOpen: () => void;
+    reloadPage: () => void;
 };
 
 export type AsyncSelectInputValuesType = {
@@ -78,7 +79,7 @@ const customStyles = {
     }),
 };
 
-const RegisterModal = ({ setIsOpen }: RegisterModalProps) => {
+const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
     const [isNFunctionalSelected, setIsNFunctionalSelected] = useState(false);
     const {
         register,
@@ -128,6 +129,7 @@ const RegisterModal = ({ setIsOpen }: RegisterModalProps) => {
             .then(() => {
                 toast.success("Requisito cadastrado com sucesso!");
                 toggleIsModalOpen();
+                reloadPage();
             })
             .catch((erro) => {
                 console.log("Error", erro);

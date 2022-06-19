@@ -81,6 +81,10 @@ const Requirements = () => {
         setIsModalInfoOpen((prevState) => !prevState);
     };
 
+    const handleReloadPage = () => {
+        window.location.reload();
+    };
+
     useEffect(() => {
         console.log("Data", data);
         let reqFunc: any = [];
@@ -145,7 +149,9 @@ const Requirements = () => {
                 </ContentTable>
             </TableList>
             {isModalInfoOpen && <InfoModal setIsOpen={toggleInfoModal} />}
-            {isModalRegisterOpen && <RegisterModal setIsOpen={toggleModalRegister} />}
+            {isModalRegisterOpen && (
+                <RegisterModal setIsOpen={toggleModalRegister} reloadPage={handleReloadPage} />
+            )}
         </Container>
     );
 };

@@ -12,4 +12,12 @@ export const Container = styled.div`
     font-size: 15px;
     background-color: rgba(242, 242, 242, 0.5);
     cursor: pointer;
+
+    .function_icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: grey;
+    }
 `;
