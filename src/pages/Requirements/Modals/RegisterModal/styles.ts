@@ -1,3 +1,4 @@
+import AsyncSelect from "react-select/async";
 import styled from "styled-components";
 
 export const Background = styled.div`
@@ -58,6 +59,27 @@ export const Content = styled.div`
         outline: none;
         transition: all 0.3s;
         color: black;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        &:disabled {
+            border: 2px solid rgba(242, 242, 242, 1);
+            cursor: not-allowed;
+
+            ::placeholder {
+                color: rgba(242, 242, 242, 1);
+            }
+        }
+    }
+
+    select {
+        padding: 0.8rem;
+        border: 2px solid #b3b3b3;
+        border-radius: 5px;
+        font-size: 15px;
+        outline: none;
+        transition: all 0.3s;
+        color: black;
     }
 
     .row {
@@ -70,6 +92,29 @@ export const Content = styled.div`
         .inputContainer {
             display: flex;
             flex-flow: column nowrap;
+
+            .category {
+                width: 100%;
+            }
+
+            .error_message {
+                color: red;
+                font-family: "Maven Pro", sans-serif;
+                margin: 4px 0 0 5px;
+            }
+        }
+
+        #version {
+            input {
+                &:disabled {
+                    border: 2px solid transparent;
+                    cursor: not-allowed;
+
+                    ::placeholder {
+                        color: grey;
+                    }
+                }
+            }
         }
     }
 
@@ -81,16 +126,22 @@ export const Content = styled.div`
 
     #firstRow {
         display: grid;
-        grid-template-columns: 8% 91%;
+        /* grid-template-columns: 25% 74.5%; */
+        grid-template-columns: 49.5% 49.5%;
     }
 
     #secondRow {
         display: grid;
         grid-template-columns: 33% 33% 33%;
-        margin-bottom: 35px;
     }
 
     #thirdRow {
+        display: grid;
+        grid-template-columns: 49.5% 49.5%;
+        margin-bottom: 35px;
+    }
+
+    #fourthRow {
         display: grid;
         grid-template-columns: 49.5% 49.5%;
     }
