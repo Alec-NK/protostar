@@ -15,13 +15,15 @@ const ItemTable = ({ data, onClick, id }: ItemTableProps) => {
     return (
         <Container onClick={onClick}>
             <div>{id + 1}</div>
-            <div>{data && data.description}</div>
+            <div>
+                {data && data.description.length >= 56
+                    ? `${data.description.substring(0, 56)}...`
+                    : data.description}
+            </div>
             <div style={{ textAlign: "center" }}>
                 <Status />
             </div>
-            <div style={{ textAlign: "center" }}>
-                {data && formatDate(data.created_data)}
-            </div>
+            <div style={{ textAlign: "center" }}>{data && formatDate(data.created_data)}</div>
             <div style={{ textAlign: "center" }}>{data && data.version}</div>
             <div style={{ textAlign: "center" }}>asd</div>
         </Container>
