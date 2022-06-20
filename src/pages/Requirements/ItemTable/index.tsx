@@ -17,9 +17,10 @@ const ItemTable = ({ data, onClick, id }: ItemTableProps) => {
     return (
         <Container onClick={onClick}>
             <div>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
+            <div>{data && data.title}</div>
             <div>
-                {data && data.description.length >= 56
-                    ? `${data.description.substring(0, 56)}...`
+                {data && data.description.length >= 55
+                    ? `${data.description.substring(0, 55)}...`
                     : data.description}
             </div>
             <div style={{ textAlign: "center" }}>

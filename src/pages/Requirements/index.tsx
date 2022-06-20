@@ -114,6 +114,7 @@ const Requirements = () => {
             <TableList>
                 <HeaderTable>
                     <div>ID</div>
+                    <div>Título</div>
                     <div>Descrição</div>
                     <div style={{ textAlign: "center" }}>Status</div>
                     <div style={{ textAlign: "center" }}>Data de Criacao</div>
