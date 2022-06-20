@@ -97,8 +97,8 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             value: req.id,
             label:
                 req.type === "F"
-                    ? `Requisito Funcional ${req.id}`
-                    : `Requisito Não Funcional ${req.id}`,
+                    ? `Requisito ${req.id} Funcional`
+                    : `Requisito ${req.id} Não Funcional`,
         }));
 
         return options;
