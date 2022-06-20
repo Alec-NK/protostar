@@ -1,5 +1,7 @@
 import Status from "../Status";
 
+import { TbReportSearch } from "react-icons/tb";
+
 import { ChangesDataType } from "..";
 import { formatDate } from "../../../util/app.util";
 
@@ -14,23 +16,17 @@ type ItemTableProps = {
 const ItemChangeTable = ({ data, onClick, id }: ItemTableProps) => {
     return (
         <Container onClick={onClick}>
-            <div>{id + 1}</div>
+            <div>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
             <div>{data && formatDate(data.data_pedido)}</div>
             <div>{data.title}</div>
             <div>{data.requestor}</div>
-            <div>{data.accountable[0]}</div>
+            <div>{data.accountable}</div>
             <div style={{ textAlign: "center" }}>
-                <Status />
+                <Status typeStatus={data.status} />
             </div>
-            {/* <div>
-                {data && data.reason.length >= 56
-                    ? `${data.reason.substring(0, 56)}...`
-                    : data.reason}
-            </div> */}
-            {/* <div style={{ textAlign: "center" }}>
-                {data && data.data_mudanca ? formatDate(data.data_mudanca) : "----"}
-            </div> */}
-            <div style={{ textAlign: "center" }}>asd</div>
+            <div style={{ textAlign: "center" }} className="function_icon">
+                <TbReportSearch />
+            </div>
         </Container>
     );
 };
