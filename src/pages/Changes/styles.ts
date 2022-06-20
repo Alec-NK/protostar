@@ -50,6 +50,11 @@ export const HeaderTable = styled.div`
     font-weight: 700;
     border-bottom: solid 1px rgba(242, 242, 242, 0.9);
     color: #525a68;
+
+    div {
+        flex-wrap: wrap;
+        margin-right: 5px;
+    }
 `;
 
 export const ContentTable = styled.div`

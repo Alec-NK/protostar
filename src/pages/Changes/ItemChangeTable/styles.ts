@@ -13,6 +13,11 @@ export const Container = styled.div`
     background-color: rgba(242, 242, 242, 0.5);
     cursor: pointer;
 
+    div {
+        flex-wrap: wrap;
+        margin-right: 5px;
+    }
+
     .function_icon {
         display: flex;
         align-items: center;

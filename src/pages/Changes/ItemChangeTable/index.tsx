@@ -18,7 +18,9 @@ const ItemChangeTable = ({ data, onClick, id }: ItemTableProps) => {
         <Container onClick={onClick}>
             <div>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
             <div>{data && formatDate(data.data_pedido)}</div>
-            <div>{data.title}</div>
+            <div>
+                {data && data.title.length >= 30 ? `${data.title.substring(0, 30)}...` : data.title}
+            </div>
             <div>{data.requestor}</div>
             <div>{data.accountable}</div>
             <div style={{ textAlign: "center" }}>
