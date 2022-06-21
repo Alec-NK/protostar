@@ -11,5 +11,7 @@ export const Container = styled.div<ContainerProps>`
         border-radius: 4px;
         background-color: ${(props) => props.backgroundColor};
         color: ${(props) => props.color};
+        font-family: "Maven Pro", sans-serif;
+        font-weight: 600;
     }
 `;

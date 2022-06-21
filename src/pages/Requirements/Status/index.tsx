@@ -25,19 +25,16 @@ const Status = ({ typeStatus }: StatusProps) => {
 
             default:
                 setStatusData({
-                    label: "Teste",
-                    textColor: "#333333",
-                    backColor: "#afafaf",
+                    label: "None",
+                    textColor: "#505F79",
+                    backColor: "#C1C7D0",
                 });
                 break;
         }
     }, [typeStatus]);
 
     return (
-        <Container
-            color={statusData.textColor}
-            backgroundColor={statusData.backColor}
-        >
+        <Container color={statusData.textColor} backgroundColor={statusData.backColor}>
             <span>{statusData.label}</span>
         </Container>
     );
