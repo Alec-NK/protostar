@@ -167,11 +167,11 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         </div>
                         <div className="row" id="secondRow">
                             <div className="inputContainer">
-                                <label>Motivo</label>
+                                <label>Descrição/Motivo</label>
                                 <textarea
                                     className="input_reason"
                                     {...register("reason")}
-                                    placeholder="Insira o motivo da mudança"
+                                    placeholder="Insira o motivo e a descrição da mudança"
                                 />
                                 <p className="error_message">{errors.reason?.message}</p>
                             </div>

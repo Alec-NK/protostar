@@ -142,7 +142,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                         </ThirdRow>
                         <SecondRow>
                             <Element>
-                                <div className="attribute">O motivo da mudança:</div>
+                                <div className="attribute">O motivo e a descrição da mudança:</div>
                                 <div className="value_info">{data?.reason}</div>
                             </Element>
                             <Element>
