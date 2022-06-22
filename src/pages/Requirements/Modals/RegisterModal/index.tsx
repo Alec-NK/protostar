@@ -8,7 +8,7 @@ import axios from "axios";
 import AsyncSelect from "react-select/async";
 import Select from "react-select";
 
-import { RequirementsTypes, StatusTypes } from "../../../../util/Types";
+import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
 
 import { Background, Container, Content, Footer, ModalHeader } from "./styles";
 
@@ -89,7 +89,9 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         formState: { errors },
     } = useForm<Inputs>({ resolver: yupResolver(schema) });
     const [selectedTypeOption, setSelectedTypeOption] = useState<any>(RequirementsTypes[0]);
-    const [selectedStatusOption, setSelectedStatusOption] = useState<any>(StatusTypes[0]);
+    const [selectedStatusOption, setSelectedStatusOption] = useState<any>(
+        RequirementStatusTypes[0]
+    );
 
     const getRequirements = async () => {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/requisitos/`);
@@ -196,7 +198,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             <Select
                                                 {...field}
                                                 value={selectedStatusOption}
-                                                options={StatusTypes}
+                                                options={RequirementStatusTypes}
                                                 onChange={(option) => handleChangeStatus(option)}
                                                 styles={customStyles}
                                                 defaultValue={{ value: "TD", label: "To-do" }}

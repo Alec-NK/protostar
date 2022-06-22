@@ -1,4 +1,4 @@
-export const StatusTypes = [
+export const RequirementStatusTypes = [
     { value: "TD", label: "Cadastrado" },
     { value: "D", label: "Em implementação" },
     { value: "DN", label: "Implementado" },

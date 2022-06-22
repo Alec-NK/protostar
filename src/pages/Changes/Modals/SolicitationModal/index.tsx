@@ -9,7 +9,7 @@ import AsyncSelect from "react-select/async";
 import Select from "react-select";
 
 import { AsyncSelectInputValuesType } from "../../../Requirements/Modals/RegisterModal";
-import { ChangesTypes, RequirementsTypes, StatusTypes } from "../../../../util/Types";
+import { ChangesTypes } from "../../../../util/Types";
 
 import { Background, Container, Content, Footer, ModalHeader } from "./styles";
 
