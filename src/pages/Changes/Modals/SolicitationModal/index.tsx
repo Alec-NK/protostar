@@ -157,7 +157,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             {...field}
                                             isClearable
                                             defaultOptions
-                                            placeholder="Selecione os requisitos relacionados"
+                                            placeholder="Selecione o requisito relacionados"
                                             loadOptions={getRequirements}
                                             styles={customStyles}
                                         />
@@ -202,7 +202,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 <input
                                     type="text"
                                     {...register("accountable")}
-                                    placeholder="Responável pela mudança"
+                                    placeholder="Responsável pela mudança"
                                 />
                                 <p className="error_message">{errors.accountable?.message}</p>
                             </div>
