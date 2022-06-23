@@ -1,14 +1,17 @@
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import DefaultLayout from "./pages/_layouts/default";
+import { ThemeProvider } from "styled-components";
+
 import IndexRoutes from "./routes";
+import DefaultLayout from "./pages/_layouts/default";
 
 import "react-toastify/dist/ReactToastify.css";
+import { defaultTheme } from "./styles/theme";
 import GlobalStyle from "./styles/global";
 
 function App() {
     return (
-        <>
+        <ThemeProvider theme={defaultTheme}>
             <BrowserRouter>
                 <DefaultLayout>
                     <IndexRoutes />
@@ -27,7 +30,7 @@ function App() {
                 pauseOnHover
                 theme="colored"
             />
-        </>
+        </ThemeProvider>
     );
 }
 

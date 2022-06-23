@@ -11,7 +11,7 @@ export const ButtonContainer = styled.button`
     border-radius: 5px;
     font-family: "Maven Pro", sans-serif;
     font-weight: bold;
-    background-color: #fab039;
+    background-color: ${(props) => props.theme.orange};
     transition: 0.2s;
 
     &:hover {
