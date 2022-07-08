@@ -86,7 +86,6 @@ const Requirements = () => {
     };
 
     useEffect(() => {
-        console.log("Data", data);
         let reqFunc: any = [];
         let reqNFunc: any = [];
         data?.map((requirement: RequirementsDataType) => {

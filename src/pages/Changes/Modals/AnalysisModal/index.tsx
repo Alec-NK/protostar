@@ -99,7 +99,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     );
 
     useEffect(() => {
-        console.log("Teste", data);
         if (data && data.progrecao.length > 0) {
             getRequirement(data.progrecao[0]);
         }

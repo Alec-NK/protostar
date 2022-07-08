@@ -92,8 +92,6 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
     };
 
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
-        console.log("Send", data);
-
         const newData = {
             title: data.title,
             reason: data.reason,
@@ -106,8 +104,6 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             data_mudanca: null,
             progrecao: [data.requirements.value],
         };
-
-        console.log("Send2", newData);
 
         await axios
             .post(`${process.env.REACT_APP_API_URL}/pedido_mudanca/`, newData)
