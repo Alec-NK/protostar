@@ -1,3 +1,4 @@
+import { Tooltip } from "@chakra-ui/react";
 import Status from "../Status";
 
 import { AiOutlineEye } from "react-icons/ai";
@@ -28,9 +29,11 @@ const ItemTable = ({ data, onClick, id }: ItemTableProps) => {
             </div>
             <div style={{ textAlign: "center" }}>{data && formatDate(data.created_data)}</div>
             <div style={{ textAlign: "center" }}>{data && data.version}</div>
-            <div style={{ textAlign: "center" }} className="function_icon">
-                <AiOutlineEye />
-            </div>
+            <Tooltip label="Visualizar" placement="top" bg="grey">
+                <div style={{ textAlign: "center" }} className="function_icon">
+                    <AiOutlineEye />
+                </div>
+            </Tooltip>
         </Container>
     );
 };
