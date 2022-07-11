@@ -1,9 +1,10 @@
-import Status from "../Status";
+import Status from "../../../components/Status";
 
 import { TbReportSearch } from "react-icons/tb";
 
 import { ChangesDataType } from "..";
 import { formatDate } from "../../../util/app.util";
+import { StatusKinds } from "../../../util/Enums";
 
 import { Container } from "./styles";
 
@@ -24,7 +25,7 @@ const ItemChangeTable = ({ data, onClick, id }: ItemTableProps) => {
             <div>{data.requestor}</div>
             <div>{data.accountable}</div>
             <div style={{ textAlign: "center" }}>
-                <Status typeStatus={data.status} />
+                <Status status={data.status} type={StatusKinds.changes} />
             </div>
             <div style={{ textAlign: "center" }} className="function_icon">
                 <TbReportSearch />

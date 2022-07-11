@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import Status from "../../Status";
+import Status from "../../../../components/Status";
 
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -184,7 +184,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                             </Element>
                             <Element>
                                 <div className="attribute">Status:</div>
-                                <Status />
+                                {/* <Status /> */}
                             </Element>
                             <Element>
                                 <div className="attribute">Tipo:</div>
