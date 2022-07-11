@@ -1,3 +1,8 @@
+export enum StatusKinds {
+    requirements = "REQ",
+    changes = "CHG",
+}
+
 export enum ChangesStatusEnum {
     analise = "AN",
     aprovado = "APR",
