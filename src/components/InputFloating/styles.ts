@@ -14,6 +14,7 @@ export const Container = styled.div`
         font-size: 14px;
         font-weight: bold;
         color: ${(props) => props.theme.black_grey};
+        background-color: ${(props) => props.theme.white_grey};
         outline: 0;
     }
 
@@ -27,6 +28,12 @@ export const Container = styled.div`
         transform-origin: top left;
         transition: all 0.2s ease-out;
         pointer-events: none;
+    }
+
+    &:focus-within input {
+        border: 1px solid ${(props) => props.theme.black};
+        background: #fff;
+        transition: all 0.2s ease-out;
     }
 
     &:focus-within label {
