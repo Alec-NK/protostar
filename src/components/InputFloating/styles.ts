@@ -31,7 +31,7 @@ export const Container = styled.div`
     }
 
     &:focus-within input {
-        border: 1px solid ${(props) => props.theme.black};
+        border: 1px solid ${(props) => props.theme.white_grey};
         background: #fff;
         transition: all 0.2s ease-out;
     }
