@@ -4,7 +4,9 @@ import { ThemeProvider } from "styled-components";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import IndexRoutes from "./routes";
-import DefaultLayout from "./pages/_layouts/default";
+
+import Layout from "./pages/_layouts";
+import { AuthProvider } from "./contexts/AuthContext";
 
 import "react-toastify/dist/ReactToastify.css";
 import { defaultTheme } from "./styles/theme";
@@ -14,24 +16,26 @@ function App() {
     return (
         <ChakraProvider>
             <ThemeProvider theme={defaultTheme}>
-                <BrowserRouter>
-                    <DefaultLayout>
-                        <IndexRoutes />
-                    </DefaultLayout>
-                    <GlobalStyle />
-                </BrowserRouter>
-                <ToastContainer
-                    position="top-right"
-                    autoClose={5000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                    theme="colored"
-                />
+                <AuthProvider>
+                    <BrowserRouter>
+                        <Layout>
+                            <IndexRoutes />
+                        </Layout>
+                        <GlobalStyle />
+                    </BrowserRouter>
+                    <ToastContainer
+                        position="top-right"
+                        autoClose={5000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="colored"
+                    />
+                </AuthProvider>
             </ThemeProvider>
         </ChakraProvider>
     );
