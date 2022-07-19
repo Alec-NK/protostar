@@ -8,7 +8,7 @@ const Sidebar = () => {
     const location = useLocation();
     const menuItems = [
         {
-            path: "/",
+            path: "/requisitos",
             name: "Requisitos",
             icon: <FaList />,
         },
