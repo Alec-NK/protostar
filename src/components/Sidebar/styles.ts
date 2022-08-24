@@ -44,7 +44,7 @@ export const SideItems = styled.div<SideItemsProps>`
         justify-content: start;
         align-items: center;
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         margin-bottom: 5px;
         border-radius: 5px;
         text-align: center;

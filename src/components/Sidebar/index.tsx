@@ -8,6 +8,11 @@ const Sidebar = () => {
     const location = useLocation();
     const menuItems = [
         {
+            path: "/projetos",
+            name: "Projetos",
+            icon: <FaList />,
+        },
+        {
             path: "/requisitos",
             name: "Requisitos",
             icon: <FaList />,
