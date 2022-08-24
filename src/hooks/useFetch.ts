@@ -7,8 +7,15 @@ export function useFetch<T = unknown>(url: string) {
     const [isFetching, setIsFetching] = useState(true); // Saber se está acontecendo a requisição
 
     useEffect(() => {
+        const token = localStorage.getItem("user_token");
+        const config = {
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+        };
+
         axios
-            .get(url)
+            .get(url, config)
             .then((response) => {
                 setData(response.data);
             })
