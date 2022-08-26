@@ -5,6 +5,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 import AuthLayout from "./auth";
 import DefaultLayout from "./default";
+import ProjectsLayout from "./projects";
 
 type LayoutProps = {
     children: React.ReactNode;
@@ -17,7 +18,11 @@ const Layout = ({ children }: LayoutProps) => {
     return (
         <>
             {authenticated() && location.pathname !== "/" && location.pathname !== "/cadastro" ? (
-                <DefaultLayout>{children}</DefaultLayout>
+                location.pathname === "/projetos" ? (
+                    <ProjectsLayout>{children}</ProjectsLayout>
+                ) : (
+                    <DefaultLayout>{children}</DefaultLayout>
+                )
             ) : (
                 <AuthLayout>{children}</AuthLayout>
             )}
