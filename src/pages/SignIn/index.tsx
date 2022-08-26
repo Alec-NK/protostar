@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { NavLink } from "react-router-dom";
 import * as yup from "yup";
@@ -10,21 +11,22 @@ import { AuthContext } from "../../contexts/AuthContext";
 
 import { BoxContent, BtnSignIn, Container, Header, MainContent, RegisterLink } from "./styles";
 
-type SignInInputs = {
-    email: string;
+export type SignInInputs = {
+    username: string;
     password: string;
 };
 
 const schema = yup
     .object({
-        email: yup.string().email("Email inválido!").required("Email obrigatório!"),
+        username: yup.string().required("Nome obrigatório!"),
         password: yup.string().required("Senha obrigatória!"),
     })
     .required();
 
 const SignIn: React.FC = () => {
     const { signIn } = useContext(AuthContext);
-    const [isEmailActive, setIsEmailActive] = useState(false);
+    const navigate = useNavigate();
+    const [isUsernameActive, setisUsernameActive] = useState(false);
     const [isPasswordActive, setIsPasswordActive] = useState(false);
     const {
         register,
@@ -34,16 +36,16 @@ const SignIn: React.FC = () => {
         watch,
         formState: { errors },
     } = useForm<SignInInputs>({ resolver: yupResolver(schema) });
-    const emailWatch = watch("email");
+    const usernameWatch = watch("username");
     const passwordWatch = watch("password");
 
     useEffect(() => {
-        if (emailWatch === "" || emailWatch === undefined || emailWatch === null) {
-            return setIsEmailActive(false);
+        if (usernameWatch === "" || usernameWatch === undefined || usernameWatch === null) {
+            return setisUsernameActive(false);
         }
 
-        return setIsEmailActive(true);
-    }, [emailWatch]);
+        return setisUsernameActive(true);
+    }, [usernameWatch]);
 
     useEffect(() => {
         if (passwordWatch === "" || passwordWatch === undefined || passwordWatch === null) {
@@ -53,12 +55,12 @@ const SignIn: React.FC = () => {
         return setIsPasswordActive(true);
     }, [passwordWatch]);
 
-    useEffect(() => {
-        console.log("Erros", errors);
-    }, [errors]);
+    const onSubmit: SubmitHandler<any> = async (data: SignInInputs) => {
+        const isLogged = await signIn(data);
 
-    const onSubmit: SubmitHandler<any> = async (data: any) => {
-        console.log("Submit", data);
+        if (isLogged) {
+            navigate("/projetos");
+        }
     };
 
     return (
@@ -71,19 +73,19 @@ const SignIn: React.FC = () => {
                 <MainContent>
                     <form id="form_sign_in" onSubmit={handleSubmit(onSubmit)}>
                         <Controller
-                            name="email"
+                            name="username"
                             control={control}
                             rules={{ required: true }}
                             render={({ field }) => (
                                 <InputFloating
                                     {...field}
-                                    type="email"
-                                    label="E-MAIL"
-                                    isActive={isEmailActive}
+                                    type="text"
+                                    label="NOME DE USUÁRIO"
+                                    isActive={isUsernameActive}
                                 />
                             )}
                         />
-                        {errors.email && <div className="error">{errors.email.message}</div>}
+                        {errors.username && <div className="error">{errors.username.message}</div>}
                         <Controller
                             name="password"
                             control={control}
