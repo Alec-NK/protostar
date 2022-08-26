@@ -25,9 +25,9 @@ export const Content = styled.div`
 `;
 
 export const Card = styled.div`
-    width: 40%;
+    width: 30%;
     min-height: 250px;
-    margin: 0 20px 20px 0;
+    margin: 0 40px 40px 0;
     padding: 20px;
     box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.2);
 
