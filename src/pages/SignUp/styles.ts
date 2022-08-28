@@ -45,3 +45,9 @@ export const BtnSignUp = styled.button`
     color: white;
     background-color: ${(props) => props.theme.orange};
 `;
+
+export const ErrorMessage = styled.div`
+    margin-top: 10px;
+    font-size: 14px;
+    color: #e34444;
+`;
