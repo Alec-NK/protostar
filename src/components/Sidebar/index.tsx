@@ -2,6 +2,7 @@ import { useCallback, useContext } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { FaList } from "react-icons/fa";
+import { IoMdHome } from "react-icons/io";
 import { MdPublishedWithChanges, MdOutlineExitToApp } from "react-icons/md";
 
 import { AuthContext } from "../../contexts/AuthContext";
@@ -14,9 +15,9 @@ const Sidebar = () => {
     const location = useLocation();
     const menuItems = [
         {
-            path: "/projetos",
-            name: "Projetos",
-            icon: <FaList />,
+            path: "/inicio",
+            name: "Início",
+            icon: <IoMdHome />,
         },
         {
             path: "/requisitos",
