@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
 
@@ -58,8 +58,8 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     const [reqmtData, setReqmtData] = useState<RequirementsDataType>();
 
     const getRequirement = useCallback(async (requirementId: number) => {
-        await axios
-            .get(`${process.env.REACT_APP_API_URL}/requisitos/${requirementId}/`)
+        await api
+            .get(`/requisitos/${requirementId}/`)
             .then((response) => {
                 setReqmtData(response.data);
             })
@@ -80,11 +80,8 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                 status: choice,
             };
 
-            await axios
-                .put(
-                    `${process.env.REACT_APP_API_URL}/pedido_mudanca/${requirementId}/`,
-                    dataModified
-                )
+            await api
+                .put(`/pedido_mudanca/${requirementId}/`, dataModified)
                 .then((response) => {
                     toast.success("Status atualizado com sucesso!");
                     setIsOpen();
@@ -148,18 +145,19 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                 <div className="attribute">Stakeholders relacionados:</div>
                                 <div className="value_list">
                                     <ul>
-                                        {reqmtData?.stake_holders.map(
+                                        {/* {reqmtData?.stake_holders.map(
                                             (stake: string, index: number) => {
                                                 return <li key={index}>{stake}</li>;
                                             }
-                                        )}
+                                        )} */}
+                                        a
                                     </ul>
                                 </div>
                             </Element>
                         </SecondRow>
                     </Section>
                     <Section>
-                        <Caption>INFORMAÇÕES DOS REQUISITOS</Caption>
+                        <Caption>INFORMAÇÕES DO REQUISITO</Caption>
                         <Title>
                             <h3>{`Requisito ${reqmtData?.id} - ${reqmtData?.title}`}</h3>
                         </Title>

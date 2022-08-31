@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../../services/api";
 
 import Button from "../../components/Button";
 import ItemChangeTable from "./ItemChangeTable";
@@ -32,12 +32,12 @@ const Changes = () => {
     const [changeId, setChangeId] = useState<number>(1);
 
     const getChanges = useCallback(async () => {
-        await axios
-            .get(`${process.env.REACT_APP_API_URL}/pedido_mudanca/`)
+        await api
+            .get(`/pedido_mudanca/`)
             .then((response) => {
                 setData(response.data);
             })
-            .catch(() => {
+            .catch((error) => {
                 toast.error("Houve um erro");
             });
     }, []);

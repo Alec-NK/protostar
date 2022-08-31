@@ -3,7 +3,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import api from "../../../../services/api";
 
 import AsyncSelect from "react-select/async";
 import Select from "react-select";
@@ -94,7 +94,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
     );
 
     const getRequirements = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/requisitos/`);
+        const response = await api.get(`/requisitos/`);
         const options = await response.data.map((req: any) => ({
             value: req.id,
             label:
@@ -126,8 +126,8 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             requirements: reqList,
         };
 
-        await axios
-            .post(`${process.env.REACT_APP_API_URL}/requisitos/`, newData)
+        await api
+            .post(`/requisitos/`, newData)
             .then(() => {
                 toast.success("Requisito cadastrado com sucesso!");
                 toggleIsModalOpen();

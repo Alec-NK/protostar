@@ -1,21 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import api from "../services/api";
 
 export function useFetch<T = unknown>(url: string) {
     const [data, setData] = useState<T | null>(null);
     const [isFetching, setIsFetching] = useState(true); // Saber se está acontecendo a requisição
 
     useEffect(() => {
-        const token = localStorage.getItem("user_token");
-        const config = {
-            headers: {
-                Authorization: `Token ${token}`,
-            },
-        };
-
-        axios
-            .get(url, config)
+        api.get(url)
             .then((response) => {
                 setData(response.data);
             })
@@ -26,7 +19,7 @@ export function useFetch<T = unknown>(url: string) {
                 // Acontece independente se o response for true ou false
                 setIsFetching(false);
             });
-    }, []);
+    }, [url]);
 
     return { data, isFetching };
 }
