@@ -1,14 +1,20 @@
 import { Avatar, AvatarGroup } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import { Card, Content, Header } from "./styles";
 
 const Projects: React.FC = () => {
+    const navigate = useNavigate();
+    const selectProject = () => {
+        navigate("/inicio");
+    };
+
     return (
         <div>
             <Header>
                 <h1>PROJETOS</h1>
             </Header>
             <Content>
-                <Card>
+                <Card onClick={selectProject}>
                     <div className="name_project">Nome projeto</div>
                     <div className="description_project">
                         Nomeprojetoasdasdasdassdasdadaasdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...
