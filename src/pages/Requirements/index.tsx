@@ -21,7 +21,7 @@ import {
 } from "./styles";
 
 export type RequirementsDataType = {
-    id: string;
+    id: number;
     title: string;
     type: string;
     stake_holders: Array<string>;
@@ -40,28 +40,10 @@ const Requirements = () => {
     const [isPageNFunctional, setIsPageNFunctional] = useState(false);
     const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
-    const { data, isFetching }: any = useFetch(`${process.env.REACT_APP_API_URL}/requisitos/`);
+    const { data, isFetching }: any = useFetch(`/requisitos/`);
     const [functionalData, setFunctionalData] = useState<RequirementsDataType[]>([]);
     const [nFunctionalData, setNFunctionalData] = useState<RequirementsDataType[]>([]);
-
-    // const getRequirements = useCallback(async () => {
-    //     await axios
-    //         .get(`${process.env.REACT_APP_API_URL}/requisitos/`)
-    //         .then((response) => {
-    //             const requirements = response.data;
-
-    //             requirements.map((req: RequirementsDataType, index: number) => {
-    //                 req.created_data = formatDate(req.created_data);
-    //             });
-    //         })
-    //         .catch((error) => {
-    //             console.log("Error", error);
-    //         })
-    //         .finally(() => {
-    //             // Acontece independente se o response for true ou false
-    //             // setIsFetching(false);
-    //         });
-    // }, []);
+    const [requirementId, setRequirementId] = useState<number | null>(null);
 
     const toggleFunctionalPage = () => {
         setIsPageFunctional(true);
@@ -79,6 +61,11 @@ const Requirements = () => {
 
     const toggleInfoModal = () => {
         setIsModalInfoOpen((prevState) => !prevState);
+    };
+
+    const handleInfoModal = (id: number) => {
+        setRequirementId(id);
+        toggleInfoModal();
     };
 
     const handleReloadPage = () => {
@@ -130,7 +117,7 @@ const Requirements = () => {
                                     key={index}
                                     data={req}
                                     id={index}
-                                    onClick={toggleInfoModal}
+                                    onClick={() => handleInfoModal(req.id)}
                                 />
                             );
                         })}
@@ -142,13 +129,15 @@ const Requirements = () => {
                                     key={index}
                                     data={req}
                                     id={index}
-                                    onClick={toggleInfoModal}
+                                    onClick={() => handleInfoModal(req.id)}
                                 />
                             );
                         })}
                 </ContentTable>
             </TableList>
-            {isModalInfoOpen && <InfoModal setIsOpen={toggleInfoModal} />}
+            {isModalInfoOpen && (
+                <InfoModal requirementId={requirementId} setIsOpen={toggleInfoModal} />
+            )}
             {isModalRegisterOpen && (
                 <RegisterModal setIsOpen={toggleModalRegister} reloadPage={handleReloadPage} />
             )}
