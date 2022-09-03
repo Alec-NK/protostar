@@ -36,8 +36,8 @@ export const CloseButton = styled.button`
 export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    width: 50%;
-    height: 60%;
+    width: 68%;
+    height: 70%;
     border-radius: 6px;
     background-color: white;
 `;
@@ -48,7 +48,6 @@ export const ModalHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px 30px 20px;
-    /* border-bottom: solid 3px rgba(242, 242, 242, 1); */
     color: #1a1a1a;
 
     h2 {
@@ -84,30 +83,28 @@ export const ButtonSection = styled.button<ButtonSectionProps>`
     }
 `;
 
+export const HeaderContent = styled.div`
+    margin-bottom: 30px;
+
+    .row_title {
+        width: 100%;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 20px;
+    }
+`;
+
 export const Content = styled.div`
-    display: grid;
-    grid-template-columns: auto 35%;
     padding: 20px 35px;
     width: 100%;
     height: calc(100% - 65px);
     overflow: auto;
 
-    .column:first-child {
-        /* background-color: #b3b3b3; */
-    }
-
     .column:last-child {
         margin-left: 2rem;
-        /* background-color: #b3b3b3; */
     }
 
     .element {
-        margin-bottom: 2rem;
-    }
-
-    .row_title {
-        width: 100%;
-        font-family: "Montserrat", sans-serif;
         margin-bottom: 30px;
     }
 
@@ -115,24 +112,55 @@ export const Content = styled.div`
         display: flex;
         text-align: justify;
         margin-bottom: 30px;
-
-        .caption {
-            margin-bottom: 15px;
-            font-family: "Montserrat", sans-serif;
-            color: #b3b3b3;
-        }
     }
 
-    .row_items {
-        display: grid;
-        grid-template-columns: 35% 35% 35%;
-        width: 100%;
-        /* background-color: red; */
-        /* margin-bottom: 20px; */
+    .caption {
+        margin-bottom: 15px;
+        font-family: "Montserrat", sans-serif;
+        color: ${(props) => props.theme.grey};
+        font-weight: 600;
+    }
+
+    .requirements {
+        display: flex;
+        flex-flow: row wrap;
     }
 `;
 
-export const Row = styled.div``;
+export const Columns = styled.div`
+    display: grid;
+    grid-template-columns: auto 35%;
+`;
+
+export const RowItems = styled.div`
+    display: grid;
+    grid-template-columns: 35% 35% 35%;
+    width: 100%;
+
+    .atribute {
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: ${(props) => props.theme.grey};
+    }
+`;
+
+export const Tag = styled.button`
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    margin: 0 5px 10px 0;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 2px solid #dfe1e6;
+    background-color: #ebecf0;
+    color: #7a869a;
+    transition: all 0.2s;
+
+    &:hover {
+        background-color: #dfe1e6;
+        transition: all 0.2s;
+    }
+`;
 
 export const Footer = styled.div`
     display: flex;
