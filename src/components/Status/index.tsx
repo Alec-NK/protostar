@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { StatusKinds } from "../../util/Enums";
-import { ChangeStatusInfos } from "../../util/StatusInfos";
+import { RequirementStatusInfos, ChangeStatusInfos } from "../../util/StatusInfos";
 
 import { Container } from "./styles";
 
@@ -20,7 +20,11 @@ const Status = ({ status, type }: StatusProps) => {
 
     useEffect(() => {
         if (type === StatusKinds.requirements) {
-            console.log("Testando");
+            RequirementStatusInfos.forEach((reqmntStatus) => {
+                if (reqmntStatus.id === status) {
+                    setDataStatus(reqmntStatus);
+                }
+            });
         } else if (type === StatusKinds.changes) {
             ChangeStatusInfos.forEach((changeStatus) => {
                 if (changeStatus.id === status) {

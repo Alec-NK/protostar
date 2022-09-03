@@ -1,10 +1,12 @@
 import { Tooltip } from "@chakra-ui/react";
-import Status from "../Status";
 
 import { AiOutlineEye } from "react-icons/ai";
 
+import Status from "../../../components/Status";
+
 import { RequirementsDataType } from "..";
 import { formatDate } from "../../../util/app.util";
+import { StatusKinds } from "../../../util/Enums";
 
 import { Container } from "./styles";
 
@@ -25,7 +27,7 @@ const ItemTable = ({ data, onClick, id }: ItemTableProps) => {
                     : data.description}
             </div>
             <div style={{ textAlign: "center" }}>
-                <Status />
+                <Status status={data.status} type={StatusKinds.requirements} />
             </div>
             <div style={{ textAlign: "center" }}>{data && formatDate(data.created_data)}</div>
             <div style={{ textAlign: "center" }}>{data && data.version}</div>
