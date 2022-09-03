@@ -1,3 +1,42 @@
+export const RequirementStatusInfos = [
+    {
+        id: "TD",
+        label: "CADASTRADO",
+        textColor: "#505F79",
+        backColor: "#C1C7D0",
+    },
+    {
+        id: "D",
+        label: "EM IMPLEMENTAÇÃO",
+        textColor: "#2684FF",
+        backColor: "#DEEBFF",
+    },
+    {
+        id: "DN",
+        label: "IMPLEMENTADO",
+        textColor: "#08b489",
+        backColor: "#c9f1e7",
+    },
+    {
+        id: "B",
+        label: "BLOQUEADO",
+        textColor: "#091E42",
+        backColor: "#8993A4",
+    },
+    // {
+    //     id: "DEL",
+    //     label: "DELETADO",
+    //     textColor: "#2684FF",
+    //     backColor: "#DEEBFF",
+    // },
+    {
+        id: "C",
+        label: "EM MUDANÇA",
+        textColor: "#5243AA",
+        backColor: "#EAE6FF",
+    },
+];
+
 export const ChangeStatusInfos = [
     {
         id: "AN",
