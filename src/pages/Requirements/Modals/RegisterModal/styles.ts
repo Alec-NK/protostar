@@ -17,8 +17,8 @@ export const Background = styled.div`
 export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    width: 50%;
-    height: 60%;
+    width: 70%;
+    height: 70%;
     border-radius: 6px;
     background-color: white;
 `;
@@ -99,9 +99,9 @@ export const Content = styled.div`
             }
 
             .error_message {
-                color: red;
-                font-family: "Maven Pro", sans-serif;
                 margin: 4px 0 0 5px;
+                font-size: 14px;
+                color: #e34444;
             }
         }
 

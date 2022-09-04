@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Input } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import api from "../../../../services/api";
 
-import AsyncSelect from "react-select/async";
 import Select from "react-select";
+import AsyncSelect from "react-select/async";
 
 import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
+import api from "../../../../services/api";
 
 import { Background, Container, Content, Footer, ModalHeader } from "./styles";
 
@@ -60,7 +61,6 @@ const schema = yup
 const customStyles = {
     control: (provided: any, state: any) => ({
         ...provided,
-        padding: "0.2rem",
         border: "2px solid #b3b3b3",
         borderRadius: "5px",
         fontSize: "15px",
@@ -97,10 +97,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         const response = await api.get(`/requisitos/`);
         const options = await response.data.map((req: any) => ({
             value: req.id,
-            label:
-                req.type === "F"
-                    ? `Requisito ${req.id} Funcional`
-                    : `Requisito ${req.id} Não Funcional`,
+            label: req.title,
         }));
 
         return options;
@@ -111,9 +108,13 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
     };
 
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
-        const reqList = data.requirements.map((option: AsyncSelectInputValuesType) => {
-            return option.value;
-        });
+        let reqList: Array<number> = [];
+
+        if (data.requirements !== undefined) {
+            reqList = data.requirements.map((option: AsyncSelectInputValuesType) => {
+                return option.value;
+            });
+        }
 
         const newData = {
             title: data.title,
@@ -134,27 +135,24 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                 reloadPage();
             })
             .catch((erro) => {
-                console.log("Error", erro);
                 toast.error("Erro no cadastro");
             });
     };
 
     const handleChangeType = (option: any) => {
         setSelectedTypeOption(option);
-    };
 
-    const handleChangeStatus = (option: any) => {
-        setSelectedStatusOption(option);
-    };
-
-    useEffect(() => {
-        if (selectedTypeOption.value === "NF") {
+        if (option.value === "NF") {
             setIsNFunctionalSelected(true);
         } else {
             setIsNFunctionalSelected(false);
             resetField("category");
         }
-    }, [selectedTypeOption]);
+    };
+
+    const handleChangeStatus = (option: any) => {
+        setSelectedStatusOption(option);
+    };
 
     return (
         <Background>
@@ -168,21 +166,23 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         <div className="row" id="firstRow">
                             <div className="inputContainer">
                                 <label>Título</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="title"
-                                    {...register("title")}
+                                    id="title"
                                     placeholder="Ex: Cadastro de requisito"
+                                    {...register("title")}
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.title?.message}</p>
                             </div>
                             <div className="inputContainer">
                                 <label>Descrição</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="descricao"
+                                    id="descricao"
+                                    placeholder="Ex: Cadastro de requisito"
                                     {...register("description")}
-                                    placeholder="Ex: O sistema deverá..."
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.description?.message}</p>
                             </div>
@@ -230,10 +230,11 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                             </div>
                             <div className="inputContainer" id="version">
                                 <label>Versão</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="version"
+                                    id="version"
                                     placeholder="vs-1"
+                                    focusBorderColor="#fab039"
                                     disabled
                                 />
                             </div>
@@ -241,22 +242,24 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         <div className="row" id="thirdRow">
                             <div className="inputContainer">
                                 <label>Categoria</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="category"
-                                    disabled={!isNFunctionalSelected}
-                                    {...register("category")}
+                                    id="category"
                                     placeholder="Ex: Implementação, processo, segurança..."
+                                    {...register("category")}
+                                    focusBorderColor="#fab039"
+                                    disabled={!isNFunctionalSelected}
                                 />
                                 <p className="error_message">{errors.category?.message}</p>
                             </div>
                             <div className="inputContainer">
                                 <label>Fonte</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="source"
+                                    id="source"
+                                    placeholder="Digite o nome da fonte do requisito"
                                     {...register("source")}
-                                    placeholder="Insira a fonte do requisito"
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.source?.message}</p>
                             </div>
@@ -284,11 +287,12 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                             </div>
                             <div className="inputContainer">
                                 <label>Stakeholders</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="stakeholders"
+                                    id="stakeholders"
+                                    placeholder="Digite o nome dos stakeholders"
                                     {...register("stakeholders")}
-                                    placeholder="Stakeholders"
+                                    focusBorderColor="#fab039"
                                     disabled
                                 />
                                 <p className="error_message">{errors.stakeholders?.message}</p>

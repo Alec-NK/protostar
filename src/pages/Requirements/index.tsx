@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { useFetch } from "../../hooks/useFetch";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import Button from "../../components/Button";
 import ItemTable from "./ItemTable";
@@ -9,6 +10,8 @@ import RegisterModal from "./Modals/RegisterModal";
 import InfoModal from "./Modals/InfoModal";
 
 import { formatDate } from "../../util/app.util";
+
+import api from "../../services/api";
 
 import {
     ButtonSection,
@@ -40,10 +43,21 @@ const Requirements = () => {
     const [isPageNFunctional, setIsPageNFunctional] = useState(false);
     const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
-    const { data, isFetching }: any = useFetch(`/requisitos/`);
+    const [data, setData] = useState([]);
     const [functionalData, setFunctionalData] = useState<RequirementsDataType[]>([]);
     const [nFunctionalData, setNFunctionalData] = useState<RequirementsDataType[]>([]);
     const [requirementId, setRequirementId] = useState<number | null>(null);
+
+    const getRequirements = useCallback(async () => {
+        await api
+            .get("/requisitos/")
+            .then((response) => {
+                setData(response.data);
+            })
+            .catch(() => {
+                toast.error("Houve um erro");
+            });
+    }, []);
 
     const toggleFunctionalPage = () => {
         setIsPageFunctional(true);
@@ -69,7 +83,7 @@ const Requirements = () => {
     };
 
     const handleReloadPage = () => {
-        window.location.reload();
+        getRequirements();
     };
 
     useEffect(() => {
@@ -82,6 +96,10 @@ const Requirements = () => {
         setFunctionalData(reqFunc);
         setNFunctionalData(reqNFunc);
     }, [data]);
+
+    useEffect(() => {
+        getRequirements();
+    }, [getRequirements]);
 
     return (
         <Container>
