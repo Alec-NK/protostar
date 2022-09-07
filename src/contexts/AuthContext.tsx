@@ -10,6 +10,15 @@ type User = {
     password: string;
     username: string;
     selectedProject?: number;
+    date_joined: string;
+    first_name: string;
+    last_name: string;
+    groups: Array<any>;
+    is_active: boolean;
+    is_staff: boolean;
+    is_superuser: boolean;
+    last_login: string;
+    user_permissions: Array<string>;
 };
 
 type AuthData = {
@@ -45,12 +54,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const signIn = async (dataSignIn: SignInInputs) => {
         let allowedLogin = false;
         let token = "";
-        let userData: User = {
-            id: 0,
-            email: "",
-            password: "",
-            username: "",
-        };
+        let userData: any = {};
 
         await api
             .post(`/auth/`, dataSignIn)
@@ -65,9 +69,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             });
 
         await api
-            .get(`/usuarios/1`)
+            .post(`/user_id/`, dataSignIn)
             .then((response) => {
-                userData = response.data;
+                userData = response.data[0];
                 localStorage.setItem("user", JSON.stringify(userData));
             })
             .catch(() => {
