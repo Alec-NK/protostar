@@ -13,7 +13,7 @@ export const ButtonContainer = styled.button`
     font-weight: bold;
     font-size: 14px;
     background-color: ${(props) => props.theme.orange};
-    color: #f0f0f0;
+    color: white;
     transition: 0.2s;
 
     &:hover {
