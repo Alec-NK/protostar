@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
-import { useFetch } from "../../hooks/useFetch";
-import axios from "axios";
 import { toast } from "react-toastify";
 
 import Button from "../../components/Button";
 import ItemTable from "./ItemTable";
 import RegisterModal from "./Modals/RegisterModal";
 import InfoModal from "./Modals/InfoModal";
-
-import { formatDate } from "../../util/app.util";
+import EditModal from "./Modals/EditModal";
 
 import api from "../../services/api";
 
@@ -36,17 +33,21 @@ export type RequirementsDataType = {
     source: string;
     requirements: Array<number>;
     relations: Array<number>;
+    requisito_mudanca: any;
 };
 
 const Requirements = () => {
     const [isPageFunctional, setIsPageFunctional] = useState(true);
     const [isPageNFunctional, setIsPageNFunctional] = useState(false);
     const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
+    const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
     const [data, setData] = useState([]);
     const [functionalData, setFunctionalData] = useState<RequirementsDataType[]>([]);
     const [nFunctionalData, setNFunctionalData] = useState<RequirementsDataType[]>([]);
-    const [requirementId, setRequirementId] = useState<number | null>(null);
+    const [currentRequirement, setCurrentRequirement] = useState<RequirementsDataType>(
+        {} as RequirementsDataType
+    );
 
     const getRequirements = useCallback(async () => {
         await api
@@ -54,7 +55,7 @@ const Requirements = () => {
             .then((response) => {
                 setData(response.data);
             })
-            .catch(() => {
+            .catch((error) => {
                 toast.error("Houve um erro");
             });
     }, []);
@@ -73,13 +74,22 @@ const Requirements = () => {
         setIsModalRegisterOpen((prevState) => !prevState);
     };
 
+    const toggleEditModal = () => {
+        setIsModalEditOpen((prevState) => !prevState);
+    };
+
     const toggleInfoModal = () => {
         setIsModalInfoOpen((prevState) => !prevState);
     };
 
-    const handleInfoModal = (id: number) => {
-        setRequirementId(id);
+    const handleInfoModal = (requirementData: any) => {
+        setCurrentRequirement(requirementData);
         toggleInfoModal();
+    };
+
+    const handleEditModal = (requirementData: any) => {
+        setCurrentRequirement(requirementData);
+        toggleEditModal();
     };
 
     const handleReloadPage = () => {
@@ -135,7 +145,8 @@ const Requirements = () => {
                                     key={index}
                                     data={req}
                                     id={index}
-                                    onClick={() => handleInfoModal(req.id)}
+                                    openInfoModal={() => handleInfoModal(req)}
+                                    openEditModal={() => handleEditModal(req)}
                                 />
                             );
                         })}
@@ -147,17 +158,25 @@ const Requirements = () => {
                                     key={index}
                                     data={req}
                                     id={index}
-                                    onClick={() => handleInfoModal(req.id)}
+                                    openInfoModal={() => handleInfoModal(req)}
+                                    openEditModal={() => handleEditModal(req)}
                                 />
                             );
                         })}
                 </ContentTable>
             </TableList>
             {isModalInfoOpen && (
-                <InfoModal requirementId={requirementId} setIsOpen={toggleInfoModal} />
+                <InfoModal requirementId={currentRequirement.id} setIsOpen={toggleInfoModal} />
             )}
             {isModalRegisterOpen && (
                 <RegisterModal setIsOpen={toggleModalRegister} reloadPage={handleReloadPage} />
+            )}
+            {isModalEditOpen && (
+                <EditModal
+                    data={currentRequirement}
+                    setIsOpen={toggleEditModal}
+                    reloadPage={handleReloadPage}
+                />
             )}
         </Container>
     );

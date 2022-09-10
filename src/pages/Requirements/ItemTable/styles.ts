@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: grid;
-    grid-template-columns: 0.3fr 1fr 1.5fr 0.6fr 0.7fr 0.5fr 0.5fr;
+    grid-template-columns: 0.3fr 1fr 1.6fr 0.6fr 0.7fr 0.5fr 0.55fr;
     align-items: center;
     width: 100%;
     padding: 10px;
@@ -17,7 +17,11 @@ export const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
+        font-size: 20px;
         color: grey;
+
+        button {
+            margin-left: 12px;
+        }
     }
 `;
