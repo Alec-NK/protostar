@@ -34,6 +34,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
     const [isGeneralWindow, setIsGeneralWindow] = useState(true);
     const [isVersionsWindow, setIsVersionsWindow] = useState(false);
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
+    const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
 
     const getRequirement = useCallback(async () => {
         await api
@@ -43,6 +44,17 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
             })
             .catch(() => {
                 toast.error("Houve um erro ao buscar requisito");
+            });
+    }, [requirementId]);
+
+    const getRelatedRequirements = useCallback(async () => {
+        await api
+            .post(`/related_requirements/`, { id: requirementId })
+            .then((response) => {
+                setRelatedRequirements(response.data.relacionamento);
+            })
+            .catch(() => {
+                toast.error("Houve um erro");
             });
     }, [requirementId]);
 
@@ -62,7 +74,8 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
 
     useEffect(() => {
         getRequirement();
-    }, [requirementId, getRequirement]);
+        getRelatedRequirements();
+    }, [requirementId, getRequirement, getRelatedRequirements]);
 
     return (
         <Background>
@@ -139,7 +152,9 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                                 <div className="column">
                                     <div className="caption">REQUISITOS RELACIONADOS</div>
                                     <div className="requirements">
-                                        <Tag>FAZER REQUISIÇÃO</Tag>
+                                        {relatedRequirements.map((reqrmnt) => {
+                                            return <Tag>{reqrmnt[0].title}</Tag>;
+                                        })}
                                     </div>
                                 </div>
                             </Columns>
