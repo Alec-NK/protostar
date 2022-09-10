@@ -1,10 +1,10 @@
-import axios from "axios";
 import { FormLabel, Grid, GridItem, Input } from "@chakra-ui/react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../services/api";
 
 import { Background, BtnSignUp, Container, ErrorMessage, Header, SignInLink } from "./styles";
 
@@ -46,8 +46,8 @@ const SignUp: React.FC = () => {
             email: data.email,
         };
 
-        await axios
-            .post(`${process.env.REACT_APP_API_URL}/usuarios/`, registerData)
+        await api
+            .post(`/usuarios/`, registerData)
             .then((response) => {
                 toast.success("Conta cadastrada com sucesso!");
                 navigate("/");
