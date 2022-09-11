@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@chakra-ui/react";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Select from "react-select";
 import AsyncSelect from "react-select/async";
 
+import { AuthContext } from "../../../../contexts/AuthContext";
 import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
 import api from "../../../../services/api";
 
@@ -80,6 +81,7 @@ const customStyles = {
 };
 
 const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
+    const { user } = useContext(AuthContext);
     const [isNFunctionalSelected, setIsNFunctionalSelected] = useState(false);
     const {
         register,
@@ -125,6 +127,10 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             category: data.category === undefined ? null : data.category,
             source: data.source,
             requirements: reqList,
+            project_related: user.selectedProject,
+            stake_holders: {
+                stakeholders: [],
+            },
         };
 
         await api

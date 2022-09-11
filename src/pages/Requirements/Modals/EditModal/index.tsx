@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Input, Textarea } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import Select from "react-select";
 import AsyncSelect from "react-select/async";
 
 import { RequirementsDataType } from "../..";
+import { AuthContext } from "../../../../contexts/AuthContext";
 import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
 import api from "../../../../services/api";
 
@@ -60,6 +61,7 @@ const customStyles = {
 };
 
 const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
+    const { user } = useContext(AuthContext);
     const [selectedStatusOption, setSelectedStatusOption] = useState<any>(() => {
         return RequirementStatusTypes.find((statusType) => {
             return statusType.value === data.status;
@@ -113,6 +115,10 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
             description: formData.description,
             status: selectedStatusOption.value,
             requirements: reqList,
+            project_related: user.selectedProject,
+            stake_holders: {
+                stakeholders: [],
+            },
         };
 
         if (reqList.length > 0) {
