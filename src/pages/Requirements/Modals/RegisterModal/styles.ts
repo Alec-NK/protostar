@@ -29,7 +29,7 @@ export const ModalHeader = styled.div`
     justify-content: space-between;
     padding: 20px;
     padding-bottom: 10px;
-    border-bottom: solid 3px rgba(242, 242, 242, 1);
+    border-bottom: solid 1px rgba(242, 242, 242, 1);
     color: #1a1a1a;
 
     h2 {
@@ -213,7 +213,7 @@ export const Footer = styled.div`
     flex-direction: row;
     justify-content: end;
     padding: 20px;
-    border-top: solid 3px rgba(242, 242, 242, 1);
+    border-top: solid 1px rgba(242, 242, 242, 1);
 
     button {
         display: flex;
