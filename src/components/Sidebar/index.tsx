@@ -2,12 +2,12 @@ import { useCallback, useContext } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { FaList } from "react-icons/fa";
-import { IoMdHome } from "react-icons/io";
+import { IoMdHome, IoMdFolder } from "react-icons/io";
 import { MdPublishedWithChanges, MdOutlineExitToApp } from "react-icons/md";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { ButtonLogOut, Container, SideItem } from "./styles";
+import { ButtonLogOut, Container, SideItem, ButtonProject } from "./styles";
 
 const Sidebar = () => {
     const { signOut } = useContext(AuthContext);
@@ -46,8 +46,17 @@ const Sidebar = () => {
             <div className="logo">
                 <img src="images/logo_protostar.png" alt="Protostar" />
             </div>
+            <div>
+                <div className="title">GERAL</div>
+                <ButtonProject onClick={() => navigate("/projetos")}>
+                    <div className="btn_icon">
+                        <IoMdFolder />
+                    </div>
+                    <div className="btn_text">Projetos</div>
+                </ButtonProject>
+            </div>
             <div className="pages">
-                {/* <div className="title">MENU</div> */}
+                <div className="title">MENU</div>
                 {menuItems.map((item, index) => (
                     <SideItem key={index} active={item.path === location.pathname}>
                         <NavLink to={item.path} key={index} className="link">
