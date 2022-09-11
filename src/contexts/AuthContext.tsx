@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import api from "../services/api";
 
 import { SignInInputs } from "../pages/SignIn";
+import { ProjectsData } from "../pages/Projects";
 
 type User = {
     id: number;
@@ -19,6 +20,7 @@ type User = {
     is_superuser: boolean;
     last_login: string;
     user_permissions: Array<string>;
+    projects: Array<ProjectsData>;
 };
 
 type AuthData = {
@@ -31,6 +33,7 @@ type AuthContextProps = {
     signIn: (dataSignIn: SignInInputs) => Promise<boolean>;
     authenticated: () => boolean;
     signOut: () => void;
+    updateSelectedProject: (projectId: number) => void;
 };
 
 type AuthProviderProps = {
@@ -72,12 +75,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             .post(`/user_id/`, dataSignIn)
             .then((response) => {
                 userData = response.data[0];
-                localStorage.setItem("user", JSON.stringify(userData));
             })
             .catch(() => {
                 console.log("Error user");
             });
 
+        await api
+            .get(`/projeto/`)
+            .then((response) => {
+                const projects = response.data;
+
+                const memberProjects = projects.filter((project: any) => {
+                    return project.participants.some((memberId: any) => {
+                        return userData.id === memberId;
+                    });
+                });
+
+                userData.projects = memberProjects;
+            })
+            .catch(() => {
+                console.log("Erro projetos");
+            });
+
+        localStorage.setItem("user", JSON.stringify(userData));
         setData({
             token,
             user: userData,
@@ -96,17 +116,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         return false;
     };
 
-    const updateSelectedProject = useCallback((projectId: number) => {
-        const clonedUser: User = data.user;
+    const updateSelectedProject = useCallback(
+        (projectId: number) => {
+            const clonedUser: User = data.user;
 
-        clonedUser.selectedProject = projectId;
+            clonedUser.selectedProject = projectId;
 
-        localStorage.setItem("user", JSON.stringify(clonedUser));
-        setData({
-            token: data.token,
-            user: clonedUser,
-        });
-    }, []);
+            localStorage.setItem("user", JSON.stringify(clonedUser));
+            setData({
+                token: data.token,
+                user: clonedUser,
+            });
+        },
+        [data]
+    );
 
     const signOut = () => {
         localStorage.removeItem("user_token");
@@ -115,7 +138,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user: data.user, signIn, authenticated, signOut }}>
+        <AuthContext.Provider
+            value={{ user: data.user, signIn, authenticated, signOut, updateSelectedProject }}
+        >
             {children}
         </AuthContext.Provider>
     );
