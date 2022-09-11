@@ -1,18 +1,21 @@
 import styled from "styled-components";
 
+type CardProps = {
+    disabled?: boolean;
+};
+
 export const Container = styled.div`
     width: 100%;
 `;
 
 export const Header = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 3rem;
+    flex-direction: column;
+    margin-bottom: 45px;
 
     h1 {
-        font-family: "Prompt", sans-serif;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
         font-size: 45px;
         color: #1a1a1a;
     }
@@ -20,11 +23,28 @@ export const Header = styled.div`
 
 export const Content = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-direction: column;
+
+    h2 {
+        margin-bottom: 5px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        font-size: 35px;
+        color: #1a1a1a;
+    }
+
+    .projects {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+    }
 `;
 
-export const Card = styled.div`
+export const Card = styled.div<CardProps>`
+    visibility: ${(props) => (props.disabled ? "hidden" : "")};
+    display: grid;
+    grid-template-rows: 20% 65% 10%;
     width: 30%;
     min-height: 250px;
     margin: 0 40px 40px 0;

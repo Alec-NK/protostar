@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
     display: grid;
-    grid-template-rows: 8% 92%;
+    grid-template-rows: 10% 90%;
     grid-template-areas:
         "header"
         "projects_content";
