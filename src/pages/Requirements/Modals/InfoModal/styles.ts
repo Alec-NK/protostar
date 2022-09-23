@@ -162,39 +162,24 @@ export const Tag = styled.button`
     }
 `;
 
+export const CardVersion = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    padding: 12px;
+    border-radius: 5px;
+    background-color: ${(props) => props.theme.white_grey};
+
+    .title_card {
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+`;
+
 export const Footer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: end;
     padding: 20px;
     border-top: solid 1px rgba(242, 242, 242, 1);
-
-    button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 0;
-        padding: 20px 25px;
-        border: none;
-        border-radius: 5px;
-        font-family: "Maven Pro", sans-serif;
-    }
-
-    .btnEditar {
-        margin-right: 10px;
-        background-color: #fab039;
-        color: white;
-        transition: 0.2s;
-
-        &:hover {
-            background-color: #f0a732;
-            transition: 0.2s;
-        }
-    }
-
-    .btnExcluir {
-        background-color: transparent;
-        border: solid 1px #fab039;
-        color: #fab039;
-    }
 `;

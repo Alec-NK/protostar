@@ -13,6 +13,7 @@ import { IoMdClose } from "react-icons/io";
 import {
     Background,
     ButtonSection,
+    CardVersion,
     CloseButton,
     Columns,
     Container,
@@ -35,6 +36,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
     const [isVersionsWindow, setIsVersionsWindow] = useState(false);
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
     const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
+    const [versions, setVersions] = useState<RequirementsDataType[][]>([]);
 
     const getRequirement = useCallback(async () => {
         await api
@@ -52,6 +54,17 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
             .post(`/related_requirements/`, { id: requirementId })
             .then((response) => {
                 setRelatedRequirements(response.data.relacionamento);
+            })
+            .catch(() => {
+                toast.error("Houve um erro com o relacionamento");
+            });
+    }, [requirementId]);
+
+    const getVersions = useCallback(async () => {
+        await api
+            .post(`/relacionamento_versionamento/`, { id: requirementId })
+            .then((response) => {
+                setVersions(response.data[0]);
             })
             .catch(() => {
                 toast.error("Houve um erro");
@@ -72,6 +85,11 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
         setIsVersionsWindow(true);
     };
 
+    const handleVersionWindow = () => {
+        getVersions();
+        toggleVersionWindow();
+    };
+
     useEffect(() => {
         getRequirement();
         getRelatedRequirements();
@@ -90,7 +108,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                     <ButtonSection isActive={isGeneralWindow} onClick={toggleGeneralWindow}>
                         Geral
                     </ButtonSection>
-                    <ButtonSection isActive={isVersionsWindow} onClick={toggleVersionWindow}>
+                    <ButtonSection isActive={isVersionsWindow} onClick={handleVersionWindow}>
                         Versões
                     </ButtonSection>
                 </SectionsPage>
@@ -116,7 +134,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                                         </div>
                                         <div className="element">
                                             <div className="atribute">Fonte:</div>
-                                            <div>Nome alguem</div>
+                                            <div>{data.source}</div>
                                         </div>
                                         <div className="element">
                                             <div className="atribute">Tipo:</div>
@@ -164,13 +182,24 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                 {isVersionsWindow && (
                     <>
                         <Content>
-                            <div>Testando versões</div>
+                            {versions.map((version) => {
+                                return version.map((v) => {
+                                    return (
+                                        <CardVersion>
+                                            <div className="title_card">
+                                                {formatDate(v.created_data)} - {v.title}
+                                            </div>
+                                            <div>{v.description}</div>
+                                        </CardVersion>
+                                    );
+                                });
+                            })}
                         </Content>
                     </>
                 )}
                 <Footer>
-                    <button className="btnEditar">EDITAR</button>
-                    <button className="btnExcluir">EXCLUIR</button>
+                    {/* <button className="btnEditar">EDITAR</button>
+                    <button className="btnExcluir">EXCLUIR</button> */}
                 </Footer>
             </Container>
         </Background>
