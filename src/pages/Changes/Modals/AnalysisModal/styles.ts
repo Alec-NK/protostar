@@ -84,6 +84,7 @@ export const Title = styled.div`
 
 export const Caption = styled.div`
     font-family: "Montserrat", sans-serif;
+    font-weight: 600;
     color: #b3b3b3;
     margin-bottom: 2rem;
 `;

@@ -11,6 +11,7 @@ import { IoCloseCircleSharp } from "react-icons/io5";
 import { useFetch } from "../../../../hooks/useFetch";
 import { formatDate } from "../../../../util/app.util";
 import { RequirementsDataType } from "../../../Requirements";
+import { StatusKinds } from "../../../../util/Enums";
 
 import {
     Background,
@@ -45,23 +46,34 @@ type ChangeDataType = {
     data_mudanca: null;
     data_pedido: string;
     is_accepted: boolean;
-    new_req: null;
-    progrecao: Array<number>;
+    new_req: {};
     requestor: string;
     status: string;
+    requisito_mudanca: number;
 };
 
 const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
-    const { data, isFetching }: any = useFetch(
-        `${process.env.REACT_APP_API_URL}/pedido_mudanca/${changeId}`
-    );
-    const [reqmtData, setReqmtData] = useState<RequirementsDataType>();
+    const [data, setData] = useState<ChangeDataType>();
+    const [reqmtData, setReqmtData] = useState<RequirementsDataType>({} as RequirementsDataType);
+    const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
 
-    const getRequirement = useCallback(async (requirementId: number) => {
+    const getChange = useCallback(async () => {
         await api
-            .get(`/requisitos/${requirementId}/`)
+            .post(`/pedido_requisito/`, { id: changeId })
             .then((response) => {
-                setReqmtData(response.data);
+                setData(response.data.pedido[0]);
+                setReqmtData(response.data.requisito[0]);
+            })
+            .catch((erro) => {
+                toast.error("Houve um erro");
+            });
+    }, [changeId]);
+
+    const getRelatedRequirements = useCallback(async (requirementId: number) => {
+        await api
+            .post(`/related_requirements/`, { id: requirementId })
+            .then((response) => {
+                setRelatedRequirements(response.data.relacionamento);
             })
             .catch(() => {
                 toast.error("Houve um erro");
@@ -74,34 +86,36 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
 
     const ChangeStatus = useCallback(
         async (requirementId: number, choice: string) => {
-            const dataModified = {
-                progrecao: data && data.progrecao,
-                reason: data && data.reason,
-                status: choice,
-            };
-
-            await api
-                .put(`/pedido_mudanca/${requirementId}/`, dataModified)
-                .then((response) => {
-                    toast.success("Status atualizado com sucesso!");
-                    setIsOpen();
-                    reloadData();
-                })
-                .catch((error) => {
-                    console.log("Erro", error);
-                    toast.error("Houve um erro");
-                });
+            // const dataModified = {
+            //     progrecao: data && data.progrecao,
+            //     reason: data && data.reason,
+            //     status: choice,
+            // };
+            // await api
+            //     .put(`/pedido_mudanca/${requirementId}/`, dataModified)
+            //     .then((response) => {
+            //         console.log("Response", response.data);
+            //         toast.success("Status atualizado com sucesso!");
+            //         setIsOpen();
+            //         reloadData();
+            //     })
+            //     .catch((error) => {
+            //         console.log("Erro", error);
+            //         toast.error("Houve um erro");
+            //     });
         },
         [data]
     );
 
     useEffect(() => {
-        if (data && data.progrecao.length > 0) {
-            getRequirement(data.progrecao[0]);
+        if (data) {
+            getRelatedRequirements(data.requisito_mudanca);
         }
-    }, [data, getRequirement]);
+    }, [data, getRelatedRequirements]);
 
-    useEffect(() => {}, [reqmtData]);
+    useEffect(() => {
+        getChange();
+    }, [getChange]);
 
     return (
         <Background>
@@ -150,7 +164,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                                 return <li key={index}>{stake}</li>;
                                             }
                                         )} */}
-                                        a
+                                        <li>Não há stakeholders cadastrados</li>
                                     </ul>
                                 </div>
                             </Element>
@@ -182,7 +196,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                             </Element>
                             <Element>
                                 <div className="attribute">Status:</div>
-                                {/* <Status /> */}
+                                <Status status={reqmtData.status} type={StatusKinds.requirements} />
                             </Element>
                             <Element>
                                 <div className="attribute">Tipo:</div>
@@ -199,10 +213,10 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                             <ElementList>
                                 <div className="attribute">Requisitos Relacionados:</div>
                                 <div className="values_row">
-                                    {reqmtData?.requirements.map((reqId) => {
-                                        return (
-                                            <Tag>Requisito {reqId < 10 ? `0${reqId}` : reqId}</Tag>
-                                        );
+                                    {relatedRequirements.map((requirement) => {
+                                        return requirement.map((req) => {
+                                            return <Tag>{req.title}</Tag>;
+                                        });
                                     })}
                                 </div>
                             </ElementList>
