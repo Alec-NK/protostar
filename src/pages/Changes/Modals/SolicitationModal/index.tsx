@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
+import api from "../../../../services/api";
 
+import { Input, Textarea } from "@chakra-ui/react";
 import AsyncSelect from "react-select/async";
 import Select from "react-select";
 
 import { AsyncSelectInputValuesType } from "../../../Requirements/Modals/RegisterModal";
 import { ChangesTypes } from "../../../../util/Types";
+import { RequirementsDataType } from "../../../Requirements";
 
 import { Background, Container, Content, Footer, ModalHeader } from "./styles";
 
@@ -24,7 +26,7 @@ type Inputs = {
     status: any;
     requestor: string;
     accountable: string;
-    requirements: AsyncSelectInputValuesType;
+    requirement: AsyncSelectInputValuesType;
 };
 
 const schema = yup
@@ -46,7 +48,6 @@ const schema = yup
 const customStyles = {
     control: (provided: any, state: any) => ({
         ...provided,
-        padding: "0.3rem",
         border: "2px solid #b3b3b3",
         borderRadius: "5px",
         fontSize: "15px",
@@ -73,19 +74,28 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         formState: { errors },
     } = useForm<Inputs>({ resolver: yupResolver(schema) });
     const [selectedChangeOption, setSelectedChangeOption] = useState<any>(ChangesTypes[0]);
+    const [basedRequirement, setBasedRequirement] = useState<RequirementsDataType>();
 
     const getRequirements = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/requisitos/`);
+        const response = await api.get(`/requisitos/`);
         const options = await response.data.map((req: any) => ({
             value: req.id,
-            label:
-                req.type === "F"
-                    ? `Requisito ${req.id} Funcional`
-                    : `Requisito ${req.id} Não Funcional`,
+            label: req.title,
         }));
 
         return options;
     };
+
+    const getRequirement = useCallback(async (option: any) => {
+        await api
+            .get(`/requisitos/${option.value}`)
+            .then((response) => {
+                setBasedRequirement(response.data);
+            })
+            .catch(() => {
+                toast.error("Houve um erro ao buscar requisito");
+            });
+    }, []);
 
     const toggleIsModalOpen = () => {
         setIsOpen();
@@ -100,20 +110,20 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             requestor: data.requestor,
             accountable: data.accountable,
             is_accepted: false,
-            new_req: null,
-            data_mudanca: null,
-            progrecao: [data.requirements.value],
+            new_req: {
+                infoQualquer: "InfoQualquer",
+            },
+            requisito_mudanca: basedRequirement ? basedRequirement.id : data.requirement,
         };
 
-        await axios
-            .post(`${process.env.REACT_APP_API_URL}/pedido_mudanca/`, newData)
+        await api
+            .post(`/pedido_mudanca/`, newData)
             .then(() => {
                 toast.success("Solicitação enviada com sucesso!");
                 toggleIsModalOpen();
                 reloadPage();
             })
             .catch((erro) => {
-                console.log("Error", erro);
                 toast.error("Erro na solicitação");
             });
     };
@@ -134,18 +144,19 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         <div className="row" id="firstRow">
                             <div className="inputContainer">
                                 <label>Título</label>
-                                <input
+                                <Input
                                     type="text"
-                                    className="title"
+                                    id="title"
+                                    placeholder="Digite um título para mudança"
                                     {...register("title")}
-                                    placeholder="Insira um título para mudança"
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.title?.message}</p>
                             </div>
                             <div className="inputContainer">
                                 <label>Requisitos</label>
                                 <Controller
-                                    name="requirements"
+                                    name="requirement"
                                     control={control}
                                     rules={{ required: true }}
                                     render={({ field }) => (
@@ -153,6 +164,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             {...field}
                                             isClearable
                                             defaultOptions
+                                            onChange={(option) => getRequirement(option)}
                                             placeholder="Selecione o requisito relacionados"
                                             loadOptions={getRequirements}
                                             styles={customStyles}
@@ -164,10 +176,10 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         <div className="row" id="secondRow">
                             <div className="inputContainer">
                                 <label>Descrição/Motivo</label>
-                                <textarea
-                                    className="input_reason"
+                                <Textarea
+                                    placeholder="Digite o motivo e a descrição da mudança"
                                     {...register("reason")}
-                                    placeholder="Insira o motivo e a descrição da mudança"
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.reason?.message}</p>
                             </div>
@@ -195,19 +207,21 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                             </div>
                             <div className="inputContainer">
                                 <label>Responsável</label>
-                                <input
+                                <Input
                                     type="text"
+                                    placeholder="Digite o nome do responsável pela mudança"
                                     {...register("accountable")}
-                                    placeholder="Responsável pela mudança"
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.accountable?.message}</p>
                             </div>
                             <div className="inputContainer">
                                 <label>Solicitante</label>
-                                <input
+                                <Input
                                     type="text"
+                                    placeholder="Digite o nome do solicitante da mudança"
                                     {...register("requestor")}
-                                    placeholder="Solicitante da mudança"
+                                    focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.reason?.message}</p>
                             </div>
@@ -216,7 +230,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                 </Content>
                 <Footer>
                     <button type="submit" form="form_new_requirement" className="btnRegister">
-                        CADASTRAR
+                        SOLICITAR
                     </button>
                     <button className="btnCancel" onClick={toggleIsModalOpen}>
                         CANCELAR

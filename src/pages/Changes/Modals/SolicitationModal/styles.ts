@@ -17,8 +17,8 @@ export const Background = styled.div`
 export const Container = styled.div`
     display: flex;
     flex-flow: column nowrap;
-    width: 50%;
-    height: 60%;
+    width: 70%;
+    height: 70%;
     border-radius: 6px;
     background-color: white;
 `;
@@ -29,7 +29,7 @@ export const ModalHeader = styled.div`
     justify-content: space-between;
     padding: 20px;
     padding-bottom: 10px;
-    border-bottom: solid 3px rgba(242, 242, 242, 1);
+    border-bottom: solid 1px rgba(242, 242, 242, 1);
     color: #1a1a1a;
 
     h2 {
@@ -49,6 +49,10 @@ export const Content = styled.div`
         font-family: "Montserrat", sans-serif;
         font-weight: 500;
         font-size: 15px;
+    }
+
+    textarea {
+        border: 2px solid RGBA(0, 0, 0, 0.3);
     }
 
     input {
@@ -103,19 +107,6 @@ export const Content = styled.div`
                 font-family: "Maven Pro", sans-serif;
                 margin: 4px 0 0 5px;
             }
-
-            .input_reason {
-                padding: 15px;
-                border: 2px solid #b3b3b3;
-                border-radius: 5px;
-                outline: none;
-                font-family: "Montserrat", sans-serif;
-                resize: vertical;
-                color: black;
-                transition: all 0.3s;
-                -webkit-appearance: none;
-                -moz-appearance: none;
-            }
         }
 
         #version {
@@ -153,66 +144,6 @@ export const Content = styled.div`
         display: grid;
         grid-template-columns: 33% 33% 33%;
     }
-
-    /* .input-container {
-        width: 280px;
-        position: relative;
-    }
-
-    .label {
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        transition: all 0.2s;
-        padding: 0 2px;
-        z-index: 1;
-        color: #b3b3b3;
-    }
-
-    .text-input {
-        padding: 0.8rem;
-        width: 100%;
-        height: 100%;
-        border: 2px solid #2f2c45;
-        border-radius: 5px;
-        font-size: 15px;
-        outline: none;
-        transition: all 0.3s;
-        color: black;
-    }
-
-    .label::before {
-        content: "";
-        height: 5px;
-        background: white;
-        position: absolute;
-        left: 0px;
-        top: 10px;
-        width: 100%;
-        z-index: -1;
-    }
-
-    .text-input:focus {
-        border: 2px solid #7e4ccb;
-    }
-
-    .text-input:focus + .label,
-    .filled {
-        top: -10px;
-        color: #7e4ccb;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .text-input::placeholder {
-        font-size: 16px;
-        opacity: 0;
-        transition: all 0.3s;
-    }
-
-    .text-input:focus::placeholder {
-        opacity: 1;
-    } */
 `;
 
 export const Footer = styled.div`
