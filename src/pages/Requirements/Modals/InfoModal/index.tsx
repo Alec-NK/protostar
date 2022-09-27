@@ -36,7 +36,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
     const [isVersionsWindow, setIsVersionsWindow] = useState(false);
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
     const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
-    const [versions, setVersions] = useState<RequirementsDataType[][]>([]);
+    const [versions, setVersions] = useState<RequirementsDataType[]>([]);
 
     const getRequirement = useCallback(async () => {
         await api
@@ -64,7 +64,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
         await api
             .post(`/relacionamento_versionamento/`, { id: requirementId })
             .then((response) => {
-                setVersions(response.data[0]);
+                setVersions(response.data.versionamento[0]);
             })
             .catch(() => {
                 toast.error("Houve um erro");
@@ -170,8 +170,8 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                                 <div className="column">
                                     <div className="caption">REQUISITOS RELACIONADOS</div>
                                     <div className="requirements">
-                                        {relatedRequirements.map((reqrmnt) => {
-                                            return <Tag>{reqrmnt[0].title}</Tag>;
+                                        {relatedRequirements.map((reqrmnt, index) => {
+                                            return <Tag key={index}>{reqrmnt[0].title}</Tag>;
                                         })}
                                     </div>
                                 </div>
@@ -182,17 +182,15 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                 {isVersionsWindow && (
                     <>
                         <Content>
-                            {versions.map((version) => {
-                                return version.map((v) => {
-                                    return (
-                                        <CardVersion>
-                                            <div className="title_card">
-                                                {formatDate(v.created_data)} - {v.title}
-                                            </div>
-                                            <div>{v.description}</div>
-                                        </CardVersion>
-                                    );
-                                });
+                            {versions.map((version, index) => {
+                                return (
+                                    <CardVersion key={index}>
+                                        <div className="title_card">
+                                            {formatDate(version.created_data)} - {version.title}
+                                        </div>
+                                        <div>{version.description}</div>
+                                    </CardVersion>
+                                );
                             })}
                         </Content>
                     </>
