@@ -27,6 +27,7 @@ export const Container = styled.div`
 
     .pages {
         height: 60%;
+        margin-top: 10px;
     }
 
     // Seções - Habilitar na versão final

@@ -21,6 +21,8 @@ type User = {
     last_login: string;
     user_permissions: Array<string>;
     projects: Array<ProjectsData>;
+    cargo: string;
+    funcao_usuario: string;
 };
 
 type AuthData = {
@@ -34,6 +36,7 @@ type AuthContextProps = {
     authenticated: () => boolean;
     signOut: () => void;
     updateSelectedProject: (projectId: number) => void;
+    authorization: (permissions: string[]) => boolean;
 };
 
 type AuthProviderProps = {
@@ -57,7 +60,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     const signIn = async (dataSignIn: SignInInputs) => {
         let allowedLogin = false;
         let token = "";
-        let userData: any = {};
+        let userData = {} as User;
 
         await api
             .post(`/auth/`, dataSignIn)
@@ -78,6 +81,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             })
             .catch(() => {
                 console.log("Error user");
+            });
+
+        await api
+            .post(`/funcao_usuario/`, { id: userData.id })
+            .then((response) => {
+                userData.cargo = response.data.funcao[0].cargo;
+                userData.funcao_usuario = response.data.funcao[0].funcao_usuario;
+            })
+            .catch((err) => {
+                console.log("Error function");
             });
 
         await api
@@ -137,9 +150,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setData({} as AuthData);
     };
 
+    const authorization = (permissions: string[]) => {
+        const hasPermission = permissions.some((permission) => {
+            return permission === data.user.funcao_usuario;
+        });
+
+        return hasPermission;
+    };
+
     return (
         <AuthContext.Provider
-            value={{ user: data.user, signIn, authenticated, signOut, updateSelectedProject }}
+            value={{
+                user: data.user,
+                signIn,
+                authenticated,
+                signOut,
+                updateSelectedProject,
+                authorization,
+            }}
         >
             {children}
         </AuthContext.Provider>

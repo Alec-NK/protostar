@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Tooltip } from "@chakra-ui/react";
 
 import { AiOutlineEye } from "react-icons/ai";
@@ -5,6 +6,8 @@ import { FiEdit } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 
 import Status from "../../../components/Status";
+
+import { AuthContext } from "../../../contexts/AuthContext";
 
 import { RequirementsDataType } from "..";
 import { formatDate } from "../../../util/app.util";
@@ -20,6 +23,8 @@ type ItemTableProps = {
 };
 
 const ItemTable = ({ data, openInfoModal, id, openEditModal }: ItemTableProps) => {
+    const { authorization } = useContext(AuthContext);
+
     return (
         <Container>
             <div onClick={openInfoModal}>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
@@ -44,16 +49,21 @@ const ItemTable = ({ data, openInfoModal, id, openEditModal }: ItemTableProps) =
                         <AiOutlineEye />
                     </button>
                 </Tooltip>
-                <Tooltip label="Editar" placement="top" bg="grey">
-                    <button onClick={openEditModal}>
-                        <FiEdit />
-                    </button>
-                </Tooltip>
-                <Tooltip label="Excluir" placement="top" bg="grey">
-                    <button>
-                        <FaRegTrashAlt />
-                    </button>
-                </Tooltip>
+                {authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) && (
+                    <>
+                        <Tooltip label="Editar" placement="top" bg="grey">
+                            <button onClick={openEditModal}>
+                                <FiEdit />
+                            </button>
+                        </Tooltip>
+
+                        <Tooltip label="Excluir" placement="top" bg="grey">
+                            <button>
+                                <FaRegTrashAlt />
+                            </button>
+                        </Tooltip>
+                    </>
+                )}
             </div>
         </Container>
     );

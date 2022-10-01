@@ -10,7 +10,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { ButtonLogOut, Container, SideItem, ButtonProject } from "./styles";
 
 const Sidebar = () => {
-    const { signOut } = useContext(AuthContext);
+    const { signOut, authorization } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const menuItems = [
@@ -18,16 +18,19 @@ const Sidebar = () => {
             path: "/inicio",
             name: "Início",
             icon: <IoMdHome />,
+            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
         },
         {
             path: "/requisitos",
             name: "Requisitos",
             icon: <FaList />,
+            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
         },
         {
             path: "/mudancas",
             name: "Mudanças",
             icon: <MdPublishedWithChanges />,
+            permissions: ["MEMBRO_COMITE", "ADMINISTRADOR"],
         },
         // {
         //     path: "/solicitacoes",
@@ -57,14 +60,20 @@ const Sidebar = () => {
             </div>
             <div className="pages">
                 <div className="title">MENU</div>
-                {menuItems.map((item, index) => (
-                    <SideItem key={index} active={item.path === location.pathname}>
-                        <NavLink to={item.path} key={index} className="link">
-                            <div className="link_icon">{item.icon}</div>
-                            <div className="link_text">{item.name}</div>
-                        </NavLink>
-                    </SideItem>
-                ))}
+                {menuItems.map((item, index) => {
+                    if (authorization(item.permissions)) {
+                        return (
+                            <SideItem key={index} active={item.path === location.pathname}>
+                                <NavLink to={item.path} key={index} className="link">
+                                    <div className="link_icon">{item.icon}</div>
+                                    <div className="link_text">{item.name}</div>
+                                </NavLink>
+                            </SideItem>
+                        );
+                    }
+
+                    return <></>;
+                })}
             </div>
             <ButtonLogOut onClick={logOut}>
                 <div className="btn_icon">

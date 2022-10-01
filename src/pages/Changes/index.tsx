@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import api from "../../services/api";
 
@@ -8,6 +8,8 @@ import SolicitationModal from "./Modals/SolicitationModal";
 import AnalysisModal from "./Modals/AnalysisModal";
 
 import { BsPlusLg } from "react-icons/bs";
+
+import { AuthContext } from "../../contexts/AuthContext";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
 
@@ -26,6 +28,7 @@ export type ChangesDataType = {
 };
 
 const Changes = () => {
+    const { authorization } = useContext(AuthContext);
     const [isModalSolicitationOpen, setIsModalSolicitationOpen] = useState(false);
     const [isModalAnalysisOpen, setIsModalAnalysisOpen] = useState(false);
     const [data, setData] = useState<ChangesDataType[]>();
@@ -67,11 +70,13 @@ const Changes = () => {
         <Container>
             <Header>
                 <h1>MUDANÇAS</h1>
-                <Button
-                    text="SOLICITAR MUDANÇA"
-                    icon={<BsPlusLg />}
-                    onClick={toggleSolicitationModal}
-                />
+                {authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) && (
+                    <Button
+                        text="SOLICITAR MUDANÇA"
+                        icon={<BsPlusLg />}
+                        onClick={toggleSolicitationModal}
+                    />
+                )}
             </Header>
             <TableList>
                 <HeaderTable>
