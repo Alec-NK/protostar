@@ -49,7 +49,8 @@ export const Card = styled.div<CardProps>`
     min-height: 250px;
     margin: 0 40px 40px 0;
     padding: 20px;
-    box-shadow: 2px 2px 8px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 
     .name_project {
         font-size: 20px;

@@ -37,7 +37,7 @@ const Projects: React.FC = () => {
                     {user.projects.map((project) => {
                         return (
                             <Card onClick={() => selectProject(project.id)}>
-                                <div className="name_project">{project.title}</div>
+                                <div className="name_project">{project.title.toUpperCase()}</div>
                                 <div className="description_project">
                                     {project.description}
                                     {/* 225 chr */}
