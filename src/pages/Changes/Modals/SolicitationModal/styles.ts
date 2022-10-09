@@ -94,21 +94,6 @@ export const Content = styled.div`
         width: 100%;
         margin-bottom: 20px;
 
-        .inputContainer {
-            display: flex;
-            flex-flow: column nowrap;
-
-            .category {
-                width: 100%;
-            }
-
-            .error_message {
-                color: red;
-                font-family: "Maven Pro", sans-serif;
-                margin: 4px 0 0 5px;
-            }
-        }
-
         #version {
             input {
                 &:disabled {
@@ -123,27 +108,63 @@ export const Content = styled.div`
         }
     }
 
+    .inputContainer {
+        display: flex;
+        flex-flow: column nowrap;
+        margin-right: 5px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        .category {
+            width: 100%;
+        }
+
+        .error_message {
+            color: red;
+            font-family: "Maven Pro", sans-serif;
+            margin: 4px 0 0 5px;
+        }
+    }
+
     .caption {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         margin-bottom: 15px;
         font-family: "Montserrat", sans-serif;
         color: #b3b3b3;
-    }
 
-    #firstRow {
-        display: grid;
-        /* grid-template-columns: 25% 74.5%; */
-        grid-template-columns: 49.5% 49.5%;
-    }
+        span {
+            margin-right: 5px;
+        }
 
-    #secondRow {
-        display: grid;
-        grid-template-columns: 100%;
+        .question_icon {
+            font-size: 18px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
     }
+`;
 
-    #thirdRow {
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-    }
+export const RowOne = styled.div`
+    display: grid;
+    grid-template-columns: 100%;
+    margin-bottom: 15px;
+`;
+
+export const RowTwo = styled.div`
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 15px;
+`;
+
+export const RowThree = styled.div`
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    margin-bottom: 15px;
 `;
 
 export const Footer = styled.div`
