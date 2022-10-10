@@ -32,8 +32,8 @@ type InfoModalProps = {
 };
 
 const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
-    const [isGeneralWindow, setIsGeneralWindow] = useState(true);
-    const [isVersionsWindow, setIsVersionsWindow] = useState(false);
+    const [isGeneralTab, setIsGeneralTab] = useState(true);
+    const [isVersionsTab, setIsVersionsTab] = useState(false);
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
     const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
     const [versions, setVersions] = useState<RequirementsDataType[]>([]);
@@ -75,19 +75,19 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
         setIsOpen();
     };
 
-    const toggleGeneralWindow = () => {
-        setIsVersionsWindow(false);
-        setIsGeneralWindow(true);
+    const toggleGeneralTab = () => {
+        setIsVersionsTab(false);
+        setIsGeneralTab(true);
     };
 
-    const toggleVersionWindow = () => {
-        setIsGeneralWindow(false);
-        setIsVersionsWindow(true);
+    const toggleVersionTab = () => {
+        setIsGeneralTab(false);
+        setIsVersionsTab(true);
     };
 
-    const handleVersionWindow = () => {
+    const handleVersionTab = () => {
         getVersions();
-        toggleVersionWindow();
+        toggleVersionTab();
     };
 
     useEffect(() => {
@@ -105,14 +105,14 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                     </CloseButton>
                 </ModalHeader>
                 <SectionsPage>
-                    <ButtonSection isActive={isGeneralWindow} onClick={toggleGeneralWindow}>
+                    <ButtonSection isActive={isGeneralTab} onClick={toggleGeneralTab}>
                         Geral
                     </ButtonSection>
-                    <ButtonSection isActive={isVersionsWindow} onClick={handleVersionWindow}>
+                    <ButtonSection isActive={isVersionsTab} onClick={handleVersionTab}>
                         Versões
                     </ButtonSection>
                 </SectionsPage>
-                {isGeneralWindow && (
+                {isGeneralTab && (
                     <>
                         <Content>
                             <HeaderContent>
@@ -189,7 +189,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                         </Content>
                     </>
                 )}
-                {isVersionsWindow && (
+                {isVersionsTab && (
                     <>
                         <Content>
                             {versions.map((version, index) => {
