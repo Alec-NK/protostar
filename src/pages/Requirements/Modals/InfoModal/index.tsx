@@ -168,11 +168,21 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                                     </RowItems>
                                 </div>
                                 <div className="column">
-                                    <div className="caption">REQUISITOS RELACIONADOS</div>
-                                    <div className="requirements">
-                                        {relatedRequirements.map((reqrmnt, index) => {
-                                            return <Tag key={index}>{reqrmnt[0].title}</Tag>;
-                                        })}
+                                    <div className="relations">
+                                        <div className="caption">REQUISITOS RELACIONADOS</div>
+                                        <div className="requirements">
+                                            {relatedRequirements.map((reqrmnt, index) => {
+                                                return <Tag key={index}>{reqrmnt[0].title}</Tag>;
+                                            })}
+                                        </div>
+                                    </div>
+                                    <div className="relations">
+                                        <div className="caption">STAKEHOLDERS RELACIONADOS</div>
+                                        <div className="stakeholders">
+                                            {data.stake_holders
+                                                ? data.stake_holders.stakeholders
+                                                : ""}
+                                        </div>
                                     </div>
                                 </div>
                             </Columns>

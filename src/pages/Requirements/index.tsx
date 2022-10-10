@@ -24,7 +24,9 @@ export type RequirementsDataType = {
     id: number;
     title: string;
     type: string;
-    stake_holders: Array<string>;
+    stake_holders: {
+        stakeholders: string;
+    };
     description: string;
     status: string;
     created_data: string;

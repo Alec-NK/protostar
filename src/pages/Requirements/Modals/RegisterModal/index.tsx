@@ -129,7 +129,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             requirements: reqList,
             project_related: user.selectedProject,
             stake_holders: {
-                stakeholders: [],
+                stakeholders: data.stakeholders,
             },
         };
 
@@ -299,7 +299,6 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                     placeholder="Digite o nome dos stakeholders"
                                     {...register("stakeholders")}
                                     focusBorderColor="#fab039"
-                                    disabled
                                 />
                                 <p className="error_message">{errors.stakeholders?.message}</p>
                             </div>

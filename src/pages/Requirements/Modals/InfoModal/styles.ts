@@ -90,7 +90,7 @@ export const HeaderContent = styled.div`
         width: 100%;
         font-family: "Montserrat", sans-serif;
         font-weight: 600;
-        font-size: 20px;
+        font-size: 25px;
     }
 `;
 
@@ -99,6 +99,11 @@ export const Content = styled.div`
     width: 100%;
     height: calc(100% - 65px);
     overflow: auto;
+`;
+
+export const Columns = styled.div`
+    display: grid;
+    grid-template-columns: auto 35%;
 
     .column:last-child {
         margin-left: 2rem;
@@ -118,18 +123,17 @@ export const Content = styled.div`
         margin-bottom: 15px;
         font-family: "Montserrat", sans-serif;
         color: ${(props) => props.theme.grey};
-        font-weight: 600;
+        font-weight: bold;
     }
 
     .requirements {
         display: flex;
         flex-flow: row wrap;
     }
-`;
 
-export const Columns = styled.div`
-    display: grid;
-    grid-template-columns: auto 35%;
+    .relations {
+        margin-bottom: 25px;
+    }
 `;
 
 export const RowItems = styled.div`
