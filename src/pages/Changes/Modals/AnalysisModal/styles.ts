@@ -48,12 +48,26 @@ export const ModalHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px 15px 20px;
-    border-bottom: solid 1px rgba(242, 242, 242, 1);
+    /* border-bottom: solid 1px rgba(242, 242, 242, 1); */
     color: #1a1a1a;
 
     h2 {
         font-family: "Montserrat", sans-serif;
         font-weight: 700;
+    }
+`;
+
+export const SectionsPage = styled.div`
+    display: flex;
+    flex-direction: row;
+    border-bottom: solid 1px rgba(242, 242, 242, 0.5);
+    padding-left: 30px;
+
+    button {
+        padding: 10px 15px;
+        background-color: transparent;
+        font-family: "Prompt", sans-serif;
+        font-size: 15px;
     }
 `;
 
@@ -79,80 +93,91 @@ export const Content = styled.div`
 `;
 
 export const Title = styled.div`
+    margin-top: 2rem;
     margin-bottom: 2rem;
+    width: 100%;
+
+    h3 {
+        font-size: 20px;
+        font-weight: 700;
+    }
 `;
 
 export const Caption = styled.div`
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
-    color: #b3b3b3;
-    margin-bottom: 2rem;
-`;
-
-export const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin-bottom: 2rem;
+    color: ${(props) => props.theme.grey};
+    /* color: #b3b3b3; */
 
-    .subcontainer {
-        padding: 0 20px;
-    }
-
-    .second_title {
-        font-weight: bold;
-    }
-
-    .section_title {
-        margin-bottom: 25px;
+    span {
+        font-family: "Montserrat", sans-serif;
+        font-weight: 600;
+        margin-right: 5px;
     }
 `;
 
-export const SecondRow = styled.div`
+export const RowOne = styled.div`
     display: grid;
-    grid-template-columns: 52% 47%;
-    margin-bottom: 2rem;
+    grid-template-columns: 100%;
+    margin-bottom: 30px;
 `;
 
-export const ThirdRow = styled.div`
+export const RowTwo = styled.div`
     display: grid;
-    grid-template-columns: 33% 33% 33%;
-    margin-bottom: 2rem;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 30px;
 `;
 
-export const FourthRow = styled.div`
+export const RowThree = styled.div`
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    margin-bottom: 30px;
+`;
+
+export const RowFour = styled.div`
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
-    margin-bottom: 2rem;
+    margin-bottom: 30px;
 `;
 
 export const Element = styled.div`
     margin-right: 10px;
+    /* padding-left: 10px;
+    border-left: 2px solid #b3b3b3; */
 
     .attribute {
         font-weight: bold;
         margin-bottom: 10px;
+        color: ${(props) => props.theme.grey};
     }
 
     .value_info {
         text-align: justify;
         margin-top: 15px;
         margin-right: 20px;
-    }
-
-    .value_list {
-        margin-left: 40px;
+        color: #b3b3b3;
     }
 `;
 
 export const ElementList = styled.div`
+    margin-right: 10px;
+    /* background-color: grey; */
+
     .attribute {
         font-weight: bold;
         margin-bottom: 10px;
+        color: ${(props) => props.theme.grey};
     }
 
     .values_row {
         display: flex;
-        flex-direction: row;
+        flex-flow: row wrap;
+
+        div {
+            margin-bottom: 5px;
+        }
     }
 `;
 
