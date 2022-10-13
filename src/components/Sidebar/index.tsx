@@ -30,7 +30,7 @@ const Sidebar = () => {
             path: "/mudancas",
             name: "Mudanças",
             icon: <MdPublishedWithChanges />,
-            permissions: ["MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
         },
         // {
         //     path: "/solicitacoes",
