@@ -224,7 +224,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                         <p className="error_message">{errors.title?.message}</p>
                                     </div>
                                     <div className="inputContainer">
-                                        <label>Requisitos</label>
+                                        <label>Requisito</label>
                                         <Controller
                                             name="requirement"
                                             control={control}
@@ -235,7 +235,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                                     isClearable
                                                     defaultOptions
                                                     onChange={(option) => getRequirement(option)}
-                                                    placeholder="Selecione o requisito relacionados"
+                                                    placeholder="Selecione o requisito relacionado"
                                                     loadOptions={getRequirements}
                                                     styles={customStyles}
                                                 />
