@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaList } from "react-icons/fa";
 import { IoMdHome, IoMdFolder } from "react-icons/io";
 import { MdPublishedWithChanges, MdOutlineExitToApp } from "react-icons/md";
+import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
@@ -18,6 +19,12 @@ const Sidebar = () => {
             path: "/inicio",
             name: "Início",
             icon: <IoMdHome />,
+            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
+        },
+        {
+            path: "/artefatos",
+            name: "Artefatos",
+            icon: <HiOutlineDocumentDuplicate />,
             permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
         },
         {

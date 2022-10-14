@@ -9,6 +9,7 @@ import Changes from "../pages/Changes";
 import Solicitations from "../pages/Solicitations";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import Artefacts from "../pages/Artefacts";
 
 const IndexRoutes = () => (
     <Routes>
@@ -19,6 +20,7 @@ const IndexRoutes = () => (
         <Route path="/requisitos" element={<PrivateRoute element={Requirements} />} />
         <Route path="/mudancas" element={<PrivateRoute element={Changes} />} />
         <Route path="/solicitacoes" element={<PrivateRoute element={Solicitations} />} />
+        <Route path="/artefatos" element={<PrivateRoute element={Artefacts} />} />
     </Routes>
 );
 
