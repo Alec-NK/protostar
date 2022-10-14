@@ -410,7 +410,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                 </Element>
                                 <Element>
                                     <div className="attribute">Versão:</div>
-                                    <div className="value_info">{reqmtData?.version}</div>
+                                    <div className="value_info">{newReqmtData.version}</div>
                                 </Element>
                             </RowThree>
                             <RowThree>
