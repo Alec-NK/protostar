@@ -7,16 +7,21 @@ import ItemTable from "./ItemTable";
 import InfoModal from "./Modals/InfoModal";
 import RegisterModal from "./Modals/RegisterModal";
 import EditModal from "./Modals/EditModal";
+import ModalConfirmation from "../../components/ModalConfirmation";
 
 import { BsPlusLg } from "react-icons/bs";
 
+import { ArtefactsTypes } from "../../util/Types";
+
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
-import ModalConfirmation from "../../components/ModalConfirmation";
 
 export type ArtefactDataType = {
     id: number;
     name: string;
-    type: string;
+    type: {
+        value: string;
+        label: string;
+    };
 };
 
 const Artefacts = () => {
@@ -35,6 +40,14 @@ const Artefacts = () => {
         await api
             .get(`/artefatos/`)
             .then((response) => {
+                response.data = response.data.map((art: any) => {
+                    const type = ArtefactsTypes.find((artefactType) => {
+                        return artefactType.value === art.type;
+                    });
+                    art.type = type;
+                    return art;
+                });
+
                 setData(response.data);
             })
             .catch((error) => {

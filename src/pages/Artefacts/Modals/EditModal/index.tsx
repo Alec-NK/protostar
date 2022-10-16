@@ -75,7 +75,7 @@ const EditModal = ({ artefactData, setIsOpen, reloadPage }: EditModalProps) => {
     } = useForm<Inputs>({ resolver: yupResolver(schema) });
     const [selectedTypeOption, setSelectedTypeOption] = useState<any>(() => {
         return ArtefactsTypes.find((artefactType) => {
-            return artefactType.value === artefactData.type;
+            return artefactType.value === artefactData.type.value;
         });
     });
 

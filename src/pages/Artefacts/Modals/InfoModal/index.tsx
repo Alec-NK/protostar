@@ -46,7 +46,7 @@ const InfoModal = ({ artefactData, setIsOpen }: InfoModalProps) => {
                         </Element>
                         <Element>
                             <div className="attribute">Tipo:</div>
-                            <div className="value_info">{artefactData.type}</div>
+                            <div className="value_info">{artefactData.type.label}</div>
                         </Element>
                     </RowTwo>
                     <RowThree>

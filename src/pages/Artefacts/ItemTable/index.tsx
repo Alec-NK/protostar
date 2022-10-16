@@ -26,7 +26,7 @@ const ItemTable = ({ data, openInfoModal, id, openEditModal, openDeleteModal }: 
         <Container>
             <div onClick={openInfoModal}>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
             <div onClick={openInfoModal}>{data && data.name}</div>
-            <div onClick={openInfoModal}>{data && data.type}</div>
+            <div onClick={openInfoModal}>{data && data.type.label}</div>
             <div style={{ textAlign: "center" }} className="function_icon">
                 <Tooltip label="Visualizar" placement="top" bg="grey">
                     <button onClick={openInfoModal}>
