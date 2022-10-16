@@ -22,3 +22,9 @@ export const ChangesTypes = [
     { value: "VE", label: "Verificando" },
     { value: "D", label: "Finalizado" },
 ];
+
+export const ArtefactsTypes = [
+    { value: "DIAGRAMA", label: "Diagrama" },
+    { value: "TESTE", label: "Caso de teste" },
+    { value: "DOCUMENTO", label: "Documento do projeto" },
+];

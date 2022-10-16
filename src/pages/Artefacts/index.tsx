@@ -9,6 +9,7 @@ import InfoModal from "./Modals/InfoModal";
 import { BsPlusLg } from "react-icons/bs";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
+import RegisterModal from "./Modals/RegisterModal";
 
 export type ArtefactDataType = {
     id: number;
@@ -22,6 +23,7 @@ const Artefacts = () => {
         {} as ArtefactDataType
     );
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
+    const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(true);
 
     const getArtefacts = useCallback(async () => {
         await api
@@ -35,7 +37,7 @@ const Artefacts = () => {
     }, []);
 
     const toggleModalRegister = () => {
-        // setIsModalRegisterOpen((prevState) => !prevState);
+        setIsModalRegisterOpen((prevState) => !prevState);
     };
 
     const toggleInfoModal = () => {
@@ -56,6 +58,10 @@ const Artefacts = () => {
         toggleEditModal();
     };
 
+    const handleReloadPage = () => {
+        getArtefacts();
+    };
+
     useEffect(() => {
         getArtefacts();
     }, []);
@@ -71,9 +77,6 @@ const Artefacts = () => {
                     <div>ID</div>
                     <div>Nome</div>
                     <div>Tipo</div>
-                    {/* <div style={{ textAlign: "center" }}>Status</div>
-                    <div style={{ textAlign: "center" }}>Data de Criacao</div>
-                    <div style={{ textAlign: "center" }}>Versão</div> */}
                     <div style={{ textAlign: "center" }}>Funções</div>
                 </HeaderTable>
                 <ContentTable>
@@ -93,6 +96,9 @@ const Artefacts = () => {
             </TableList>
             {isModalInfoOpen && (
                 <InfoModal artefactData={currentArtefact} setIsOpen={toggleInfoModal} />
+            )}
+            {isModalRegisterOpen && (
+                <RegisterModal setIsOpen={toggleModalRegister} reloadPage={handleReloadPage} />
             )}
         </Container>
     );
