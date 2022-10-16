@@ -83,39 +83,32 @@ export const Content = styled.div`
         color: black;
     }
 
-    .row {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 20px;
+    #version {
+        input {
+            &:disabled {
+                border: 2px solid transparent;
+                cursor: not-allowed;
 
-        .inputContainer {
-            display: flex;
-            flex-flow: column nowrap;
-
-            .category {
-                width: 100%;
-            }
-
-            .error_message {
-                margin: 4px 0 0 5px;
-                font-size: 14px;
-                color: #e34444;
-            }
-        }
-
-        #version {
-            input {
-                &:disabled {
-                    border: 2px solid transparent;
-                    cursor: not-allowed;
-
-                    ::placeholder {
-                        color: grey;
-                    }
+                ::placeholder {
+                    color: grey;
                 }
             }
+        }
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-flow: column nowrap;
+        margin-right: 5px;
+
+        .category {
+            width: 100%;
+        }
+
+        .error_message {
+            margin: 4px 0 0 5px;
+            font-size: 14px;
+            color: #e34444;
         }
     }
 
@@ -124,88 +117,24 @@ export const Content = styled.div`
         font-family: "Montserrat", sans-serif;
         color: #b3b3b3;
     }
+`;
 
-    #firstRow {
-        display: grid;
-        /* grid-template-columns: 25% 74.5%; */
-        grid-template-columns: 49.5% 49.5%;
-    }
+export const RowOne = styled.div`
+    display: grid;
+    grid-template-columns: 100%;
+    margin-bottom: 15px;
+`;
 
-    #secondRow {
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-    }
+export const RowTwo = styled.div`
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin-bottom: 15px;
+`;
 
-    #thirdRow {
-        display: grid;
-        grid-template-columns: 49.5% 49.5%;
-        margin-bottom: 35px;
-    }
-
-    #fourthRow {
-        display: grid;
-        grid-template-columns: 49.5% 49.5%;
-    }
-
-    /* .input-container {
-        width: 280px;
-        position: relative;
-    }
-
-    .label {
-        position: absolute;
-        left: 15px;
-        top: 15px;
-        transition: all 0.2s;
-        padding: 0 2px;
-        z-index: 1;
-        color: #b3b3b3;
-    }
-
-    .text-input {
-        padding: 0.8rem;
-        width: 100%;
-        height: 100%;
-        border: 2px solid #2f2c45;
-        border-radius: 5px;
-        font-size: 15px;
-        outline: none;
-        transition: all 0.3s;
-        color: black;
-    }
-
-    .label::before {
-        content: "";
-        height: 5px;
-        background: white;
-        position: absolute;
-        left: 0px;
-        top: 10px;
-        width: 100%;
-        z-index: -1;
-    }
-
-    .text-input:focus {
-        border: 2px solid #7e4ccb;
-    }
-
-    .text-input:focus + .label,
-    .filled {
-        top: -10px;
-        color: #7e4ccb;
-        font-size: 14px;
-        font-weight: bold;
-    }
-
-    .text-input::placeholder {
-        font-size: 16px;
-        opacity: 0;
-        transition: all 0.3s;
-    }
-
-    .text-input:focus::placeholder {
-        opacity: 1;
-    } */
+export const RowThree = styled.div`
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    margin-bottom: 15px;
 `;
 
 export const Footer = styled.div`

@@ -12,7 +12,16 @@ import { AuthContext } from "../../../../contexts/AuthContext";
 import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
 import api from "../../../../services/api";
 
-import { Background, Container, Content, Footer, ModalHeader } from "./styles";
+import {
+    Background,
+    Container,
+    Content,
+    Footer,
+    ModalHeader,
+    RowOne,
+    RowThree,
+    RowTwo,
+} from "./styles";
 
 type RegisterModalProps = {
     setIsOpen: () => void;
@@ -31,6 +40,7 @@ type Inputs = {
     type: any;
     category: string | null;
     requirements: Array<AsyncSelectInputValuesType>;
+    artefacts: Array<AsyncSelectInputValuesType>;
     stakeholders: string;
     source: string;
 };
@@ -105,15 +115,32 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         return options;
     };
 
+    const getArtefacts = async () => {
+        const response = await api.get(`/artefatos/`);
+        const options = await response.data.map((art: any) => ({
+            value: art.id,
+            label: art.name,
+        }));
+
+        return options;
+    };
+
     const toggleIsModalOpen = () => {
         setIsOpen();
     };
 
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
-        let reqList: Array<number> = [];
+        let requirementsList: Array<number> = [];
+        let artefactsList: Array<number> = [];
 
         if (data.requirements !== undefined) {
-            reqList = data.requirements.map((option: AsyncSelectInputValuesType) => {
+            requirementsList = data.requirements.map((option: AsyncSelectInputValuesType) => {
+                return option.value;
+            });
+        }
+
+        if (data.artefacts !== undefined) {
+            artefactsList = data.artefacts.map((option: AsyncSelectInputValuesType) => {
                 return option.value;
             });
         }
@@ -126,7 +153,8 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                 data.status.value === undefined ? selectedStatusOption.value : data.status.value,
             category: data.category === undefined ? null : data.category,
             source: data.source,
-            requirements: reqList,
+            requirements: requirementsList,
+            artefacts: artefactsList,
             project_related: user.selectedProject,
             stake_holders: {
                 stakeholders: data.stakeholders,
@@ -169,7 +197,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                 <Content>
                     <form id="form_new_requirement" onSubmit={handleSubmit(onSubmit)}>
                         <div className="caption">INFORMAÇÕES</div>
-                        <div className="row" id="firstRow">
+                        <RowTwo>
                             <div className="inputContainer">
                                 <label>Título</label>
                                 <Input
@@ -192,8 +220,8 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 />
                                 <p className="error_message">{errors.description?.message}</p>
                             </div>
-                        </div>
-                        <div className="row" id="secondRow">
+                        </RowTwo>
+                        <RowThree>
                             <div className="inputContainer">
                                 <label>Status</label>
                                 <Controller
@@ -244,8 +272,8 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                     disabled
                                 />
                             </div>
-                        </div>
-                        <div className="row" id="thirdRow">
+                        </RowThree>
+                        <RowTwo>
                             <div className="inputContainer">
                                 <label>Categoria</label>
                                 <Input
@@ -269,9 +297,9 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 />
                                 <p className="error_message">{errors.source?.message}</p>
                             </div>
-                        </div>
+                        </RowTwo>
                         <div className="caption">RELACIONAMENTOS</div>
-                        <div className="row" id="fourthRow">
+                        <RowTwo>
                             <div className="inputContainer">
                                 <label>Requisitos</label>
                                 <Controller
@@ -292,6 +320,27 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 />
                             </div>
                             <div className="inputContainer">
+                                <label>Artefatos</label>
+                                <Controller
+                                    name="artefacts"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <AsyncSelect
+                                            {...field}
+                                            isMulti
+                                            isClearable
+                                            defaultOptions
+                                            placeholder="Selecione os artefatos relacionados"
+                                            loadOptions={getArtefacts}
+                                            styles={customStyles}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </RowTwo>
+                        <RowOne>
+                            <div className="inputContainer">
                                 <label>Stakeholders</label>
                                 <Input
                                     type="text"
@@ -302,7 +351,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 />
                                 <p className="error_message">{errors.stakeholders?.message}</p>
                             </div>
-                        </div>
+                        </RowOne>
                     </form>
                 </Content>
                 <Footer>
