@@ -5,11 +5,12 @@ import api from "../../services/api";
 import Button from "../../components/Button";
 import ItemTable from "./ItemTable";
 import InfoModal from "./Modals/InfoModal";
+import RegisterModal from "./Modals/RegisterModal";
+import EditModal from "./Modals/EditModal";
 
 import { BsPlusLg } from "react-icons/bs";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
-import RegisterModal from "./Modals/RegisterModal";
 
 export type ArtefactDataType = {
     id: number;
@@ -23,7 +24,8 @@ const Artefacts = () => {
         {} as ArtefactDataType
     );
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
-    const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(true);
+    const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
+    const [IsModalEditOpen, setIsModalEditOpen] = useState(false);
 
     const getArtefacts = useCallback(async () => {
         await api
@@ -45,7 +47,7 @@ const Artefacts = () => {
     };
 
     const toggleEditModal = () => {
-        // setIsModalEditOpen((prevState) => !prevState);
+        setIsModalEditOpen((prevState) => !prevState);
     };
 
     const handleInfoModal = (artefact: ArtefactDataType) => {
@@ -99,6 +101,13 @@ const Artefacts = () => {
             )}
             {isModalRegisterOpen && (
                 <RegisterModal setIsOpen={toggleModalRegister} reloadPage={handleReloadPage} />
+            )}
+            {IsModalEditOpen && (
+                <EditModal
+                    artefactData={currentArtefact}
+                    setIsOpen={toggleEditModal}
+                    reloadPage={handleReloadPage}
+                />
             )}
         </Container>
     );
