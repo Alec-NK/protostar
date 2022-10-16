@@ -18,13 +18,18 @@ import {
     Columns,
     Container,
     Content,
+    Element,
     Footer,
     HeaderContent,
     ModalHeader,
-    RowItems,
+    Relations,
+    RowThree,
     SectionsPage,
     Tag,
+    TitleColumn,
 } from "./styles";
+import { Divider } from "@chakra-ui/react";
+import { ArtefactDataType } from "../../../Artefacts";
 
 type InfoModalProps = {
     requirementId: number | null;
@@ -36,6 +41,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
     const [isVersionsTab, setIsVersionsTab] = useState(false);
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
     const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
+    const [relatedArtefacts, setRelatedArtefacts] = useState<ArtefactDataType[][]>([]);
     const [versions, setVersions] = useState<RequirementsDataType[]>([]);
 
     const getRequirement = useCallback(async () => {
@@ -49,10 +55,11 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
             });
     }, [requirementId]);
 
-    const getRelatedRequirements = useCallback(async () => {
+    const getRelatedElements = useCallback(async () => {
         await api
             .post(`/related_requirements/`, { id: requirementId })
             .then((response) => {
+                setRelatedArtefacts(response.data.artefatos);
                 setRelatedRequirements(response.data.relacionamento);
             })
             .catch(() => {
@@ -92,8 +99,8 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
 
     useEffect(() => {
         getRequirement();
-        getRelatedRequirements();
-    }, [requirementId, getRequirement, getRelatedRequirements]);
+        getRelatedElements();
+    }, [requirementId, getRequirement, getRelatedElements]);
 
     return (
         <Background>
@@ -122,68 +129,87 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                             </HeaderContent>
                             <Columns>
                                 <div className="column">
-                                    <div className="row">{data.description}</div>
-                                    <RowItems>
-                                        <div className="element">
+                                    <TitleColumn>
+                                        <span>DETALHES</span>
+                                        <Divider />
+                                    </TitleColumn>
+                                    <Element>
+                                        <div className="atribute">Descrição:</div>
+                                        <div className="value">{data.description}</div>
+                                    </Element>
+                                    <RowThree>
+                                        <Element>
                                             <div className="atribute">Data de criação:</div>
-                                            <div>
+                                            <div className="value">
                                                 {data && data.created_data
                                                     ? formatDate(data.created_data)
                                                     : ""}
                                             </div>
-                                        </div>
-                                        <div className="element">
+                                        </Element>
+                                        <Element>
                                             <div className="atribute">Fonte:</div>
-                                            <div>{data.source}</div>
-                                        </div>
-                                        <div className="element">
+                                            <div className="value">{data.source}</div>
+                                        </Element>
+                                        <Element>
                                             <div className="atribute">Tipo:</div>
-                                            <div>
+                                            <div className="value">
                                                 {data && data.type === "F"
                                                     ? "Funcional"
                                                     : "Não Funcional"}
                                             </div>
-                                        </div>
-                                    </RowItems>
-                                    <RowItems>
-                                        <div className="element">
+                                        </Element>
+                                    </RowThree>
+                                    <RowThree>
+                                        <Element>
                                             <div className="atribute">Versão</div>
-                                            <div>{data.version}</div>
-                                        </div>
-                                        <div className="element">
+                                            <div className="value">{data.version}</div>
+                                        </Element>
+                                        <Element>
                                             <div className="atribute">Status</div>
                                             <Status
                                                 status={data.status}
                                                 type={StatusKinds.requirements}
                                             />
-                                        </div>
+                                        </Element>
                                         {data && data.type === "NF" ? (
-                                            <div className="element">
+                                            <Element>
                                                 <div className="atribute">Categoria</div>
-                                                <div>{data.category}</div>
-                                            </div>
+                                                <div className="value">{data.category}</div>
+                                            </Element>
                                         ) : (
                                             <div />
                                         )}
-                                    </RowItems>
+                                    </RowThree>
                                 </div>
                                 <div className="column">
-                                    <div className="relations">
-                                        <div className="caption">REQUISITOS RELACIONADOS</div>
+                                    <TitleColumn>
+                                        <span>RELACIONAMENTOS</span>
+                                        <Divider />
+                                    </TitleColumn>
+                                    <Relations>
+                                        <div className="caption">Requisitos Relacionados</div>
                                         <div className="requirements">
                                             {relatedRequirements.map((reqrmnt, index) => {
                                                 return <Tag key={index}>{reqrmnt[0].title}</Tag>;
                                             })}
                                         </div>
-                                    </div>
-                                    <div className="relations">
-                                        <div className="caption">STAKEHOLDERS RELACIONADOS</div>
+                                    </Relations>
+                                    <Relations>
+                                        <div className="caption">Artefatos Relacionados</div>
+                                        <div className="requirements">
+                                            {relatedArtefacts.map((artefact, index) => {
+                                                return <Tag key={index}>{artefact[0].name}</Tag>;
+                                            })}
+                                        </div>
+                                    </Relations>
+                                    <Relations>
+                                        <div className="caption">Stakeholders Relacionados</div>
                                         <div className="stakeholders">
                                             {data.stake_holders
                                                 ? data.stake_holders.stakeholders
-                                                : ""}
+                                                : ""}{" "}
                                         </div>
-                                    </div>
+                                    </Relations>
                                 </div>
                             </Columns>
                         </Content>

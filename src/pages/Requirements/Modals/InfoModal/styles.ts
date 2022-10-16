@@ -83,8 +83,15 @@ export const ButtonSection = styled.button<ButtonSectionProps>`
     }
 `;
 
+export const Content = styled.div`
+    padding: 20px 35px;
+    width: 100%;
+    height: calc(100% - 65px);
+    overflow: auto;
+`;
+
 export const HeaderContent = styled.div`
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 
     .row_title {
         width: 100%;
@@ -94,13 +101,6 @@ export const HeaderContent = styled.div`
     }
 `;
 
-export const Content = styled.div`
-    padding: 20px 35px;
-    width: 100%;
-    height: calc(100% - 65px);
-    overflow: auto;
-`;
-
 export const Columns = styled.div`
     display: grid;
     grid-template-columns: auto 35%;
@@ -108,22 +108,45 @@ export const Columns = styled.div`
     .column:last-child {
         margin-left: 2rem;
     }
+`;
 
-    .element {
-        margin-bottom: 30px;
+export const TitleColumn = styled.div`
+    margin-bottom: 20px;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: 18px;
+    /* color: ${(props) => props.theme.grey}; */
+`;
+
+export const RowThree = styled.div`
+    display: grid;
+    grid-template-columns: 35% 35% 35%;
+    width: 100%;
+`;
+
+export const Element = styled.div`
+    margin-bottom: 30px;
+
+    .atribute {
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: ${(props) => props.theme.grey};
     }
 
-    .row {
-        display: flex;
-        text-align: justify;
-        margin-bottom: 30px;
+    .value {
+        color: #b3b3b3;
     }
+`;
+
+export const Relations = styled.div`
+    margin-bottom: 35px;
 
     .caption {
         margin-bottom: 15px;
         font-family: "Montserrat", sans-serif;
         color: ${(props) => props.theme.grey};
-        font-weight: bold;
+        font-weight: 700;
+        font-size: 15px;
     }
 
     .requirements {
@@ -131,20 +154,12 @@ export const Columns = styled.div`
         flex-flow: row wrap;
     }
 
-    .relations {
-        margin-bottom: 25px;
-    }
-`;
-
-export const RowItems = styled.div`
-    display: grid;
-    grid-template-columns: 35% 35% 35%;
-    width: 100%;
-
-    .atribute {
-        font-weight: 700;
-        margin-bottom: 5px;
-        color: ${(props) => props.theme.grey};
+    .stakeholders {
+        display: flex;
+        flex-wrap: wrap;
+        text-align: justify;
+        width: 95%;
+        color: #b3b3b3;
     }
 `;
 
