@@ -34,6 +34,7 @@ export type RequirementsDataType = {
     category: string | null;
     source: string;
     requirements: Array<number>;
+    artefacts: Array<number>;
     relations: Array<number>;
     requisito_mudanca: any;
 };

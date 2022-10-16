@@ -30,6 +30,8 @@ type Inputs = {
     description: string;
     status: any;
     requirements: Array<AsyncSelectInputValuesType>;
+    artefacts: Array<AsyncSelectInputValuesType>;
+    stakeholders: string;
 };
 
 const schema = yup
@@ -67,7 +69,8 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
             return statusType.value === data.status;
         });
     });
-    const [requirementsRelated, setRequirementsRelated] = useState<any>();
+    const [relatedRequirements, setRelatedRequirements] = useState<any>();
+    const [relatedArtefacts, setRelatedArtefacts] = useState<any>();
     const {
         register,
         handleSubmit,
@@ -82,8 +85,8 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
             value: req.id,
             label: req.title,
         }));
-        let defaultOptions = [];
 
+        let defaultOptions = [];
         if (data) {
             defaultOptions = data.requirements.map((requirementId: any) => {
                 return options.find((option: any) => {
@@ -92,21 +95,50 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
             });
         }
 
-        setRequirementsRelated(defaultOptions);
+        setRelatedRequirements(defaultOptions);
 
         return options;
     }, [data]);
+
+    const getArtefacts = async () => {
+        const response = await api.get(`/artefatos/`);
+        const options = await response.data.map((art: any) => ({
+            value: art.id,
+            label: art.name,
+        }));
+
+        let defaultArtefacts = [];
+        if (data) {
+            defaultArtefacts = data.artefacts.map((artefactId: any) => {
+                return options.find((option: any) => {
+                    return artefactId === option.value;
+                });
+            });
+        }
+
+        setRelatedArtefacts(defaultArtefacts);
+
+        return options;
+    };
 
     const handleChangeStatus = (option: any) => {
         setSelectedStatusOption(option);
     };
 
     const handleChangeRequirements = (option: any) => {
-        setRequirementsRelated(option);
+        setRelatedRequirements(option);
+    };
+
+    const handleChangeArtefacts = (option: any) => {
+        setRelatedArtefacts(option);
     };
 
     const onSubmit: SubmitHandler<any> = async (formData: Inputs) => {
-        const reqList = requirementsRelated.map((option: AsyncSelectInputValuesType) => {
+        const requirementsList = relatedRequirements.map((option: AsyncSelectInputValuesType) => {
+            return option.value;
+        });
+
+        const artefacstList = relatedArtefacts.map((option: AsyncSelectInputValuesType) => {
             return option.value;
         });
 
@@ -114,27 +146,24 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
             title: formData.title,
             description: formData.description,
             status: selectedStatusOption.value,
-            requirements: reqList,
+            requirements: requirementsList,
+            artefacts: artefacstList,
             project_related: user.selectedProject,
             stake_holders: {
-                stakeholders: [],
+                stakeholders: formData.stakeholders,
             },
         };
 
-        if (reqList.length > 0) {
-            await api
-                .put(`/requisitos/${data.id}/`, dataChanged)
-                .then(() => {
-                    toast.success("Requisito editado com sucesso!");
-                    setIsOpen();
-                    reloadPage();
-                })
-                .catch((erro) => {
-                    toast.error("Erro na alteração");
-                });
-        } else {
-            toast.error("Deve relacionar pelo menos 1 requisito");
-        }
+        await api
+            .put(`/requisitos/${data.id}/`, dataChanged)
+            .then(() => {
+                toast.success("Requisito editado com sucesso!");
+                setIsOpen();
+                reloadPage();
+            })
+            .catch((erro) => {
+                toast.error("Erro na alteração");
+            });
     };
 
     return (
@@ -145,7 +174,7 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
                 </ModalHeader>
                 <Content>
                     <form id="form_edit_requirement" onSubmit={handleSubmit(onSubmit)}>
-                        <Row>
+                        <Row isDouble>
                             <div className="input_container">
                                 <label>Título</label>
                                 <Input
@@ -158,21 +187,6 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
                                 />
                                 <p className="error_message">{errors.title?.message}</p>
                             </div>
-                        </Row>
-                        <Row>
-                            <div className="input_container">
-                                <label>Descrição</label>
-                                <Textarea
-                                    id="description"
-                                    placeholder="Digite a descrição do requisito"
-                                    {...register("description")}
-                                    focusBorderColor="#fab039"
-                                    defaultValue={data?.description}
-                                />
-                                <p className="error_message">{errors.description?.message}</p>
-                            </div>
-                        </Row>
-                        <Row isDouble>
                             <div className="input_container">
                                 <label>Status</label>
                                 <Controller
@@ -192,8 +206,23 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
                                     }}
                                 />
                             </div>
+                        </Row>
+                        <Row>
                             <div className="input_container">
-                                <label>Requisitos</label>
+                                <label>Descrição</label>
+                                <Textarea
+                                    id="description"
+                                    placeholder="Digite a descrição do requisito"
+                                    {...register("description")}
+                                    focusBorderColor="#fab039"
+                                    defaultValue={data?.description}
+                                />
+                                <p className="error_message">{errors.description?.message}</p>
+                            </div>
+                        </Row>
+                        <Row isDouble>
+                            <div className="input_container">
+                                <label>Requisitos Relacionados</label>
                                 <Controller
                                     name="requirements"
                                     control={control}
@@ -204,13 +233,47 @@ const EditModal = ({ data, setIsOpen, reloadPage }: EditModalProps) => {
                                             isMulti
                                             isClearable
                                             defaultOptions
-                                            value={requirementsRelated}
+                                            value={relatedRequirements}
                                             onChange={(option) => handleChangeRequirements(option)}
                                             placeholder="Selecione os requisitos relacionados"
                                             loadOptions={getRequirements}
                                             styles={customStyles}
                                         />
                                     )}
+                                />
+                            </div>
+                            <div className="input_container">
+                                <label>Artefatos Relacionados</label>
+                                <Controller
+                                    name="artefacts"
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({ field }) => (
+                                        <AsyncSelect
+                                            {...field}
+                                            isMulti
+                                            isClearable
+                                            defaultOptions
+                                            value={relatedArtefacts}
+                                            onChange={(option) => handleChangeArtefacts(option)}
+                                            placeholder="Selecione os artefatos relacionados"
+                                            loadOptions={getArtefacts}
+                                            styles={customStyles}
+                                        />
+                                    )}
+                                />
+                            </div>
+                        </Row>
+                        <Row>
+                            <div className="input_container">
+                                <label>Stakeholders Relacionados</label>
+                                <Input
+                                    type="text"
+                                    id="stakeholders"
+                                    placeholder="Digite o nome dos stakeholders relacionados"
+                                    {...register("stakeholders")}
+                                    focusBorderColor="#fab039"
+                                    defaultValue={data?.stake_holders.stakeholders}
                                 />
                             </div>
                         </Row>
