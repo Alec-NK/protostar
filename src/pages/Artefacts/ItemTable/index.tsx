@@ -16,9 +16,10 @@ type ItemTableProps = {
     data: ArtefactDataType;
     openInfoModal?: () => void;
     openEditModal?: () => void;
+    openDeleteModal?: () => void;
 };
 
-const ItemTable = ({ data, openInfoModal, id, openEditModal }: ItemTableProps) => {
+const ItemTable = ({ data, openInfoModal, id, openEditModal, openDeleteModal }: ItemTableProps) => {
     const { authorization } = useContext(AuthContext);
 
     return (
@@ -41,7 +42,7 @@ const ItemTable = ({ data, openInfoModal, id, openEditModal }: ItemTableProps) =
                         </Tooltip>
 
                         <Tooltip label="Excluir" placement="top" bg="grey">
-                            <button>
+                            <button onClick={openDeleteModal}>
                                 <FaRegTrashAlt />
                             </button>
                         </Tooltip>

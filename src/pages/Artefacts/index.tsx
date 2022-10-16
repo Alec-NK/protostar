@@ -11,6 +11,7 @@ import EditModal from "./Modals/EditModal";
 import { BsPlusLg } from "react-icons/bs";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
+import ModalConfirmation from "../../components/ModalConfirmation";
 
 export type ArtefactDataType = {
     id: number;
@@ -26,6 +27,9 @@ const Artefacts = () => {
     const [isModalInfoOpen, setIsModalInfoOpen] = useState(false);
     const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
     const [IsModalEditOpen, setIsModalEditOpen] = useState(false);
+    const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
+    const [currentArtefactId, setCurrentArtefactId] = useState<number>();
+    const [deleteMessage, setDeleteMessage] = useState("");
 
     const getArtefacts = useCallback(async () => {
         await api
@@ -50,6 +54,10 @@ const Artefacts = () => {
         setIsModalEditOpen((prevState) => !prevState);
     };
 
+    const toggleConfirmationModal = () => {
+        setIsModalConfirmationOpen((prevState) => !prevState);
+    };
+
     const handleInfoModal = (artefact: ArtefactDataType) => {
         setCurrentArtefact(artefact);
         toggleInfoModal();
@@ -60,8 +68,27 @@ const Artefacts = () => {
         toggleEditModal();
     };
 
+    const handleDeleteModal = (id: number, name: string) => {
+        setCurrentArtefactId(id);
+        setDeleteMessage(`Você tem certeza que deseja excluir "${name}"?`);
+        toggleConfirmationModal();
+    };
+
     const handleReloadPage = () => {
         getArtefacts();
+    };
+
+    const handleDeleteArtefact = async () => {
+        await api
+            .delete(`/artefatos/${currentArtefactId}/`)
+            .then(() => {
+                toast.success("Artefato deletado com sucesso!");
+                toggleConfirmationModal();
+                handleReloadPage();
+            })
+            .catch((erro) => {
+                toast.error("Erro ao excluir artefato");
+            });
     };
 
     useEffect(() => {
@@ -91,6 +118,9 @@ const Artefacts = () => {
                                     id={index}
                                     openInfoModal={() => handleInfoModal(artefact)}
                                     openEditModal={() => handleEditModal(artefact)}
+                                    openDeleteModal={() =>
+                                        handleDeleteModal(artefact.id, artefact.name)
+                                    }
                                 />
                             );
                         })}
@@ -107,6 +137,13 @@ const Artefacts = () => {
                     artefactData={currentArtefact}
                     setIsOpen={toggleEditModal}
                     reloadPage={handleReloadPage}
+                />
+            )}
+            {isModalConfirmationOpen && (
+                <ModalConfirmation
+                    message={deleteMessage}
+                    setIsOpen={toggleConfirmationModal}
+                    handleConfirm={handleDeleteArtefact}
                 />
             )}
         </Container>
