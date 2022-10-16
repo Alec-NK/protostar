@@ -87,7 +87,7 @@ const EditModal = ({ artefactData, setIsOpen, reloadPage }: EditModalProps) => {
         setSelectedTypeOption(option);
     };
 
-    const onSubmitasdasd: SubmitHandler<any> = async (formData: Inputs) => {
+    const onSubmit: SubmitHandler<any> = async (formData: Inputs) => {
         const dataChanged = {
             name: formData.name,
             type: selectedTypeOption.value,
@@ -112,7 +112,7 @@ const EditModal = ({ artefactData, setIsOpen, reloadPage }: EditModalProps) => {
                     <h2 className="title">Editar artefato</h2>
                 </ModalHeader>
                 <Content>
-                    <form id="form_edit_artefact" onSubmit={handleSubmit(onSubmitasdasd)}>
+                    <form id="form_edit_artefact" onSubmit={handleSubmit(onSubmit)}>
                         <div className="caption">INFORMAÇÕES DO ARTEFATO</div>
                         <RowTwo>
                             <div className="inputContainer">
