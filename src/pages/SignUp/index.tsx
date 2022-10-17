@@ -4,23 +4,33 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../../services/api";
+import axios from "axios";
 
 import { Background, BtnSignUp, Container, ErrorMessage, Header, SignInLink } from "./styles";
+import { UserFunctionEnum } from "../../util/Enums";
 
 type SignUpInputs = {
     // name: string;
     // last_name: string;
     username: string;
     email: string;
+    role: string;
     password: string;
     confirmation_password: string;
+};
+
+type UserData = {
+    id: number;
+    username: string;
+    password: string;
+    email: string;
 };
 
 const schema = yup
     .object({
         username: yup.string().required("Nome de usuário obrigatório!"),
         email: yup.string().email().required("Email obrigatório!"),
+        role: yup.string().required("Cargo obrigatório!"),
         password: yup
             .string()
             .min(8, "Senha deve ter no mínimo 8 caracteres")
@@ -40,20 +50,43 @@ const SignUp: React.FC = () => {
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<any> = async (data: SignUpInputs) => {
-        const registerData = {
+        const registerUserData = {
             username: data.username,
             password: data.password,
             email: data.email,
         };
 
-        await api
-            .post(`/usuarios/`, registerData)
+        let user = {} as UserData;
+        await axios
+            .post(`${process.env.REACT_APP_API_URL}/usuarios/`, registerUserData, {
+                headers: {
+                    Authorization: `Token ${process.env.REACT_APP_ADMIN_TOKEN}`,
+                },
+            })
             .then((response) => {
+                user = response.data;
+            })
+            .catch((error) => {
+                toast.error("Houve um erro no cadastro");
+            });
+
+        let registerFunctionData = {
+            cargo: data.role,
+            funcao_usuario: UserFunctionEnum.usuario,
+            usuario: user.id,
+        };
+
+        await axios
+            .post(`${process.env.REACT_APP_API_URL}/funcao/`, registerFunctionData, {
+                headers: {
+                    Authorization: `Token ${process.env.REACT_APP_ADMIN_TOKEN}`,
+                },
+            })
+            .then(() => {
                 toast.success("Conta cadastrada com sucesso!");
                 navigate("/");
             })
             .catch((error) => {
-                // console.log("Erro", error);
                 toast.error("Houve um erro no cadastro");
             });
     };
@@ -105,6 +138,19 @@ const SignUp: React.FC = () => {
                                 focusBorderColor="#fab039"
                             />
                             {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+                        </GridItem>
+                    </Grid>
+                    <Grid marginBottom="20px">
+                        <GridItem>
+                            <FormLabel htmlFor="role">Cargo</FormLabel>
+                            <Input
+                                type="text"
+                                id="role"
+                                placeholder="Digite seu cargo (Ex: Desenvolvedor)"
+                                {...register("role")}
+                                focusBorderColor="#fab039"
+                            />
+                            {errors.role && <ErrorMessage>{errors.role.message}</ErrorMessage>}
                         </GridItem>
                     </Grid>
                     {/* <Grid templateColumns="repeat(2, 1fr)" gap={5} marginBottom="20px">
