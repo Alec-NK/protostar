@@ -44,6 +44,7 @@ type Inputs = {
     type: any;
     category: string | null;
     requirements: Array<AsyncSelectInputValuesType>;
+    artefacts: Array<AsyncSelectInputValuesType>;
     stakeholders: string;
     source: string;
 };
@@ -113,6 +114,16 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         return options;
     };
 
+    const getArtefacts = async () => {
+        const response = await api.get(`/artefatos/`);
+        const options = await response.data.map((art: any) => ({
+            value: art.id,
+            label: art.name,
+        }));
+
+        return options;
+    };
+
     const getRequirement = useCallback(async (option: any) => {
         await api
             .get(`/requisitos/${option.value}`)
@@ -140,10 +151,17 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
     };
 
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
-        let reqList: Array<number> = [];
+        let requirementsList: Array<number> = [];
+        let artefactsList: Array<number> = [];
 
         if (data.requirements !== undefined) {
-            reqList = data.requirements.map((option: AsyncSelectInputValuesType) => {
+            requirementsList = data.requirements.map((option: AsyncSelectInputValuesType) => {
+                return option.value;
+            });
+        }
+
+        if (data.artefacts !== undefined) {
+            artefactsList = data.artefacts.map((option: AsyncSelectInputValuesType) => {
                 return option.value;
             });
         }
@@ -165,7 +183,8 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                         : data.status.value,
                 type: data.type === undefined ? selectedTypeOption.value : data.type.value,
                 category: data.category === undefined ? null : data.category,
-                requirements: reqList,
+                requirements: requirementsList,
+                artefacts: artefactsList,
                 stakeholders: data.stakeholders,
                 source: data.source,
             },
@@ -454,6 +473,27 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                         />
                                     </div>
                                     <div className="inputContainer">
+                                        <label>Artefatos</label>
+                                        <Controller
+                                            name="artefacts"
+                                            control={control}
+                                            rules={{ required: true }}
+                                            render={({ field }) => (
+                                                <AsyncSelect
+                                                    {...field}
+                                                    isMulti
+                                                    isClearable
+                                                    defaultOptions
+                                                    placeholder="Selecione os artefatos relacionados"
+                                                    loadOptions={getArtefacts}
+                                                    styles={customStyles}
+                                                />
+                                            )}
+                                        />
+                                    </div>
+                                </RowTwo>
+                                <RowOne>
+                                    <div className="inputContainer">
                                         <label>Stakeholders</label>
                                         <Input
                                             type="text"
@@ -466,7 +506,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             {errors.stakeholders?.message}
                                         </p>
                                     </div>
-                                </RowTwo>
+                                </RowOne>
                             </>
                         )}
                     </form>
