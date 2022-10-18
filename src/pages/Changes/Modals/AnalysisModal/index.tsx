@@ -10,9 +10,9 @@ import { FaCheck } from "react-icons/fa";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { AiFillQuestionCircle } from "react-icons/ai";
 
-import { useFetch } from "../../../../hooks/useFetch";
-import { formatDate } from "../../../../util/app.util";
 import { RequirementsDataType } from "../../../Requirements";
+import { ArtefactDataType } from "../../../Artefacts";
+import { formatDate } from "../../../../util/app.util";
 import { StatusKinds } from "../../../../util/Enums";
 
 import {
@@ -49,6 +49,7 @@ type NewRequirementType = {
     type: string;
     category: string | null;
     requirements: Array<number>;
+    artefacts: Array<number>;
     stakeholders: string;
     source: string;
     version: string;
@@ -70,7 +71,7 @@ type ChangeDataType = {
 
 type RelatedDataType = {
     requirements: RequirementsDataType[][];
-    artefacts: any[][];
+    artefacts: ArtefactDataType[][];
 };
 
 const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
@@ -119,24 +120,39 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
             });
     }, []);
 
-    const getNewRequirementRelated = useCallback(async (requirementsIds: number[]) => {
-        const relatedRequirements: Array<RequirementsDataType> = [];
-        requirementsIds.map(async (id) => {
-            await api
-                .get(`/requisitos/${id}/`)
-                .then((response) => {
-                    relatedRequirements.push(response.data);
-                })
-                .catch((error) => {
-                    toast.error("Houve um erro");
-                });
-        });
+    const getNewRequirementRelated = useCallback(
+        async (requirementsIds: number[], artefactsIds: number[]) => {
+            const relatedRequirements: Array<RequirementsDataType> = [];
+            requirementsIds.map(async (id) => {
+                await api
+                    .get(`/requisitos/${id}/`)
+                    .then((response) => {
+                        relatedRequirements.push(response.data);
+                    })
+                    .catch((error) => {
+                        toast.error("Houve um erro");
+                    });
+            });
 
-        setNewRequirementRelatedData({
-            requirements: [relatedRequirements],
-            artefacts: [],
-        });
-    }, []);
+            const relatedArtefacts: Array<ArtefactDataType> = [];
+            artefactsIds.map(async (id) => {
+                await api
+                    .get(`/artefatos/${id}/`)
+                    .then((response) => {
+                        relatedArtefacts.push(response.data);
+                    })
+                    .catch((error) => {
+                        toast.error("Houve um erro");
+                    });
+            });
+
+            setNewRequirementRelatedData({
+                requirements: [relatedRequirements],
+                artefacts: [relatedArtefacts],
+            });
+        },
+        []
+    );
 
     const toggleIsModalOpen = () => {
         setIsOpen();
@@ -168,7 +184,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     useEffect(() => {
         if (data) {
             getRelatedRequirements(data.requisito_mudanca);
-            getNewRequirementRelated(data.new_req.requirements);
+            getNewRequirementRelated(data.new_req.requirements, data.new_req.artefacts);
         }
     }, [data, getRelatedRequirements, getNewRequirementRelated]);
 
@@ -447,7 +463,13 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                 </ElementList>
                                 <ElementList>
                                     <div className="attribute">Artefatos Relacionados:</div>
-                                    <div className="values_row">*FAZER REQUISIÇÃO*</div>
+                                    <div className="values_row">
+                                        {newRequirementRelatedData.artefacts.map((artefact) => {
+                                            return artefact.map((art, index) => {
+                                                return <Tag key={index}>{art.name}</Tag>;
+                                            });
+                                        })}
+                                    </div>
                                 </ElementList>
                             </RowTwo>
                             <RowOne>
