@@ -4,6 +4,7 @@ import { Divider, Tooltip } from "@chakra-ui/react";
 import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
+import ModalAccepted from "./ModalAccepted";
 
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -55,7 +56,7 @@ type NewRequirementType = {
     version: string;
 };
 
-type ChangeDataType = {
+export type ChangeDataType = {
     id: number;
     title: string;
     reason: string;
@@ -66,6 +67,18 @@ type ChangeDataType = {
     new_req: NewRequirementType;
     requestor: string;
     status: string;
+    data_planejada:
+        | {
+              data_inicio: string;
+              data_final: string;
+          }
+        | JSON;
+    data_realizada:
+        | {
+              data_inicio: string;
+              data_final: string;
+          }
+        | JSON;
     requisito_mudanca: number;
 };
 
@@ -87,6 +100,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     const [newRequirementRelatedData, setNewRequirementRelatedData] = useState<RelatedDataType>(
         {} as RelatedDataType
     );
+    const [isModalAcceptedOpen, setIsModalAcceptedOpen] = useState(false);
 
     const getChange = useCallback(async () => {
         await api
@@ -154,44 +168,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
         []
     );
 
-    const toggleIsModalOpen = () => {
-        setIsOpen();
-    };
-
-    const ChangeStatus = useCallback(
-        async (requirementId: number, choice: string) => {
-            // const dataModified = {
-            //     progrecao: data && data.progrecao,
-            //     reason: data && data.reason,
-            //     status: choice,
-            // };
-            // await api
-            //     .put(`/pedido_mudanca/${requirementId}/`, dataModified)
-            //     .then((response) => {
-            //         console.log("Response", response.data);
-            //         toast.success("Status atualizado com sucesso!");
-            //         setIsOpen();
-            //         reloadData();
-            //     })
-            //     .catch((error) => {
-            //         console.log("Erro", error);
-            //         toast.error("Houve um erro");
-            //     });
-        },
-        [data]
-    );
-
-    useEffect(() => {
-        if (data) {
-            getRelatedRequirements(data.requisito_mudanca);
-            getNewRequirementRelated(data.new_req.requirements, data.new_req.artefacts);
-        }
-    }, [data, getRelatedRequirements, getNewRequirementRelated]);
-
-    useEffect(() => {
-        getChange();
-    }, [getChange]);
-
     const toggleSolicitationTab = () => {
         setIsSolicitationTab(true);
         setIsRequirementTab(false);
@@ -209,6 +185,52 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
         setIsRequirementTab(false);
         setIsNewRequirementTab(true);
     };
+
+    const toggleIsModalOpen = () => {
+        setIsOpen();
+    };
+
+    const toggleModalAcceptedOpen = () => {
+        setIsModalAcceptedOpen((prevState) => !prevState);
+    };
+
+    const handleSolicitationAccepted = () => {
+        toggleIsModalOpen();
+        toggleModalAcceptedOpen();
+        reloadData();
+    };
+
+    const ChangeStatusChoice = useCallback(
+        async (requirementId: number, choice: string) => {
+            const dataModified = {
+                reason: data && data.reason,
+                status: choice,
+            };
+
+            // await api
+            //     .put(`/pedido_mudanca/${requirementId}/`, dataModified)
+            //     .then((response) => {
+            //         toast.success("Status atualizado com sucesso!");
+            //         setIsOpen();
+            //         reloadData();
+            //     })
+            //     .catch((error) => {
+            //         toast.error("Houve um erro");
+            //     });
+        },
+        [data]
+    );
+
+    useEffect(() => {
+        if (data) {
+            getRelatedRequirements(data.requisito_mudanca);
+            getNewRequirementRelated(data.new_req.requirements, data.new_req.artefacts);
+        }
+    }, [data, getRelatedRequirements, getNewRequirementRelated]);
+
+    useEffect(() => {
+        getChange();
+    }, [getChange]);
 
     return (
         <Background>
@@ -482,12 +504,12 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                     </Content>
                 )}
                 <Footer>
-                    {data?.status === "AN" && (
+                    {data && data.status === "AN" && (
                         <>
                             <button
                                 className="btn_footer"
                                 id="btn_accept"
-                                onClick={() => ChangeStatus(data?.id, "ING")}
+                                onClick={() => toggleModalAcceptedOpen()}
                             >
                                 <FaCheck className="icon_btn" />
                                 ACEITAR
@@ -495,13 +517,13 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                             <button
                                 className="btn_footer"
                                 id="btn_reject"
-                                onClick={() => ChangeStatus(data?.id, "RJ")}
+                                onClick={() => ChangeStatusChoice(data.id, "RJ")}
                             >
                                 <IoCloseCircleSharp className="icon_btn" /> REJEITAR
                             </button>
                         </>
                     )}
-                    {data?.status === "ING" && (
+                    {/* {data?.status === "ING" && (
                         <>
                             <button
                                 className="btn_footer"
@@ -515,27 +537,31 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                     )}
                     {data?.status === "VE" && (
                         <>
-                            <>
-                                <button
-                                    className="btn_footer"
-                                    id="btn_imp"
-                                    onClick={() => ChangeStatus(data?.id, "D")}
-                                >
-                                    <FaCheck className="icon_btn" /> IMPLEMENTAÇÃO COMPLETA
-                                </button>
-                                <button
-                                    className="btn_footer"
-                                    id="btn_reject"
-                                    onClick={() => ChangeStatus(data?.id, "ING")}
-                                >
-                                    <IoCloseCircleSharp className="icon_btn" /> IMPLEMENTAÇÃO
-                                    INCOMPLETA
-                                </button>
-                            </>
+                            <button
+                                className="btn_footer"
+                                id="btn_imp"
+                                onClick={() => ChangeStatus(data?.id, "D")}
+                            >
+                                <FaCheck className="icon_btn" /> IMPLEMENTAÇÃO COMPLETA
+                            </button>
+                            <button
+                                className="btn_footer"
+                                id="btn_reject"
+                                onClick={() => ChangeStatus(data?.id, "ING")}
+                            >
+                                <IoCloseCircleSharp className="icon_btn" /> IMPLEMENTAÇÃO INCOMPLETA
+                            </button>
                         </>
-                    )}
+                    )} */}
                 </Footer>
             </Container>
+            {isModalAcceptedOpen && (
+                <ModalAccepted
+                    solicitationData={data}
+                    setIsOpen={toggleModalAcceptedOpen}
+                    setIsConcluded={handleSolicitationAccepted}
+                />
+            )}
         </Background>
     );
 };
