@@ -14,7 +14,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { RequirementsDataType } from "../../../Requirements";
 import { ArtefactDataType } from "../../../Artefacts";
 import { formatDate } from "../../../../util/app.util";
-import { StatusKinds } from "../../../../util/Enums";
+import { ChangesStatusEnum, StatusKinds } from "../../../../util/Enums";
 
 import {
     Background,
@@ -200,25 +200,26 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
         reloadData();
     };
 
-    const ChangeStatusChoice = useCallback(
-        async (requirementId: number, choice: string) => {
+    const ChangeStatus = useCallback(
+        async (changeId: number, status: string) => {
             const dataModified = {
                 reason: data && data.reason,
-                status: choice,
+                status: status,
+                requisito_mudanca: data && data.requisito_mudanca,
             };
 
-            // await api
-            //     .put(`/pedido_mudanca/${requirementId}/`, dataModified)
-            //     .then((response) => {
-            //         toast.success("Status atualizado com sucesso!");
-            //         setIsOpen();
-            //         reloadData();
-            //     })
-            //     .catch((error) => {
-            //         toast.error("Houve um erro");
-            //     });
+            await api
+                .put(`/pedido_mudanca/${changeId}/`, dataModified)
+                .then((response) => {
+                    toast.success("Status atualizado com sucesso!");
+                    setIsOpen();
+                    reloadData();
+                })
+                .catch((error) => {
+                    toast.error("Houve um erro");
+                });
         },
-        [data]
+        [data, reloadData, setIsOpen]
     );
 
     useEffect(() => {
@@ -504,7 +505,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                     </Content>
                 )}
                 <Footer>
-                    {data && data.status === "AN" && (
+                    {data && data.status === ChangesStatusEnum.analisando && (
                         <>
                             <button
                                 className="btn_footer"
@@ -517,42 +518,58 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                             <button
                                 className="btn_footer"
                                 id="btn_reject"
-                                onClick={() => ChangeStatusChoice(data.id, "RJ")}
+                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.rejeitado)}
                             >
                                 <IoCloseCircleSharp className="icon_btn" /> REJEITAR
                             </button>
                         </>
                     )}
-                    {/* {data?.status === "ING" && (
+                    {data && data.status === ChangesStatusEnum.aprovado && (
+                        <>
+                            <button
+                                className="btn_footer"
+                                id="btn_accept"
+                                onClick={() =>
+                                    ChangeStatus(data.id, ChangesStatusEnum.implementando)
+                                }
+                            >
+                                <FaCheck className="icon_btn" />
+                                IMPLEMENTAR
+                            </button>
+                        </>
+                    )}
+                    {data && data.status === ChangesStatusEnum.implementando && (
                         <>
                             <button
                                 className="btn_footer"
                                 id="btn_imp"
-                                onClick={() => ChangeStatus(data?.id, "VE")}
+                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.verificando)}
                             >
                                 <FaCheck className="icon_btn" />
                                 IMPLEMENTADO
                             </button>
                         </>
                     )}
-                    {data?.status === "VE" && (
+                    {data && data.status === ChangesStatusEnum.verificando && (
                         <>
                             <button
                                 className="btn_footer"
                                 id="btn_imp"
-                                onClick={() => ChangeStatus(data?.id, "D")}
+                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.finalizado)}
                             >
                                 <FaCheck className="icon_btn" /> IMPLEMENTAÇÃO COMPLETA
                             </button>
                             <button
                                 className="btn_footer"
                                 id="btn_reject"
-                                onClick={() => ChangeStatus(data?.id, "ING")}
+                                onClick={() =>
+                                    ChangeStatus(data.id, ChangesStatusEnum.implementando)
+                                }
                             >
                                 <IoCloseCircleSharp className="icon_btn" /> IMPLEMENTAÇÃO INCOMPLETA
                             </button>
                         </>
-                    )} */}
+                    )}
                 </Footer>
             </Container>
             {isModalAcceptedOpen && (

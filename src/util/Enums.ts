@@ -4,11 +4,11 @@ export enum StatusKinds {
 }
 
 export enum ChangesStatusEnum {
-    analise = "AN",
+    analisando = "AN",
     aprovado = "APR",
     rejeitado = "RJ",
     bloqueado = "PR",
-    emImplementação = "ING",
+    implementando = "ING",
     implementado = "IED",
     verificando = "VE",
     finalizado = "D",
