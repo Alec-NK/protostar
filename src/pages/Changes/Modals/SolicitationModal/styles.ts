@@ -172,7 +172,7 @@ export const Footer = styled.div`
     flex-direction: row;
     justify-content: end;
     padding: 20px;
-    border-top: solid 3px rgba(242, 242, 242, 1);
+    border-top: solid 1px rgba(242, 242, 242, 1);
 
     button {
         display: flex;
