@@ -9,6 +9,7 @@ import AnalysisModal from "./Modals/AnalysisModal";
 
 import { BsPlusLg } from "react-icons/bs";
 
+import { ChangesStatusEnum } from "../../util/Enums";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
@@ -38,7 +39,11 @@ const Changes = () => {
         await api
             .get(`/pedido_mudanca/`)
             .then((response) => {
-                setData(response.data);
+                const changes = response.data.filter((change: ChangesDataType) => {
+                    return change.status !== ChangesStatusEnum.analisando;
+                });
+
+                setData(changes);
             })
             .catch((error) => {
                 toast.error("Houve um erro");
@@ -82,7 +87,7 @@ const Changes = () => {
                 <HeaderTable>
                     <div>ID</div>
                     <div>Data Solicitação</div>
-                    <div>Titulo</div>
+                    <div>Título</div>
                     <div>Solicitante</div>
                     <div>Responsável</div>
                     <div style={{ textAlign: "center" }}>Status</div>

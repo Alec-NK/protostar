@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import { Divider, Tooltip } from "@chakra-ui/react";
+import { Tooltip } from "@chakra-ui/react";
 import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
-import ModalAccepted from "./ModalAccepted";
 
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -100,7 +99,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     const [newRequirementRelatedData, setNewRequirementRelatedData] = useState<RelatedDataType>(
         {} as RelatedDataType
     );
-    const [isModalAcceptedOpen, setIsModalAcceptedOpen] = useState(false);
 
     const getChange = useCallback(async () => {
         await api
@@ -188,16 +186,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
 
     const toggleIsModalOpen = () => {
         setIsOpen();
-    };
-
-    const toggleModalAcceptedOpen = () => {
-        setIsModalAcceptedOpen((prevState) => !prevState);
-    };
-
-    const handleSolicitationAccepted = () => {
-        toggleIsModalOpen();
-        toggleModalAcceptedOpen();
-        reloadData();
     };
 
     const ChangeStatus = useCallback(
@@ -505,25 +493,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                     </Content>
                 )}
                 <Footer>
-                    {data && data.status === ChangesStatusEnum.analisando && (
-                        <>
-                            <button
-                                className="btn_footer"
-                                id="btn_accept"
-                                onClick={() => toggleModalAcceptedOpen()}
-                            >
-                                <FaCheck className="icon_btn" />
-                                ACEITAR
-                            </button>
-                            <button
-                                className="btn_footer"
-                                id="btn_reject"
-                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.rejeitado)}
-                            >
-                                <IoCloseCircleSharp className="icon_btn" /> REJEITAR
-                            </button>
-                        </>
-                    )}
                     {data && data.status === ChangesStatusEnum.aprovado && (
                         <>
                             <button
@@ -572,13 +541,6 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                     )}
                 </Footer>
             </Container>
-            {isModalAcceptedOpen && (
-                <ModalAccepted
-                    solicitationData={data}
-                    setIsOpen={toggleModalAcceptedOpen}
-                    setIsConcluded={handleSolicitationAccepted}
-                />
-            )}
         </Background>
     );
 };
