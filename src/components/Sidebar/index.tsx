@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { FaList } from "react-icons/fa";
 import { IoMdHome, IoMdFolder } from "react-icons/io";
-import { MdPublishedWithChanges, MdOutlineExitToApp } from "react-icons/md";
+import { MdPublishedWithChanges, MdOutlineExitToApp, MdOutlineSpeakerNotes } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
 import { AuthContext } from "../../contexts/AuthContext";
@@ -39,11 +39,12 @@ const Sidebar = () => {
             icon: <MdPublishedWithChanges />,
             permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
         },
-        // {
-        //     path: "/solicitacoes",
-        //     name: "Solicitações",
-        //     icon: <MdPublishedWithChanges />,
-        // },
+        {
+            path: "/solicitacoes",
+            name: "Solicitações",
+            icon: <MdOutlineSpeakerNotes />,
+            permissions: ["MEMBRO_COMITE", "ADMINISTRADOR"],
+        },
     ];
 
     const logOut = useCallback(async () => {
