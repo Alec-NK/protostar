@@ -5,7 +5,7 @@ import api from "../../services/api";
 import Button from "../../components/Button";
 import ItemChangeTable from "./ItemChangeTable";
 import SolicitationModal from "./Modals/SolicitationModal";
-import AnalysisModal from "./Modals/AnalysisModal";
+import InformationModal from "./Modals/InformationModal";
 
 import { BsPlusLg } from "react-icons/bs";
 
@@ -113,7 +113,7 @@ const Changes = () => {
                 />
             )}
             {isModalAnalysisOpen && (
-                <AnalysisModal
+                <InformationModal
                     changeId={changeId}
                     setIsOpen={toggleAnalysisModal}
                     reloadData={handleReloadPage}

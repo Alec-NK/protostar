@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-toastify";
-import { Tooltip } from "@chakra-ui/react";
+import { Divider, Tooltip } from "@chakra-ui/react";
 import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
@@ -22,6 +22,7 @@ import {
     CloseButton,
     Container,
     Content,
+    DateItems,
     Element,
     ElementList,
     Footer,
@@ -66,18 +67,16 @@ export type ChangeDataType = {
     new_req: NewRequirementType;
     requestor: string;
     status: string;
-    data_planejada:
-        | {
-              data_inicio: string;
-              data_final: string;
-          }
-        | JSON;
-    data_realizada:
-        | {
-              data_inicio: string;
-              data_final: string;
-          }
-        | JSON;
+    change: string;
+    impact: string;
+    data_planejada: {
+        data_inicio: string;
+        data_final: string;
+    };
+    data_realizada: {
+        data_inicio: string;
+        data_final: string;
+    };
     requisito_mudanca: number;
 };
 
@@ -86,7 +85,7 @@ type RelatedDataType = {
     artefacts: ArtefactDataType[][];
 };
 
-const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
+const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     const [isSolicitationTab, setIsSolicitationTab] = useState(true);
     const [isRequirementTab, setIsRequirementTab] = useState(false);
     const [isNewRequirementTab, setIsNewRequirementTab] = useState(false);
@@ -254,32 +253,24 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                 <span>DETALHES DA SOLICITAÇÃO</span>
                             </Caption>
                             <Title>
-                                <h3>{`Mudança ${
-                                    data && data.id < 10 ? `0${data?.id}` : data?.id
-                                } - ${data?.title}`}</h3>
+                                <h3>{`${data?.data_pedido && formatDate(data.data_pedido)} - ${
+                                    data?.title
+                                }`}</h3>
+                                <Status
+                                    status={data && data.status ? data.status : "PR"}
+                                    type={StatusKinds.changes}
+                                />
                             </Title>
 
-                            <RowTwo>
+                            <RowOne>
                                 <Element>
                                     <div className="attribute">
                                         O motivo e a descrição da mudança:
                                     </div>
                                     <div className="value_info">{data?.reason}</div>
                                 </Element>
-                                <Element>
-                                    <div className="attribute">Stakeholders relacionados:</div>
-                                    <div className="value_info">*FAZER REQUISIÇÃO*</div>
-                                </Element>
-                            </RowTwo>
-                            <RowThree>
-                                <Element>
-                                    <div className="attribute">Data da solicitação:</div>
-                                    <div className="value_info">
-                                        {data && data.data_pedido
-                                            ? formatDate(data.data_pedido)
-                                            : ""}
-                                    </div>
-                                </Element>
+                            </RowOne>
+                            <RowFour>
                                 <Element>
                                     <div className="attribute">Solicitante:</div>
                                     <div className="value_info">{data?.requestor}</div>
@@ -288,7 +279,59 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                     <div className="attribute">Responsável:</div>
                                     <div className="value_info">{data?.accountable}</div>
                                 </Element>
-                            </RowThree>
+                                <Element>
+                                    <div className="attribute">Impacto:</div>
+                                    <div className="value_info">{data?.impact}</div>
+                                </Element>
+                                <Element>
+                                    <div className="attribute">Tamanho da mudança:</div>
+                                    <div className="value_info">{data?.change}</div>
+                                </Element>
+                            </RowFour>
+                            <RowTwo>
+                                <DateItems>
+                                    <div className="subheading">DATA PLANEJADA</div>
+                                    <div className="dates">
+                                        <div className="items">
+                                            <div className="attribute">Data início:</div>
+                                            <div className="value">
+                                                {data?.data_planejada &&
+                                                    data?.data_planejada.data_inicio &&
+                                                    formatDate(data?.data_planejada.data_inicio)}
+                                            </div>
+                                        </div>
+                                        <div className="items">
+                                            <div className="attribute">Data final:</div>
+                                            <div className="value">
+                                                {data?.data_planejada &&
+                                                    data.data_planejada.data_final &&
+                                                    formatDate(data.data_planejada.data_final)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DateItems>
+                                <DateItems>
+                                    <div className="subheading">DATA REALIZADA</div>
+                                    <div className="dates">
+                                        <div className="items">
+                                            <div className="attribute">Data início:</div>
+                                            <div className="value">
+                                                {data?.data_realizada &&
+                                                    data?.data_realizada.data_inicio &&
+                                                    formatDate(data?.data_realizada.data_inicio)}
+                                            </div>
+                                        </div>
+                                        <div className="items">
+                                            <div className="attribute">Data final:</div>
+                                            <div className="value">
+                                                {data?.data_realizada &&
+                                                    data?.data_realizada.data_final &&
+                                                    formatDate(data?.data_realizada.data_final)}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </DateItems>
+                            </RowTwo>
                         </Section>
                     </Content>
                 )}
@@ -549,4 +592,4 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
     );
 };
 
-export default AnalysisModal;
+export default InformationModal;

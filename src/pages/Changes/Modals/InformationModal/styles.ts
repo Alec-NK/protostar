@@ -48,7 +48,6 @@ export const ModalHeader = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px 15px 20px;
-    /* border-bottom: solid 1px rgba(242, 242, 242, 1); */
     color: #1a1a1a;
 
     h2 {
@@ -93,6 +92,9 @@ export const Content = styled.div`
 `;
 
 export const Title = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     margin-top: 2rem;
     margin-bottom: 2rem;
     width: 100%;
@@ -100,6 +102,7 @@ export const Title = styled.div`
     h3 {
         font-size: 20px;
         font-weight: 700;
+        margin-right: 10px;
     }
 `;
 
@@ -109,7 +112,6 @@ export const Caption = styled.div`
     align-items: center;
     margin-bottom: 2rem;
     color: ${(props) => props.theme.grey};
-    /* color: #b3b3b3; */
 
     span {
         font-family: "Montserrat", sans-serif;
@@ -178,6 +180,40 @@ export const ElementList = styled.div`
         div {
             margin-bottom: 5px;
         }
+    }
+`;
+
+export const DateItems = styled.div`
+    .subheading {
+        margin-bottom: 10px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        /* color: #b3b3b3; */
+        margin-right: 20px;
+        /* color: ${(props) => props.theme.grey}; */
+    }
+
+    .dates {
+        border-left: solid 2px orange;
+        padding: 0 0 0 10px;
+    }
+
+    .items {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 5px;
+        /* background-color: red; */
+    }
+
+    .attribute {
+        font-weight: bold;
+        color: ${(props) => props.theme.grey};
+        margin-right: 10px;
+    }
+
+    .value {
+        color: #b3b3b3;
     }
 `;
 
