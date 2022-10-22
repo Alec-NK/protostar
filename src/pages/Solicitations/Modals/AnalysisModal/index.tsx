@@ -122,7 +122,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
             });
     }, [changeId]);
 
-    const getRelatedRequirements = useCallback(async (requirementId: number) => {
+    const getRequirementRelateds = useCallback(async (requirementId: number) => {
         await api
             .post(`/related_requirements/`, { id: requirementId })
             .then((response) => {
@@ -136,7 +136,7 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
             });
     }, []);
 
-    const getNewRequirementRelated = useCallback(
+    const getNewRequirementRelateds = useCallback(
         async (requirementsIds: number[], artefactsIds: number[]) => {
             const relatedRequirements: Array<RequirementsDataType> = [];
             requirementsIds.map(async (id) => {
@@ -146,7 +146,9 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                         relatedRequirements.push(response.data);
                     })
                     .catch((error) => {
-                        toast.error("Houve um erro");
+                        if (error.response.status !== 404) {
+                            toast.error("Houve um erro");
+                        }
                     });
             });
 
@@ -158,7 +160,9 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                         relatedArtefacts.push(response.data);
                     })
                     .catch((error) => {
-                        toast.error("Houve um erro");
+                        if (error.response.status !== 404) {
+                            toast.error("Houve um erro");
+                        }
                     });
             });
 
@@ -236,10 +240,10 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
 
     useEffect(() => {
         if (data) {
-            getRelatedRequirements(data.requisito_mudanca);
-            getNewRequirementRelated(data.new_req.requirements, data.new_req.artefacts);
+            getRequirementRelateds(data.requisito_mudanca);
+            getNewRequirementRelateds(data.new_req.requirements, data.new_req.artefacts);
         }
-    }, [data, getRelatedRequirements, getNewRequirementRelated]);
+    }, [data, getRequirementRelateds, getNewRequirementRelateds]);
 
     useEffect(() => {
         getChange();
@@ -279,18 +283,14 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                                 } - ${data?.title}`}</h3>
                             </Title>
 
-                            <RowTwo>
+                            <RowOne>
                                 <Element>
                                     <div className="attribute">
                                         O motivo e a descrição da mudança:
                                     </div>
                                     <div className="value_info">{data?.reason}</div>
                                 </Element>
-                                <Element>
-                                    <div className="attribute">Stakeholders relacionados:</div>
-                                    <div className="value_info">*FAZER REQUISIÇÃO*</div>
-                                </Element>
-                            </RowTwo>
+                            </RowOne>
                             <RowThree>
                                 <Element>
                                     <div className="attribute">Data da solicitação:</div>

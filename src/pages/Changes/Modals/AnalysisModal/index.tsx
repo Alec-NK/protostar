@@ -142,7 +142,9 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                         relatedRequirements.push(response.data);
                     })
                     .catch((error) => {
-                        toast.error("Houve um erro");
+                        if (error.response.status !== 404) {
+                            toast.error("Houve um erro");
+                        }
                     });
             });
 
@@ -154,7 +156,9 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                         relatedArtefacts.push(response.data);
                     })
                     .catch((error) => {
-                        toast.error("Houve um erro");
+                        if (error.response.status !== 404) {
+                            toast.error("Houve um erro");
+                        }
                     });
             });
 
