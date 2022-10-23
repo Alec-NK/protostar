@@ -221,7 +221,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 <Input
                                     type="text"
                                     id="descricao"
-                                    placeholder="Ex: Cadastro de requisito"
+                                    placeholder="Ex: O sistema deverá..."
                                     {...register("description")}
                                     focusBorderColor="#fab039"
                                 />
