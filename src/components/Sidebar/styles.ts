@@ -74,34 +74,6 @@ export const SideItem = styled.div<SideItemsProps>`
     }
 `;
 
-export const ButtonLogOut = styled.button`
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 5px;
-    border-radius: 5px;
-    text-align: center;
-    color: #616060;
-    transition: 0.2s;
-    font-family: "Maven Pro", sans-serif;
-    font-weight: 500;
-    font-size: 15px;
-
-    &:hover {
-        background-color: #404040;
-        transition: 0.2s;
-    }
-
-    .btn_icon {
-        display: flex;
-        margin-right: 15px;
-        padding: 0;
-    }
-`;
-
 export const ButtonProject = styled.button`
     display: flex;
     flex-direction: row;

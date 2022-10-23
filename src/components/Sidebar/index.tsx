@@ -3,12 +3,12 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { FaList } from "react-icons/fa";
 import { IoMdHome, IoMdFolder } from "react-icons/io";
-import { MdPublishedWithChanges, MdOutlineExitToApp, MdOutlineSpeakerNotes } from "react-icons/md";
+import { MdPublishedWithChanges, MdOutlineSpeakerNotes } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
 import { AuthContext } from "../../contexts/AuthContext";
 
-import { ButtonLogOut, Container, SideItem, ButtonProject } from "./styles";
+import { Container, SideItem, ButtonProject } from "./styles";
 
 const Sidebar = () => {
     const { signOut, authorization } = useContext(AuthContext);
@@ -83,12 +83,6 @@ const Sidebar = () => {
                     return <></>;
                 })}
             </div>
-            <ButtonLogOut onClick={logOut}>
-                <div className="btn_icon">
-                    <MdOutlineExitToApp />
-                </div>
-                <div className="btn_text">Sair</div>
-            </ButtonLogOut>
         </Container>
     );
 };
