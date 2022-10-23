@@ -58,7 +58,7 @@ export const ChangeStatusInfos = [
     },
     {
         id: "PR",
-        label: "BLOQUEADO",
+        label: "PRIORIZANDO",
         textColor: "#505F79",
         backColor: "#C1C7D0",
     },

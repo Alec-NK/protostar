@@ -7,7 +7,7 @@ export enum ChangesStatusEnum {
     analisando = "AN",
     aprovado = "APR",
     rejeitado = "RJ",
-    bloqueado = "PR",
+    priorizando = "PR",
     implementando = "ING",
     implementado = "IED",
     verificando = "VE",

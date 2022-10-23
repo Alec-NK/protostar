@@ -22,7 +22,7 @@ export const ChangesTypes = [
     { value: "AN", label: "Em análise" },
     { value: "APR", label: "Aprovado" },
     { value: "RJ", label: "Rejeitado" },
-    { value: "PR", label: "Bloqueado" },
+    { value: "PR", label: "Priorizando" },
     { value: "ING", label: "Em implementação" },
     { value: "IED", label: "Implementado" },
     { value: "VE", label: "Verificando" },
