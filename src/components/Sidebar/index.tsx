@@ -6,6 +6,7 @@ import { IoMdHome, IoMdFolder } from "react-icons/io";
 import { MdPublishedWithChanges, MdOutlineSpeakerNotes } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
+import { UserFunctionEnum } from "../../util/Enums";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import { Container, SideItem, ButtonProject } from "./styles";
@@ -19,31 +20,47 @@ const Sidebar = () => {
             path: "/inicio",
             name: "Início",
             icon: <IoMdHome />,
-            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: [
+                UserFunctionEnum.usuario,
+                UserFunctionEnum.comite,
+                UserFunctionEnum.proprietario,
+            ],
         },
         {
             path: "/artefatos",
             name: "Artefatos",
             icon: <HiOutlineDocumentDuplicate />,
-            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: [
+                UserFunctionEnum.usuario,
+                UserFunctionEnum.comite,
+                UserFunctionEnum.proprietario,
+            ],
         },
         {
             path: "/requisitos",
             name: "Requisitos",
             icon: <FaList />,
-            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: [
+                UserFunctionEnum.usuario,
+                UserFunctionEnum.comite,
+                UserFunctionEnum.proprietario,
+            ],
         },
         {
             path: "/mudancas",
             name: "Mudanças",
             icon: <MdPublishedWithChanges />,
-            permissions: ["USUARIO_PADRAO", "MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: [
+                UserFunctionEnum.usuario,
+                UserFunctionEnum.comite,
+                UserFunctionEnum.proprietario,
+            ],
         },
         {
             path: "/solicitacoes",
             name: "Solicitações",
             icon: <MdOutlineSpeakerNotes />,
-            permissions: ["MEMBRO_COMITE", "ADMINISTRADOR"],
+            permissions: [UserFunctionEnum.comite, UserFunctionEnum.proprietario],
         },
     ];
 

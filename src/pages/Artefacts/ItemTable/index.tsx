@@ -5,6 +5,7 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { FaRegTrashAlt } from "react-icons/fa";
 
+import { UserFunctionEnum } from "../../../util/Enums";
 import { AuthContext } from "../../../contexts/AuthContext";
 
 import { ArtefactDataType } from "..";
@@ -33,7 +34,7 @@ const ItemTable = ({ data, openInfoModal, id, openEditModal, openDeleteModal }: 
                         <AiOutlineEye />
                     </button>
                 </Tooltip>
-                {authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) && (
+                {authorization([UserFunctionEnum.comite, UserFunctionEnum.proprietario]) && (
                     <>
                         <Tooltip label="Editar" placement="top" bg="grey">
                             <button onClick={openEditModal}>

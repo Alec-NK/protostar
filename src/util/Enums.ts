@@ -17,5 +17,5 @@ export enum ChangesStatusEnum {
 export enum UserFunctionEnum {
     usuario = "USUARIO_PADRAO",
     comite = "MEMBRO_COMITE",
-    administrador = "ADMINISTRADOR",
+    proprietario = "PROPRIETARIO",
 }

@@ -11,7 +11,7 @@ import { AuthContext } from "../../../contexts/AuthContext";
 
 import { RequirementsDataType } from "..";
 import { formatDate } from "../../../util/app.util";
-import { StatusKinds } from "../../../util/Enums";
+import { StatusKinds, UserFunctionEnum } from "../../../util/Enums";
 
 import { Container } from "./styles";
 
@@ -49,7 +49,7 @@ const ItemTable = ({ data, openInfoModal, id, openEditModal }: ItemTableProps) =
                         <AiOutlineEye />
                     </button>
                 </Tooltip>
-                {authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) && (
+                {authorization([UserFunctionEnum.comite, UserFunctionEnum.proprietario]) && (
                     <>
                         <Tooltip label="Editar" placement="top" bg="grey">
                             <button onClick={openEditModal}>

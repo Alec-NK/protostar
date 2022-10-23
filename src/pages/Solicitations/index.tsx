@@ -7,7 +7,7 @@ import ItemChangeTable from "./ItemsSolicitationTable";
 import AnalysisModal from "./Modals/AnalysisModal";
 
 import { ChangesDataType } from "../Changes";
-import { ChangesStatusEnum } from "../../util/Enums";
+import { ChangesStatusEnum, UserFunctionEnum } from "../../util/Enums";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
 
@@ -49,7 +49,7 @@ const Solicitations = () => {
         getChanges();
     }, [getChanges]);
 
-    return authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) ? (
+    return authorization([UserFunctionEnum.comite, UserFunctionEnum.proprietario]) ? (
         <Container>
             <Header>
                 <h1>SOLICITAÇÕES</h1>

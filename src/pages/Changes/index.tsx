@@ -9,7 +9,7 @@ import InformationModal from "./Modals/InformationModal";
 
 import { BsPlusLg } from "react-icons/bs";
 
-import { ChangesStatusEnum } from "../../util/Enums";
+import { ChangesStatusEnum, UserFunctionEnum } from "../../util/Enums";
 import { AuthContext } from "../../contexts/AuthContext";
 
 import { Container, ContentTable, Header, HeaderTable, TableList } from "./styles";
@@ -75,7 +75,7 @@ const Changes = () => {
         <Container>
             <Header>
                 <h1>MUDANÇAS</h1>
-                {authorization(["MEMBRO_COMITE", "ADMINISTRADOR"]) && (
+                {authorization([UserFunctionEnum.comite, UserFunctionEnum.proprietario]) && (
                     <Button
                         text="SOLICITAR MUDANÇA"
                         icon={<BsPlusLg />}

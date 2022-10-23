@@ -1,7 +1,7 @@
 export const UserFunctionTypes = [
     { value: "USUARIO_PADRAO", label: "Usuario padrao" },
     { value: "MEMBRO_COMITE", label: "Membro do comitê" },
-    { value: "ADMINISTRADOR", label: "Administrador" },
+    { value: "PROPRIETARIO", label: "Proprietário" },
 ];
 
 export const RequirementStatusTypes = [
