@@ -106,7 +106,11 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
 
     const getRequirements = async () => {
         const response = await api.get(`/requisitos/`);
-        const options = await response.data.map((req: any) => ({
+        const activeRequirements = response.data.filter((requirement: RequirementsDataType) => {
+            return requirement.active;
+        });
+
+        const options = await activeRequirements.map((req: any) => ({
             value: req.id,
             label: req.title,
         }));

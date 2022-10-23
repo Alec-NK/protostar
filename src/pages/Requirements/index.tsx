@@ -24,6 +24,7 @@ export type RequirementsDataType = {
     id: number;
     title: string;
     type: string;
+    active: boolean;
     stake_holders: {
         stakeholders: string;
     };
@@ -56,7 +57,12 @@ const Requirements = () => {
         await api
             .get("/requisitos/")
             .then((response) => {
-                setData(response.data);
+                const activeRequirements = response.data.filter(
+                    (requirement: RequirementsDataType) => {
+                        return requirement.active;
+                    }
+                );
+                setData(activeRequirements);
             })
             .catch((error) => {
                 toast.error("Houve um erro");

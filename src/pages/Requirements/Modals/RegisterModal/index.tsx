@@ -10,6 +10,8 @@ import AsyncSelect from "react-select/async";
 
 import { AuthContext } from "../../../../contexts/AuthContext";
 import { RequirementsTypes, RequirementStatusTypes } from "../../../../util/Types";
+import { RequirementsDataType } from "../..";
+
 import api from "../../../../services/api";
 
 import {
@@ -107,7 +109,11 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
 
     const getRequirements = async () => {
         const response = await api.get(`/requisitos/`);
-        const options = await response.data.map((req: any) => ({
+        const activeRequirements = response.data.filter((requirement: RequirementsDataType) => {
+            return requirement.active;
+        });
+
+        const options = await activeRequirements.map((req: any) => ({
             value: req.id,
             label: req.title,
         }));
@@ -147,6 +153,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
 
         const newData = {
             title: data.title,
+            active: true,
             description: data.description,
             type: data.type.value === undefined ? selectedTypeOption.value : data.type.value,
             status:
