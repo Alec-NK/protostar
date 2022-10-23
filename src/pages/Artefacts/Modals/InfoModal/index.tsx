@@ -42,27 +42,13 @@ const InfoModal = ({ artefactData, setIsOpen }: InfoModalProps) => {
                     <RowTwo>
                         <Element>
                             <div className="attribute">Descrição:</div>
-                            <div className="value_info">*FAZER REQUISIÇÃO*</div>
+                            <div className="value_info">{artefactData.description}</div>
                         </Element>
                         <Element>
                             <div className="attribute">Tipo:</div>
                             <div className="value_info">{artefactData.type.label}</div>
                         </Element>
                     </RowTwo>
-                    <RowThree>
-                        {/* <Element>
-                            <div className="attribute">Atributo:</div>
-                            <div className="value_info">*FAZER REQUISIÇÃO*</div>
-                        </Element>
-                        <Element>
-                            <div className="attribute">Atributo:</div>
-                            <div className="value_info">*FAZER REQUISIÇÃO*</div>
-                        </Element>
-                        <Element>
-                            <div className="attribute">Atributo:</div>
-                            <div className="value_info">*FAZER REQUISIÇÃO*</div>
-                        </Element> */}
-                    </RowThree>
                 </Content>
                 <Footer />
             </Container>

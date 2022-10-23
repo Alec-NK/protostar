@@ -85,6 +85,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         const registerData = {
             name: data.name,
             type: selectedTypeOption?.value,
+            description: data.description,
         };
 
         await api
@@ -114,7 +115,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                 <Input
                                     type="text"
                                     id="title"
-                                    placeholder="Ex: Cadastrar requisito"
+                                    placeholder="Ex: Diagrama de classe"
                                     {...register("name")}
                                     focusBorderColor="#fab039"
                                 />
@@ -133,7 +134,7 @@ const RegisterModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                                 options={ArtefactsTypes}
                                                 onChange={(option) => handleChangeStatus(option)}
                                                 styles={customStyles}
-                                                placeholder="Selecione o tipo de arquivo"
+                                                placeholder="Selecione o tipo do artefato"
                                             />
                                         );
                                     }}

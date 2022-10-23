@@ -18,6 +18,7 @@ import { Container, ContentTable, Header, HeaderTable, TableList } from "./style
 export type ArtefactDataType = {
     id: number;
     name: string;
+    description: string | null;
     type: {
         value: string;
         label: string;

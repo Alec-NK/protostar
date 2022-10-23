@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Input } from "@chakra-ui/react";
+import { Input, Textarea } from "@chakra-ui/react";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -34,6 +34,7 @@ type Inputs = {
 const schema = yup
     .object({
         name: yup.string().required("Nome obrigatório!"),
+        description: yup.string().required("Descrição obrigatória!"),
         type: yup
             .object()
             .shape({
@@ -91,6 +92,7 @@ const EditModal = ({ artefactData, setIsOpen, reloadPage }: EditModalProps) => {
         const dataChanged = {
             name: formData.name,
             type: selectedTypeOption.value,
+            description: formData.description,
         };
 
         await api
@@ -145,17 +147,20 @@ const EditModal = ({ artefactData, setIsOpen, reloadPage }: EditModalProps) => {
                                 />
                             </div>
                         </RowTwo>
-                        {/* <RowOne>
+                        <RowOne>
                             <div className="inputContainer">
                                 <label>Descrição</label>
                                 <Textarea
                                     placeholder="Digite a descrição do artefato"
                                     {...register("description")}
+                                    defaultValue={
+                                        artefactData.description ? artefactData.description : ""
+                                    }
                                     focusBorderColor="#fab039"
                                 />
                                 <p className="error_message">{errors.description?.message}</p>
                             </div>
-                        </RowOne> */}
+                        </RowOne>
                     </form>
                 </Content>
                 <Footer>
