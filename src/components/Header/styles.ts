@@ -8,10 +8,16 @@ export const Container = styled.div`
     align-items: center;
     width: 100%;
     padding-right: 50px;
-    font-size: 25px;
     border-bottom: solid 1px #c7c7c7;
 
-    button {
-        margin-left: 20px;
+    .notification_icon {
+        font-size: 25px;
+        margin-right: 20px;
+    }
+
+    .button_logout {
+        > span {
+            margin-left: 10px;
+        }
     }
 `;
