@@ -1,9 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { Divider, Tooltip } from "@chakra-ui/react";
 import api from "../../../../services/api";
+import { AuthContext } from "../../../../contexts/AuthContext";
 
 import Status from "../../../../components/Status";
+import DateModal from "../DateModal";
 
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -13,7 +15,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { RequirementsDataType } from "../../../Requirements";
 import { ArtefactDataType } from "../../../Artefacts";
 import { formatDate } from "../../../../util/app.util";
-import { ChangesStatusEnum, StatusKinds } from "../../../../util/Enums";
+import { ChangesStatusEnum, StatusKinds, UserFunctionEnum } from "../../../../util/Enums";
 
 import {
     Background,
@@ -86,6 +88,7 @@ type RelatedDataType = {
 };
 
 const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
+    const { authorization } = useContext(AuthContext);
     const [isSolicitationTab, setIsSolicitationTab] = useState(true);
     const [isRequirementTab, setIsRequirementTab] = useState(false);
     const [isNewRequirementTab, setIsNewRequirementTab] = useState(false);
@@ -98,6 +101,7 @@ const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) =
     const [newRequirementRelatedData, setNewRequirementRelatedData] = useState<RelatedDataType>(
         {} as RelatedDataType
     );
+    const [isDateModalOpen, setIsDateModalOpen] = useState(false);
 
     const getChange = useCallback(async () => {
         await api
@@ -189,6 +193,16 @@ const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) =
 
     const toggleIsModalOpen = () => {
         setIsOpen();
+    };
+
+    const toggleIsDateModalOpen = () => {
+        setIsDateModalOpen((prevState) => !prevState);
+    };
+
+    const handleIsModalPrioritizing = () => {
+        toggleIsModalOpen();
+        toggleIsDateModalOpen();
+        reloadData();
     };
 
     const ChangeStatus = useCallback(
@@ -570,55 +584,81 @@ const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) =
                         </Section>
                     </Content>
                 )}
-                <Footer>
-                    {data && data.status === ChangesStatusEnum.aprovado && (
-                        <>
-                            <button
-                                className="btn_footer"
-                                id="btn_accept"
-                                onClick={() =>
-                                    ChangeStatus(data.id, ChangesStatusEnum.implementando)
-                                }
-                            >
-                                <FaCheck className="icon_btn" />
-                                IMPLEMENTAR
-                            </button>
-                        </>
-                    )}
-                    {data && data.status === ChangesStatusEnum.implementando && (
-                        <>
-                            <button
-                                className="btn_footer"
-                                id="btn_imp"
-                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.verificando)}
-                            >
-                                <FaCheck className="icon_btn" />
-                                IMPLEMENTADO
-                            </button>
-                        </>
-                    )}
-                    {data && data.status === ChangesStatusEnum.verificando && (
-                        <>
-                            <button
-                                className="btn_footer"
-                                id="btn_imp"
-                                onClick={() => ChangeStatus(data.id, ChangesStatusEnum.finalizado)}
-                            >
-                                <FaCheck className="icon_btn" /> IMPLEMENTAÇÃO COMPLETA
-                            </button>
-                            <button
-                                className="btn_footer"
-                                id="btn_reject"
-                                onClick={() =>
-                                    ChangeStatus(data.id, ChangesStatusEnum.implementando)
-                                }
-                            >
-                                <IoCloseCircleSharp className="icon_btn" /> IMPLEMENTAÇÃO INCOMPLETA
-                            </button>
-                        </>
-                    )}
-                </Footer>
+                {authorization([UserFunctionEnum.comite, UserFunctionEnum.proprietario]) ? (
+                    <Footer>
+                        {data && data.status === ChangesStatusEnum.priorizando && (
+                            <>
+                                <button
+                                    className="btn_footer"
+                                    id="btn_accept"
+                                    onClick={toggleIsDateModalOpen}
+                                >
+                                    <FaCheck className="icon_btn" />
+                                    PRIORIZADO
+                                </button>
+                            </>
+                        )}
+                        {data && data.status === ChangesStatusEnum.aprovado && (
+                            <>
+                                <button
+                                    className="btn_footer"
+                                    id="btn_accept"
+                                    onClick={() =>
+                                        ChangeStatus(data.id, ChangesStatusEnum.implementando)
+                                    }
+                                >
+                                    <FaCheck className="icon_btn" />
+                                    IMPLEMENTAR
+                                </button>
+                            </>
+                        )}
+                        {data && data.status === ChangesStatusEnum.implementando && (
+                            <>
+                                <button
+                                    className="btn_footer"
+                                    id="btn_imp"
+                                    onClick={() =>
+                                        ChangeStatus(data.id, ChangesStatusEnum.verificando)
+                                    }
+                                >
+                                    <FaCheck className="icon_btn" />
+                                    IMPLEMENTADO
+                                </button>
+                            </>
+                        )}
+                        {data && data.status === ChangesStatusEnum.verificando && (
+                            <>
+                                <button
+                                    className="btn_footer"
+                                    id="btn_imp"
+                                    onClick={toggleIsDateModalOpen}
+                                >
+                                    <FaCheck className="icon_btn" /> IMPLEMENTAÇÃO COMPLETA
+                                </button>
+                                <button
+                                    className="btn_footer"
+                                    id="btn_reject"
+                                    onClick={() =>
+                                        ChangeStatus(data.id, ChangesStatusEnum.implementando)
+                                    }
+                                >
+                                    <IoCloseCircleSharp className="icon_btn" /> IMPLEMENTAÇÃO
+                                    INCOMPLETA
+                                </button>
+                            </>
+                        )}
+                    </Footer>
+                ) : (
+                    <Footer></Footer>
+                )}
             </Container>
+            {isDateModalOpen && (
+                <DateModal
+                    changeData={data}
+                    setIsOpen={toggleIsDateModalOpen}
+                    setIsConcluded={handleIsModalPrioritizing}
+                />
+            )}
         </Background>
     );
 };
