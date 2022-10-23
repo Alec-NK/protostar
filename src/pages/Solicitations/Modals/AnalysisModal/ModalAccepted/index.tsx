@@ -80,11 +80,17 @@ const ModalAccepted = ({ solicitationData, setIsOpen, setIsConcluded }: ModalAcc
         const dataChange = {
             impact: selectedImpact && selectedImpact.value,
             change: selectedSize && selectedSize.value,
-            status: ChangesStatusEnum.aprovado,
-            data_planejada: {
-                data_inicio: data.start_date,
-                data_final: data.final_date,
-            },
+            status:
+                selectedSize?.value === "GRANDE"
+                    ? ChangesStatusEnum.priorizando
+                    : ChangesStatusEnum.aprovado,
+            data_planejada:
+                selectedSize?.value === "GRANDE"
+                    ? {}
+                    : {
+                          data_inicio: data.start_date,
+                          data_final: data.final_date,
+                      },
             reason: solicitationData && solicitationData.reason,
             requisito_mudanca: solicitationData && solicitationData.requisito_mudanca,
         };
@@ -151,17 +157,23 @@ const ModalAccepted = ({ solicitationData, setIsOpen, setIsConcluded }: ModalAcc
                         <div className="inputContainer">
                             <label>Data início</label>
                             <Input
-                                type="date"
+                                type="datetime-local"
                                 focusBorderColor="#fab039"
                                 {...register("start_date")}
+                                disabled={
+                                    selectedSize?.value === "GRANDE" || selectedSize === undefined
+                                }
                             />
                         </div>
                         <div className="inputContainer">
                             <label>Data final</label>
                             <Input
-                                type="date"
+                                type="datetime-local"
                                 focusBorderColor="#fab039"
                                 {...register("final_date")}
+                                disabled={
+                                    selectedSize?.value === "GRANDE" || selectedSize === undefined
+                                }
                             />
                         </div>
                     </form>
