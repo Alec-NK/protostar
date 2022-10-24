@@ -280,11 +280,29 @@ export const Footer = styled.div`
         }
     }
 
+    #btn_impmt {
+        background-color: #2684ff;
+
+        &:hover {
+            background-color: #2679e6;
+            transition: 0.2s;
+        }
+    }
+
     #btn_imp {
         background-color: #4a91fb;
 
         &:hover {
             background-color: #3d80e4;
+            transition: 0.2s;
+        }
+    }
+
+    #btn_ver {
+        background-color: #6754d3;
+
+        &:hover {
+            background-color: #5a49bd;
             transition: 0.2s;
         }
     }

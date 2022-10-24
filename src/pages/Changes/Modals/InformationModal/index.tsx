@@ -603,7 +603,7 @@ const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) =
                             <>
                                 <button
                                     className="btn_footer"
-                                    id="btn_accept"
+                                    id="btn_impmt"
                                     onClick={() =>
                                         ChangeStatus(data.id, ChangesStatusEnum.implementando)
                                     }
@@ -617,7 +617,7 @@ const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) =
                             <>
                                 <button
                                     className="btn_footer"
-                                    id="btn_imp"
+                                    id="btn_ver"
                                     onClick={() =>
                                         ChangeStatus(data.id, ChangesStatusEnum.verificando)
                                     }
