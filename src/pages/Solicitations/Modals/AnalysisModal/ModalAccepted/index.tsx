@@ -77,6 +77,22 @@ const ModalAccepted = ({ solicitationData, setIsOpen, setIsConcluded }: ModalAcc
     };
 
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
+        if (selectedImpact === undefined) {
+            return toast.error("Selecione o nível de impacto!");
+        }
+
+        if (selectedSize === undefined) {
+            return toast.error("Selecione o tamanho da mudança!");
+        }
+
+        if (
+            selectedSize &&
+            selectedSize.value === "PEQUENA" &&
+            (data.start_date === undefined || data.final_date === undefined)
+        ) {
+            return toast.error("Selecione as datas planejadas!");
+        }
+
         const dataChange = {
             impact: selectedImpact && selectedImpact.value,
             change: selectedSize && selectedSize.value,
