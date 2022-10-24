@@ -184,10 +184,16 @@ export const Tag = styled.button`
 export const CardVersion = styled.div`
     display: flex;
     flex-direction: column;
+    width: 45%;
+    padding: 10px 20px;
     margin-bottom: 20px;
-    padding: 12px;
+    box-shadow: 1px 1px 4px 2px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    background-color: ${(props) => props.theme.white_grey};
+
+    .date {
+        color: #b3b3b3;
+        margin-bottom: 10px;
+    }
 
     .title_card {
         font-weight: 700;

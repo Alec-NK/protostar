@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import api from "../../../../services/api";
 import { toast } from "react-toastify";
+import { Divider } from "@chakra-ui/react";
+import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
 
 import { RequirementsDataType } from "../..";
 import { formatDate } from "../../../../util/app.util";
 import { StatusKinds } from "../../../../util/Enums";
+import { ArtefactDataType } from "../../../Artefacts";
 
 import { IoMdClose } from "react-icons/io";
 
@@ -28,8 +30,6 @@ import {
     Tag,
     TitleColumn,
 } from "./styles";
-import { Divider } from "@chakra-ui/react";
-import { ArtefactDataType } from "../../../Artefacts";
 
 type InfoModalProps = {
     requirementId: number | null;
@@ -42,7 +42,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
     const [data, setData] = useState<RequirementsDataType>({} as RequirementsDataType);
     const [relatedRequirements, setRelatedRequirements] = useState<RequirementsDataType[][]>([]);
     const [relatedArtefacts, setRelatedArtefacts] = useState<ArtefactDataType[][]>([]);
-    const [versions, setVersions] = useState<RequirementsDataType[]>([]);
+    const [versions, setVersions] = useState<RequirementsDataType[][]>([]);
 
     const getRequirement = useCallback(async () => {
         await api
@@ -71,7 +71,7 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
         await api
             .post(`/relacionamento_versionamento/`, { id: requirementId })
             .then((response) => {
-                setVersions(response.data.versionamento[0]);
+                setVersions(response.data.versionamento);
             })
             .catch(() => {
                 toast.error("Houve um erro");
@@ -221,10 +221,17 @@ const InfoModal = ({ requirementId, setIsOpen }: InfoModalProps) => {
                             {versions.map((version, index) => {
                                 return (
                                     <CardVersion key={index}>
-                                        <div className="title_card">
-                                            {formatDate(version.created_data)} - {version.title}
+                                        <div className="date">
+                                            {formatDate(version[0].created_data)}
                                         </div>
-                                        <div>{version.description}</div>
+                                        <div className="version_info">
+                                            <div className="title_card">{`${version[0].version.toLocaleUpperCase()} - ${
+                                                version[0].title
+                                            }`}</div>
+                                            <div className="description">
+                                                {version[0].description}
+                                            </div>
+                                        </div>
                                     </CardVersion>
                                 );
                             })}
