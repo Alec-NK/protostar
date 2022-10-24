@@ -67,28 +67,35 @@ const SignUp: React.FC = () => {
                 user = response.data;
             })
             .catch((error) => {
-                toast.error("Houve um erro no cadastro");
+                if (
+                    error.response.data.username[0] === "A user with that username already exists."
+                ) {
+                    return toast.error("Usuário já possui cadastro!");
+                }
+                return toast.error("Houve um erro no cadastro");
             });
 
-        let registerFunctionData = {
-            cargo: data.role,
-            funcao_usuario: UserFunctionEnum.usuario,
-            usuario: user.id,
-        };
+        if (user.id) {
+            let registerFunctionData = {
+                cargo: data.role,
+                funcao_usuario: UserFunctionEnum.usuario,
+                usuario: user.id,
+            };
 
-        await axios
-            .post(`${process.env.REACT_APP_API_URL}/funcao/`, registerFunctionData, {
-                headers: {
-                    Authorization: `Token ${process.env.REACT_APP_ADMIN_TOKEN}`,
-                },
-            })
-            .then(() => {
-                toast.success("Conta cadastrada com sucesso!");
-                navigate("/");
-            })
-            .catch((error) => {
-                toast.error("Houve um erro no cadastro");
-            });
+            await axios
+                .post(`${process.env.REACT_APP_API_URL}/funcao/`, registerFunctionData, {
+                    headers: {
+                        Authorization: `Token ${process.env.REACT_APP_ADMIN_TOKEN}`,
+                    },
+                })
+                .then(() => {
+                    toast.success("Conta cadastrada com sucesso!");
+                    navigate("/");
+                })
+                .catch((error) => {
+                    toast.error("Houve um erro no cadastro");
+                });
+        }
     };
 
     return (
