@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@chakra-ui/react";
 import api from "../../../../services/api";
+import { AuthContext } from "../../../../contexts/AuthContext";
 
 import { ChangeDataType } from "../InformationModal";
 import { ChangesStatusEnum } from "../../../../util/Enums";
@@ -21,11 +22,13 @@ type Inputs = {
 };
 
 const DateModal = ({ changeData, setIsOpen, setIsConcluded }: DateModalProps) => {
+    const { user } = useContext(AuthContext);
     const {
         register,
         handleSubmit,
         formState: { errors },
     } = useForm<Inputs>();
+
     const onSubmit: SubmitHandler<any> = async (data: Inputs) => {
         const dataChange = {
             status:
@@ -53,7 +56,32 @@ const DateModal = ({ changeData, setIsOpen, setIsConcluded }: DateModalProps) =>
             requisito_mudanca: changeData && changeData.requisito_mudanca,
         };
 
-        console.log("asd", dataChange);
+        if (changeData && changeData.status === ChangesStatusEnum.verificando) {
+            const newRequirementData = {
+                title: changeData.new_req.title_requirement,
+                active: true,
+                description: changeData.new_req.description,
+                type: changeData.new_req.type,
+                status: changeData.new_req.status_requirement,
+                category: changeData.new_req.category ? changeData.new_req.category : null,
+                created_data: new Date(),
+                source: changeData.new_req.source,
+                requirements: changeData.new_req.requirements,
+                artefacts: changeData.new_req.artefacts,
+                project_related: user.selectedProject,
+                stake_holders: {
+                    stakeholders: changeData.new_req.stakeholders,
+                },
+                versions: changeData.requisito_mudanca,
+            };
+
+            await api
+                .post(`/muda_versao/`, newRequirementData)
+                .then((response) => {})
+                .catch((error) => {
+                    toast.error("Erro na mudança da versão do requisito");
+                });
+        }
 
         await api
             .put(`/pedido_mudanca/${changeData?.id}/`, dataChange)

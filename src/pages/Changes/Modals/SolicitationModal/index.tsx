@@ -13,6 +13,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 
 import { AsyncSelectInputValuesType } from "../../../Requirements/Modals/RegisterModal";
 import { ChangesTypes, RequirementStatusTypes, RequirementsTypes } from "../../../../util/Types";
+import { RequirementsStatusEnum } from "../../../../util/Enums";
 import { RequirementsDataType } from "../../../Requirements";
 
 import {
@@ -40,7 +41,6 @@ type Inputs = {
     requirement: AsyncSelectInputValuesType;
     title_requirement: string;
     description: string;
-    status_requirement: any;
     type: any;
     category: string | null;
     requirements: Array<AsyncSelectInputValuesType>;
@@ -181,16 +181,14 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
             new_req: {
                 title_requirement: data.title_requirement,
                 description: data.description,
-                status_requirement:
-                    data.status.value === undefined
-                        ? selectedStatusOption.value
-                        : data.status.value,
+                status_requirement: RequirementsStatusEnum.implementado,
                 type: data.type === undefined ? selectedTypeOption.value : data.type.value,
                 category: data.category === undefined ? null : data.category,
                 requirements: requirementsList,
                 artefacts: artefactsList,
                 stakeholders: data.stakeholders,
                 source: data.source,
+                versions: basedRequirement?.versions,
             },
             requisito_mudanca: basedRequirement ? basedRequirement.id : data.requirement,
         };
@@ -355,6 +353,19 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                         <p className="error_message">{errors.title?.message}</p>
                                     </div>
                                     <div className="inputContainer">
+                                        <label>Fonte</label>
+                                        <Input
+                                            type="text"
+                                            id="source"
+                                            placeholder="Digite o nome da fonte de informação do requisito"
+                                            {...register("source")}
+                                            focusBorderColor="#fab039"
+                                        />
+                                        <p className="error_message">{errors.source?.message}</p>
+                                    </div>
+                                </RowTwo>
+                                <RowOne>
+                                    <div className="inputContainer">
                                         <label>Descrição</label>
                                         <Input
                                             type="text"
@@ -367,33 +378,8 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             {errors.description?.message}
                                         </p>
                                     </div>
-                                </RowTwo>
-                                <RowThree>
-                                    <div className="inputContainer">
-                                        <label>Status</label>
-                                        <Controller
-                                            name="status_requirement"
-                                            control={control}
-                                            render={({ field }) => {
-                                                return (
-                                                    <Select
-                                                        {...field}
-                                                        value={selectedStatusOption}
-                                                        options={RequirementStatusTypes}
-                                                        onChange={(option) =>
-                                                            handleRequirementStatus(option)
-                                                        }
-                                                        styles={customStyles}
-                                                        defaultValue={{
-                                                            value: "TD",
-                                                            label: "To-do",
-                                                        }}
-                                                    />
-                                                );
-                                            }}
-                                        />
-                                        <p className="error_message">{errors.status?.message}</p>
-                                    </div>
+                                </RowOne>
+                                <RowTwo>
                                     <div className="inputContainer">
                                         <label>Tipo</label>
                                         <Controller
@@ -419,18 +405,6 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                         />
                                         <p className="error_message">{errors.type?.message}</p>
                                     </div>
-                                    <div className="inputContainer" id="version">
-                                        <label>Versão</label>
-                                        <Input
-                                            type="text"
-                                            id="version"
-                                            placeholder="vs-1"
-                                            focusBorderColor="#fab039"
-                                            disabled
-                                        />
-                                    </div>
-                                </RowThree>
-                                <RowTwo>
                                     <div className="inputContainer">
                                         <label>Categoria</label>
                                         <Input
@@ -442,17 +416,6 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                                             disabled={!isNFunctionalSelected}
                                         />
                                         <p className="error_message">{errors.category?.message}</p>
-                                    </div>
-                                    <div className="inputContainer">
-                                        <label>Fonte</label>
-                                        <Input
-                                            type="text"
-                                            id="source"
-                                            placeholder="Digite o nome da fonte do requisito"
-                                            {...register("source")}
-                                            focusBorderColor="#fab039"
-                                        />
-                                        <p className="error_message">{errors.source?.message}</p>
                                     </div>
                                 </RowTwo>
                                 <div className="caption">RELACIONAMENTOS</div>

@@ -38,6 +38,7 @@ export type RequirementsDataType = {
     artefacts: Array<number>;
     relations: Array<number>;
     requisito_mudanca: any;
+    versions: Array<number>;
 };
 
 const Requirements = () => {

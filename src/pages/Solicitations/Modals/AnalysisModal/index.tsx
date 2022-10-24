@@ -15,6 +15,7 @@ import { RequirementsDataType } from "../../../Requirements";
 import { ArtefactDataType } from "../../../Artefacts";
 import { formatDate } from "../../../../util/app.util";
 import { ChangesStatusEnum, StatusKinds } from "../../../../util/Enums";
+import { ChangeDataType, NewRequirementType } from "../../../Changes/Modals/InformationModal";
 
 import {
     Background,
@@ -42,45 +43,6 @@ type InfoModalProps = {
     setIsOpen: () => void;
     reloadData: () => void;
     changeId: number;
-};
-
-type NewRequirementType = {
-    title_requirement: string;
-    description: string;
-    status_requirement: string;
-    type: string;
-    category: string | null;
-    requirements: Array<number>;
-    artefacts: Array<number>;
-    stakeholders: string;
-    source: string;
-    version: string;
-};
-
-export type ChangeDataType = {
-    id: number;
-    title: string;
-    reason: string;
-    accountable: string;
-    data_mudanca: null;
-    data_pedido: string;
-    is_accepted: boolean;
-    new_req: NewRequirementType;
-    requestor: string;
-    status: string;
-    data_planejada:
-        | {
-              data_inicio: string;
-              data_final: string;
-          }
-        | JSON;
-    data_realizada:
-        | {
-              data_inicio: string;
-              data_final: string;
-          }
-        | JSON;
-    requisito_mudanca: number;
 };
 
 type RelatedDataType = {

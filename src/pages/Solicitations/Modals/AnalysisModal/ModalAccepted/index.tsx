@@ -6,7 +6,7 @@ import api from "../../../../../services/api";
 import { Input } from "@chakra-ui/react";
 import Select from "react-select";
 
-import { ChangeDataType } from "..";
+import { ChangeDataType } from "../../../../Changes/Modals/InformationModal";
 import { ChangesStatusEnum } from "../../../../../util/Enums";
 
 import { Background, Caption, Container, Content, Footer, Header } from "./styles";

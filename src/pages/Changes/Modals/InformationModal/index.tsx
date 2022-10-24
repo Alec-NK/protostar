@@ -45,7 +45,7 @@ type InfoModalProps = {
     changeId: number;
 };
 
-type NewRequirementType = {
+export type NewRequirementType = {
     title_requirement: string;
     description: string;
     status_requirement: string;
@@ -56,6 +56,7 @@ type NewRequirementType = {
     stakeholders: string;
     source: string;
     version: string;
+    versions: Array<number>;
 };
 
 export type ChangeDataType = {
