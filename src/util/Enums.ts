@@ -3,6 +3,15 @@ export enum StatusKinds {
     changes = "CHG",
 }
 
+export enum RequirementsStatusEnum {
+    cadastrado = "TD",
+    implementando = "D",
+    implementado = "DN",
+    bloqueado = "B",
+    deletado = "DEL",
+    mudando = "C",
+}
+
 export enum ChangesStatusEnum {
     analisando = "AN",
     aprovado = "APR",
