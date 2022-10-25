@@ -13,7 +13,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 
 import { AsyncSelectInputValuesType } from "../../../Requirements/Modals/RegisterModal";
 import { ChangesTypes, RequirementStatusTypes, RequirementsTypes } from "../../../../util/Types";
-import { RequirementsStatusEnum } from "../../../../util/Enums";
+import { RequirementsStatusEnum, UserFunctionEnum } from "../../../../util/Enums";
 import { RequirementsDataType } from "../../../Requirements";
 
 import {
@@ -196,24 +196,39 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
         setIsFirstForm(false);
         setIsSecondForm(true);
 
+        let wasRequested = false;
+
         await api
             .post(`/pedido_mudanca/`, newData)
             .then(() => {
-                toast.success("Solicitação enviada com sucesso!");
-                toggleIsModalOpen();
-                reloadPage();
+                wasRequested = true;
             })
             .catch((erro) => {
                 toast.error("Erro na solicitação");
             });
+
+        if (wasRequested) {
+            const notificationData = {
+                title: "Solicitação de mudança",
+                mensagem: `Nova solicitação de mudança feita pelo membro ${newData.requestor}`,
+                funcao_notificacao: UserFunctionEnum.comite,
+            };
+
+            await api
+                .post(`/notificacao/`, notificationData)
+                .then((response) => {
+                    toast.success("Solicitação enviada com sucesso!");
+                    toggleIsModalOpen();
+                    reloadPage();
+                })
+                .catch((error) => {
+                    toast.error("Erro na notificação");
+                });
+        }
     };
 
     const handleChangeStatus = (option: any) => {
         setSelectedChangeOption(option);
-    };
-
-    const handleRequirementStatus = (option: any) => {
-        setSelectedStatusOption(option);
     };
 
     const toggleFormStep = () => {
