@@ -25,7 +25,7 @@ export const TableList = styled.div`
 
 export const HeaderTable = styled.div`
     display: grid;
-    grid-template-columns: 0.3fr 1fr 2fr;
+    grid-template-columns: 0.5fr 1fr 2fr;
     width: 100%;
     padding: 0 10px 10px 10px;
     margin-bottom: 25px;

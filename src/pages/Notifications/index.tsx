@@ -12,6 +12,8 @@ export type NotificationType = {
     mensagem: string;
     notificado: boolean;
     funcao_notificacao: string;
+    user: number | null;
+    data_notificado: any;
 };
 
 const Notifications = () => {
@@ -23,13 +25,17 @@ const Notifications = () => {
             .get(`/notificacao/`)
             .then((response) => {
                 const userNotifications = response.data.filter((notification: NotificationType) => {
-                    return notification.funcao_notificacao === user.funcao_usuario;
+                    if (notification.user) {
+                        return notification.user === user.id;
+                    } else {
+                        return notification.funcao_notificacao === user.funcao_usuario;
+                    }
                 });
 
                 setNewNotifications(userNotifications);
             })
             .catch((error) => {
-                toast.error("Erro na notificação");
+                toast.error("Erro ao buscar notificação");
             });
     }, []);
 
@@ -44,7 +50,7 @@ const Notifications = () => {
             </Header>
             <TableList>
                 <HeaderTable>
-                    <div>ID</div>
+                    <div>Data notificada</div>
                     <div>Título</div>
                     <div>Mensagem</div>
                 </HeaderTable>

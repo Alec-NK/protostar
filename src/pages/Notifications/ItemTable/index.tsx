@@ -1,5 +1,7 @@
 import { NotificationType } from "..";
 
+import { formatDate } from "../../../util/app.util";
+
 import { Container } from "./styles";
 
 type ItemTableProps = {
@@ -10,7 +12,7 @@ type ItemTableProps = {
 const ItemTable = ({ data, id }: ItemTableProps) => {
     return (
         <Container>
-            <div>{id + 1 < 10 ? `0${id + 1}` : id + 1}</div>
+            <div>{formatDate(data.data_notificado)}</div>
             <div>{data && data.title}</div>
             <div>{data && data.mensagem}</div>
         </Container>
