@@ -1,10 +1,12 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useContext } from "react";
 import { toast } from "react-toastify";
 import { Tooltip } from "@chakra-ui/react";
+import { AuthContext } from "../../../../contexts/AuthContext";
 import api from "../../../../services/api";
 
 import Status from "../../../../components/Status";
 import ModalAccepted from "./ModalAccepted";
+import ModalConfirmation from "../../../../components/ModalConfirmation";
 
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
@@ -14,7 +16,7 @@ import { AiFillQuestionCircle } from "react-icons/ai";
 import { RequirementsDataType } from "../../../Requirements";
 import { ArtefactDataType } from "../../../Artefacts";
 import { formatDate } from "../../../../util/app.util";
-import { ChangesStatusEnum, StatusKinds } from "../../../../util/Enums";
+import { ChangesStatusEnum, StatusKinds, UserFunctionEnum } from "../../../../util/Enums";
 import { ChangeDataType, NewRequirementType } from "../../../Changes/Modals/InformationModal";
 
 import {
@@ -37,7 +39,6 @@ import {
     Tag,
     Title,
 } from "./styles";
-import ModalConfirmation from "../../../../components/ModalConfirmation";
 
 type InfoModalProps = {
     setIsOpen: () => void;
@@ -51,6 +52,7 @@ type RelatedDataType = {
 };
 
 const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
+    const { user } = useContext(AuthContext);
     const [isSolicitationTab, setIsSolicitationTab] = useState(true);
     const [isRequirementTab, setIsRequirementTab] = useState(false);
     const [isNewRequirementTab, setIsNewRequirementTab] = useState(false);
@@ -186,9 +188,12 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                 requisito_mudanca: data && data.requisito_mudanca,
             };
 
+            let wasRequested = false;
+
             await api
                 .put(`/pedido_mudanca/${changeId}/`, dataModified)
                 .then((response) => {
+                    wasRequested = true;
                     toast.success("Status atualizado com sucesso!");
                     setIsOpen();
                     reloadData();
@@ -196,8 +201,25 @@ const AnalysisModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
                 .catch((error) => {
                     toast.error("Houve um erro");
                 });
+
+            if (wasRequested && status === ChangesStatusEnum.rejeitado) {
+                const notificationData = {
+                    title: "Solicitação de mudança rejeitada",
+                    mensagem: `A sua solicitação de mudança foi rejeitada pelo Comitê de Controle de Mudança`,
+                    funcao_notificacao: UserFunctionEnum.comite,
+                    user: user.id,
+                    data_notificado: new Date(),
+                };
+
+                await api
+                    .post(`/notificacao/`, notificationData)
+                    .then((response) => {})
+                    .catch((error) => {
+                        toast.error("Erro na notificação");
+                    });
+            }
         },
-        [data, reloadData, setIsOpen]
+        [data, reloadData, setIsOpen, user.id]
     );
 
     useEffect(() => {

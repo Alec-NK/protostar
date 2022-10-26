@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import api from "../../../../../services/api";
+import { AuthContext } from "../../../../../contexts/AuthContext";
 
 import { Input } from "@chakra-ui/react";
 import Select from "react-select";
 
 import { ChangeDataType } from "../../../../Changes/Modals/InformationModal";
-import { ChangesStatusEnum } from "../../../../../util/Enums";
+import { ChangesStatusEnum, UserFunctionEnum } from "../../../../../util/Enums";
 
 import { Background, Caption, Container, Content, Footer, Header } from "./styles";
 
@@ -58,6 +59,7 @@ const customStyles = {
 };
 
 const ModalAccepted = ({ solicitationData, setIsOpen, setIsConcluded }: ModalAcceptedProps) => {
+    const { user } = useContext(AuthContext);
     const {
         register,
         handleSubmit,
@@ -111,16 +113,37 @@ const ModalAccepted = ({ solicitationData, setIsOpen, setIsConcluded }: ModalAcc
             requisito_mudanca: solicitationData && solicitationData.requisito_mudanca,
         };
 
+        let wasRequested = false;
+
         await api
             .put(`/pedido_mudanca/${solicitationData?.id}/`, dataChange)
             .then((response) => {
-                toast.success("Mudança aprovada!");
-                setIsOpen();
-                setIsConcluded();
+                wasRequested = true;
             })
             .catch((error) => {
                 toast.error("Houve um erro");
             });
+
+        if (wasRequested) {
+            const notificationData = {
+                title: "Solicitação de mudança aceita",
+                mensagem: `A sua solicitação de mudança "${solicitationData?.title}" foi aceita pelo Comitê de Controle de Mudança`,
+                funcao_notificacao: UserFunctionEnum.usuario,
+                user: user.id,
+                data_notificado: new Date(),
+            };
+
+            await api
+                .post(`/notificacao/`, notificationData)
+                .then((response) => {
+                    toast.success("Mudança aprovada!");
+                    setIsOpen();
+                    setIsConcluded();
+                })
+                .catch((error) => {
+                    toast.error("Erro na notificação");
+                });
+        }
     };
 
     return (

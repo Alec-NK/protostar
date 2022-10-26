@@ -6,7 +6,7 @@ import api from "../../../../services/api";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
 import { ChangeDataType } from "../InformationModal";
-import { ChangesStatusEnum } from "../../../../util/Enums";
+import { ChangesStatusEnum, UserFunctionEnum } from "../../../../util/Enums";
 
 import { Background, Container, Content, Footer, Header } from "./styles";
 
@@ -83,9 +83,12 @@ const DateModal = ({ changeData, setIsOpen, setIsConcluded }: DateModalProps) =>
                 });
         }
 
+        let wasRequested = false;
+
         await api
             .put(`/pedido_mudanca/${changeData?.id}/`, dataChange)
             .then((response) => {
+                wasRequested = true;
                 toast.success("Status atualizado com sucesso!");
                 setIsOpen();
                 setIsConcluded();
@@ -93,6 +96,23 @@ const DateModal = ({ changeData, setIsOpen, setIsConcluded }: DateModalProps) =>
             .catch((error) => {
                 toast.error("Houve um erro ao atualizar status");
             });
+
+        if (wasRequested && dataChange.status === ChangesStatusEnum.finalizado) {
+            const notificationData = {
+                title: "Solicitação de mudança finalizada",
+                mensagem: `O processo de mudança da sua solicitação foi finalizada`,
+                funcao_notificacao: UserFunctionEnum.comite,
+                user: user.id,
+                data_notificado: new Date(),
+            };
+
+            await api
+                .post(`/notificacao/`, notificationData)
+                .then((response) => {})
+                .catch((error) => {
+                    toast.error("Erro na notificação");
+                });
+        }
     };
 
     return (
