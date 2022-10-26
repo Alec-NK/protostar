@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useContext } from "react";
 import { toast } from "react-toastify";
-import { Divider, Tooltip } from "@chakra-ui/react";
+import { Tooltip } from "@chakra-ui/react";
 import api from "../../../../services/api";
 import { AuthContext } from "../../../../contexts/AuthContext";
 
@@ -89,6 +89,7 @@ type RelatedDataType = {
 };
 
 const InformationModal = ({ setIsOpen, changeId, reloadData }: InfoModalProps) => {
+    const { user } = useContext(AuthContext);
     const { authorization } = useContext(AuthContext);
     const [isSolicitationTab, setIsSolicitationTab] = useState(true);
     const [isRequirementTab, setIsRequirementTab] = useState(false);

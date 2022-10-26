@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { AuthContext } from "../../../../contexts/AuthContext";
 import api from "../../../../services/api";
 
 import { Input, Textarea, Tooltip } from "@chakra-ui/react";
@@ -87,6 +88,7 @@ const customStyles = {
 };
 
 const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
+    const { user } = useContext(AuthContext);
     const [isFirstForm, setIsFirstForm] = useState(true);
     const [isSecondForm, setIsSecondForm] = useState(false);
     const {
@@ -177,6 +179,7 @@ const SolicitationModal = ({ setIsOpen, reloadPage }: RegisterModalProps) => {
                 data.status.value === undefined ? selectedChangeOption.value : data.status.value,
             requestor: data.requestor,
             accountable: data.accountable,
+            user_requestor: user.id,
             is_accepted: false,
             new_req: {
                 title_requirement: data.title_requirement,
