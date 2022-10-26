@@ -49,7 +49,11 @@ const Header = () => {
             .get(`/notificacao/`)
             .then((response) => {
                 const userNotifications = response.data.filter((notification: NotificationType) => {
-                    return notification.funcao_notificacao === user.funcao_usuario;
+                    if (notification.user) {
+                        return notification.user === user.id;
+                    } else {
+                        return notification.funcao_notificacao === user.funcao_usuario;
+                    }
                 });
 
                 const newNotifications = userNotifications.filter(
